@@ -1,0 +1,468 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #d9d9d9;
+    background-color: #404040;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    background-color: #0d0d0d;
+}
+
+header {
+    margin: 50px 0 25px;
+}
+
+.menu {
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+.navbar-brand img {
+    position: relative;
+    top: -68px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #808080;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.navbar-nav > li.active-link > a {
+   border-bottom: 2px solid #404040; 
+}
+
+.navbar-nav > li > a:hover {
+    border-bottom: 2px solid #404040;
+}
+
+.user-hello > li {
+    padding-right: 20px;
+    font-size: 18px;
+    color: #808080;
+}
+
+@media only screen and (max-width : 800px) {
+    
+    .navbar-brand {
+        padding-right: 10px;
+        padding-left: 20px;
+    } 
+
+    .navbar-brand img {
+
+        top: -65px;
+        max-height: 50px;
+    }  
+}
+
+footer {
+    margin-bottom: 100px;
+}
+
+.navbar {
+    border-radius: 64px;
+}
+
+.slogan h2 {
+    font-size: 30px;
+    text-align: center;
+    margin: 20px 0 20px;
+}
+
+.carousel {
+    margin: 25px 0 50px;
+}
+
+.form {
+    width: 300px;
+    height: 450px;
+    background-color: #1a1a1a;
+    margin: 25px auto;
+    text-align: center;
+    box-shadow: -20px -20px 0 #737373;
+    border-radius: 20px 20px 20px 20px;
+    color: #404040;
+}
+
+.form a {
+    color: #d9d9d9;
+}
+
+.form img {
+    width: 100px;
+    height: 100px;
+    margin: 30px 0 30px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 250px;
+    height: 50px;
+    font-size: 18px;
+    margin-bottom: 25px;
+    border-radius: 15px;
+    padding-left: 10px;
+}
+
+.dws-submit {
+    padding: 13px 30px;
+    margin: 5px 0 20px 0;
+    font-size: 15px;
+    color: #404040;
+    background-color: #d9d9d9;
+    border: none;
+    border-bottom: 4px solid 
+}
+
+.dws-submit:hover {
+    transition: all 0.5s;
+    background: #4d4d4d;
+    color: aliceblue;
+}
+
+.dws-input {
+    color: #404040;     
+}
+
+.dws-input input:hover {
+    box-shadow: 0 0 6px 3px rgba(30, 219, 253, 0.35);
+}
+
+.regform {
+    width: 300px;
+    height: 745px;
+    background-color: #1a1a1a;
+    margin: 25px auto;
+    text-align: center;
+    box-shadow: -20px -20px 0 #737373;
+    border-radius: 20px 20px 20px 20px;
+}
+
+.regform img {
+    width: 70px;
+    height: 70px;
+    margin: 20px 0 20px;
+}
+
+.error p {
+    color: red;
+    text-align: center;
+}
+
+h4.error  {
+    color: red;
+    text-align: center;
+}
+
+h4.status  {
+    color: greenyellow;
+    text-align: center;
+}
+
+/*Application*/
+
+.description {
+    width: 400px;
+    height: 465px;
+    background-color: rgba(26, 26, 26, 0.7);
+    margin: 20px 20px 0 120px;
+}
+
+.task_description {
+    width: 370px;
+    height: 245px;
+    background-color: #262626;
+    resize: none;
+    border: none;
+    border: 3px solid #8c8c8c;
+    font-size: 15px;
+    margin: 0 0 20px 0;
+    padding: 5px;
+}
+
+.task_description:hover {
+    transition: all 0.3s;
+    background: #404040;
+}
+
+.user_description {
+    width: 370px;
+    height: 125px;
+    background-color: #262626;
+    resize: none;
+    border: none;
+    border: 3px solid #8c8c8c;
+    font-size: 15px;
+}
+
+.user_description:hover {
+    transition: all 0.3s;
+    background: #404040;
+}
+
+.task_information {
+    width: 370px;
+    height: 105px;
+    background-color: #262626;
+    resize: none;
+    border: none;
+    border: 3px solid #8c8c8c;
+    font-size: 13px;
+    margin: 0 0 20px 0;
+    padding: 5px;
+}
+
+.task_information:hover {
+    transition: all 0.3s;
+    background: #404040;
+}
+
+.code_field {
+    width: 530px;
+    height: 465px;
+    background-color: rgba(26, 26, 26, 0.7);
+    margin: 20px;
+}
+
+.code_field textarea {
+    width: 500px;
+    height: 405px;
+    background-color: black;
+    resize: none;
+    border: none;
+    border: 3px solid #8c8c8c;
+    color: #ffb366;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.output {
+    width: 400px;
+    height: 300px;
+    background-color: rgba(26, 26, 26, 0.7);
+    margin: 20px 20px 0 120px;
+}
+
+.user_information {
+    width: 370px;
+    height: 175px;
+    background-color: #262626;
+    resize: none;
+    border: 3px solid #8c8c8c;
+    font-size: 15px;
+    margin-bottom: 30px;
+    padding: 5px;
+}
+
+.user_information:hover {
+    transition: all 0.3s;
+    background: #404040;
+}
+
+.test_example {
+    width: 530px;
+    height: 300px;
+    background-color: rgba(26, 26, 26, 0.7);
+    margin: 20px;
+}
+
+.test_description {
+    width: 500px;
+    height: 245px;
+    background-color: black;
+    resize: none;
+    border: none;
+    border: 3px solid #8c8c8c;
+    font-size: 15px;
+    padding: 5px;
+    color: #ffb366;
+}
+
+.submit {
+    width: 370px;
+    height: 37px;
+    background-color: #1a1a1a;
+}
+
+.submit:hover {
+    transition: all 0.5s;
+    background: #d9d9d9;
+    color: black;
+}
+
+.short_task_description {
+    font-size: 10px;
+    text-align: center;
+}
+
+.result_success {
+    text-align: center;
+}
+
+.result_form_success {
+    width: 550px;
+    height: 420px;
+    background-color: black;
+    margin: 50px auto 30px auto;
+    text-align: center;
+    border-radius: 20px 20px 20px 20px;
+    padding: 20px;
+}
+
+.fa-thumbs-up {
+    margin-bottom: -5px;
+    margin-top: 40px;
+}
+
+.fa-thumbs-down {
+    margin-bottom: -5px;
+    margin-top: 10px;
+}
+
+.result_form_fail {
+    width: 550px;
+    height: 350px;
+    background-color: black;
+    margin: 50px auto 30px auto;
+    text-align: center;
+    border-radius: 20px 20px 20px 20px;
+    padding: 20px;
+}
+
+.error_container {
+    text-align: center;
+}
+
+.error_form {
+    width: 550px;
+    height: 420px;
+    background-color: black;
+    margin: 50px auto 30px auto;
+    text-align: center;
+    border-radius: 20px 20px 20px 20px;
+}
+
+.fa-exclamation-triangle {
+    margin-bottom: -5px;
+    margin-top: 40px;
+}
+
+div.place_error {
+    height: 25px;
+    color: red;
+    font-color: 12px;
+}
+
+.container_user {
+    text-align: center;
+}
+
+.user_box1 {
+    width: 250px;
+    height: 300px;
+    background-color: #1a1a1a;
+    margin: 30px;
+    padding: 10px;
+}
+
+.user_box1 p:hover {
+    color: white;
+}
+
+.user_box2 {
+    width: 750px;
+    /*height: 400px;*/
+    background-color: #1a1a1a;
+    margin: 30px;
+    padding: 30px;
+}
+
+table {
+    text-align: center;
+}
+
+table tr.table_head {
+    font-size: 11px;
+    background-color: #404040;
+}
+
+table tr:hover {
+    transition: all 0.6s;
+    background-color: aliceblue;
+    color: black;
+}
+
+.SOLVED {
+    color: #40ff00;
+}
+
+.NOT {
+    color: #ff3300;
+}
+
+.dws_submit_next_task {
+    width: 370px;
+    height: 37px;
+    background-color: #1a1a1a;
+}
+
+.dws_submit_next_task:hover {
+    transition: all 0.5s;
+    background: #d9d9d9;
+    color: black;
+}
+
+.small_column {
+    font-size: 12px;
+}
+
+.rating {
+    background-color: #1a1a1a;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.rating_line {
+    background-color: #d9d9d9;
+    color: #1a1a1a;
+}
+
+.tasks {
+    background-color: #1a1a1a;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+select {
+    width: 250px;
+    height: 50px;
+    font-size: 18px;
+    margin-bottom: 25px;
+    border-radius: 15px;
+    padding-left: 10px;
+}
+
+.form_admin {
+    padding-top: 30px;
+    width: 300px;
+    background-color: #1a1a1a;
+    margin: 25px auto;
+    text-align: center;
+    box-shadow: -20px -20px 0 #737373;
+    border-radius: 20px 20px 20px 20px;
+    color: #404040;
+}
+
+.dropdown-toggle {
+    border: none;
+    background-color: #f8f8f8;
+    font-size: 28px;
+}
+
+
