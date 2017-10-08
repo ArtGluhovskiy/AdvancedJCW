@@ -25,3 +25,17 @@ hs_err_pid*
 *.iml
 .idea
 out
+
+.classpath
+.project
+
+target
+bin
+.settings
+
+tmp
+/build
+.springBeans
+/.project
+/.classpath
+rebel.xml
