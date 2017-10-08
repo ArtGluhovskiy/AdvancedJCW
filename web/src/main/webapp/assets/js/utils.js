@@ -11,23 +11,23 @@ $(document).ready(function () {
 
     $('input.input_fname').blur(function () {
         validate($(this), pat_name, 'first name');
-    })
+    });
 
     $('input.input_lname').blur(function () {
         validate($(this), pat_name, 'last name');
-    })
+    });
 
     $('input.input_date').blur(function () {
         validate($(this), pat_birth, 'birth date');
-    })
+    });
 
     $('input.input_email').blur(function () {
         validate($(this), pat_email, 'email');
-    })
+    });
 
     $('input.input_password').blur(function () {
         validate($(this), pat_password, 'password');
-    })
+    });
 
     $('.dws-submit').click(function () {
         if ($('.place_error').text() === "") {
