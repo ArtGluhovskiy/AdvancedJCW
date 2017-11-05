@@ -1,5 +1,7 @@
 package org.art.web.command.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.entities.JavaTask;
 import org.art.entities.User;
 import org.art.services.TaskOrderService;
@@ -10,7 +12,6 @@ import org.art.services.impl.ResultsAnalyzer;
 import org.art.services.impl.StringCompilerService;
 import org.art.services.impl.TaskOrderServiceImpl;
 import org.art.web.command.Controller;
-import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import java.io.IOException;
 
 public class CompilerController implements Controller {
 
-    public static final Logger log = Logger.getLogger(CompilerController.class);
+    public static final Logger log = LogManager.getLogger(CompilerController.class);
 
     /**
      * {@code CompilerController} is responsible for code compilation

@@ -1,9 +1,10 @@
 package org.art.dao.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.dao.JavaTaskDao;
 import org.art.dao.exceptions.DAOSystemException;
 import org.art.entities.JavaTask;
-import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.sql.*;
@@ -21,7 +22,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
     private ThreadLocal<Connection> threadCache;
     //Path of the file where serialized java task is stored
     private String serialTaskPath = "C:\\Users\\Lenovo\\IdeaProjects\\jsw_project\\src\\com\\java_projects\\java_code_wars\\source\\java_tasks\\serial_tasks\\Serial_task.txt";
-    public static final Logger log = Logger.getLogger(UserDaoImpl.class);
+    public static final Logger log = LogManager.getLogger(JavaTaskDaoImpl.class);
 
     private static final String SAVE_JAVA_TASK_QUERY = "INSERT INTO java_tasks (difficulty_group, short_desc, elapsed_time, popularity," +
                                                        " java_task_object, reg_date) VALUES (?, ?, ?, ?, ?, ?);";

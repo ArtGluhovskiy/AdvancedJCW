@@ -1,11 +1,12 @@
 package org.art.dao.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.dao.TaskOrderDao;
 import org.art.dao.exceptions.DAOSystemException;
 import org.art.dto.OrderDTO;
 import org.art.entities.TaskOrder;
 import org.art.entities.User;
-import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
 
     private static volatile TaskOrderDao instance = null;
     private ThreadLocal<Connection> threadCache;
-    public static final Logger log = Logger.getLogger(UserDaoImpl.class);
+    public static final Logger log = LogManager.getLogger(TaskOrderDaoImpl.class);
 
     private static final String SAVE_ORDER_QUERY = "INSERT INTO task_orders (user_id, task_id, reg_date, status) " +
             "VALUES (?, ?, ?, ?)";

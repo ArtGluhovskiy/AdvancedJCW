@@ -1,7 +1,8 @@
 package org.art.db;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.db.exceptions.DbManagerException;
 
 import java.beans.PropertyVetoException;
@@ -17,7 +18,7 @@ import java.util.ResourceBundle;
 public class ConnectionPoolManager {
 
     private static ConnectionPoolManager INSTANCE;
-    public static final Logger log = Logger.getLogger(ConnectionPoolManager.class);
+    public static final Logger log = LogManager.getLogger(ConnectionPoolManager.class);
     private ComboPooledDataSource cpds;
     private static ResourceBundle rb;
     private final String DRIVER;

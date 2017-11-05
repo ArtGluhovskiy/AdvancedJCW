@@ -1,9 +1,10 @@
 package org.art.dao.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.dao.UserDao;
 import org.art.dao.exceptions.DAOSystemException;
 import org.art.entities.User;
-import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class UserDaoImpl implements UserDao {
 
     private static volatile UserDao instance = null;
     private ThreadLocal<Connection> threadCache;
-    public static final Logger log = Logger.getLogger(UserDaoImpl.class);
+    public static final Logger log = LogManager.getLogger(UserDaoImpl.class);
 
     private static final String SAVE_USER_QUERY = "INSERT INTO users (rating, clan_name, login, password, first_name, " +
                                                   "last_name, email, reg_date, role, status, birth_date, level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

@@ -1,14 +1,15 @@
 package org.art.services;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.dao.exceptions.DAOSystemException;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class TransactionManager {
 
-    public static final Logger log = Logger.getLogger(TransactionManager.class);
+    public static final Logger log = LogManager.getLogger(TransactionManager.class);
     protected ThreadLocal<Connection> threadCache;
 
     public void startTransaction() throws DAOSystemException {

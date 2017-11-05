@@ -1,7 +1,8 @@
 package org.art.dao.util;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.dao.exceptions.TestDbManagerException;
 
 import java.sql.Connection;
@@ -11,7 +12,7 @@ import java.util.ResourceBundle;
 
 public class DbcpConnectionPool {
 
-    public static final Logger log = Logger.getLogger(DbcpConnectionPool.class);
+    public static final Logger log = LogManager.getLogger(DbcpConnectionPool.class);
 
     private static DbcpConnectionPool INSTANCE;
     private static BasicDataSource dataSource;
