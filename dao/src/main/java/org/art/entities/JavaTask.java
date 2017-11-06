@@ -1,8 +1,14 @@
 package org.art.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
-import java.io.*;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Arrays;
 
@@ -11,20 +17,55 @@ import java.util.Arrays;
  * all information needed for user, class loader, method invocation etc.
  */
 @Data
+@AllArgsConstructor
+@Entity(name = "JAVA_TASKS")
 public class JavaTask implements Serializable {
 
+    @Transient
     private static final long SerialVersionUID = 1L;
 
-    // Transient fields should be explicitly defined in the java_tasks table of the database
-    private transient long taskID; //auto increment field
-    private transient int popularity;
-    private transient String difficultyGroup = DifficultyGroup.EXPERT.toString();
-    private transient String shortDescr = "Advanced array sorting";
-    private transient Date regDate = new Date(System.currentTimeMillis());
+    @Id
+    @GeneratedValue(generator = "ID_GENERATOR")
+    @GenericGenerator(
+            name = "ID_GENERATOR",
+            strategy = "enhanced-sequence",
+            parameters = {
+                    @Parameter(
+                            name = "sequence_name",
+                            value = "TASK_SEQUENCE"
+                    )
+            }
+    )
+    @Column(name = "TASK_ID")
+    private Long id;
+
+    @Transient
+    private Long taskID; //auto increment field
+
+    @Column(name = "POPULARITY")
+    private int popularity;
+
+//    @Enumerated(value = EnumType.STRING)
+    @Column(name = "DIF_GROUP")
+    private String difficultyGroup = DifficultyGroup.EXPERT.toString();
+
+    @Column(name = "DESCR")
+    private String shortDescr = "Advanced array sorting";
+
+    @CreationTimestamp
+    @Column(name = "REG_DATE", updatable = false)
+    private Date regDate;
+
     // Efficient time of the algorithm (in mcs)
+    @Column(name = "ELAPSED_TIME")
     private long elapsedTime = 100000;
 
+    @Lob
+    @Column(name = "BINARY_TASK")
+    private byte[] binTask;
+
     // Task description and test info for user
+    @Transient
     private String description = "Congratulations! You have reached the highest level.<br>" +
             "So, it's time to try hard! Enough school tasks!<br>" +
             "This time you need to write an algorithm of array sorting...<br>" +
@@ -33,8 +74,10 @@ public class JavaTask implements Serializable {
             "Forget it! And all that O(n2) staff! You should use O(n logn) algorithms if " +
             "you want to complete this task successfully! I recommend you quick or merge sort!";
 
+    @Transient
     private String topics = "Java Core, Sorting algorithms, Arrays";
 
+    @Transient
     private String testInfo = "import org.junit.Test;<br>" +
             "import static org.junit.Assert.*;<br>" +
             "<br>" +
@@ -47,15 +90,29 @@ public class JavaTask implements Serializable {
             "}";
 
     // Value of the task
+    @Transient
     private int value = 10;
 
     // Parameters for class loader and method invocation
+    @Transient
     private int parametersNumber = 1;
+
+    @Transient
     private Object result;
+
+    @Transient
     private String className = "AdvancedArraySorting";
+
+    @Transient
     private String methodName = "sort";
+
+    @Transient
     private String methodString = "public int[] sort(int[] array) {";
+
+    @Transient
     private Object[] testMethodParameters;
+
+    @Transient
     private Class[] methodParametersType = new Class[]{int[].class};
 
     public JavaTask() {

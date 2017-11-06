@@ -33,7 +33,8 @@
         <hibernate.version>5.2.11.Final</hibernate.version>
         <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
         <hibernate-ehcache.version>2.10.4</hibernate-ehcache.version>
-        <spring-version>5.0.0.RELEASE</spring-version>
+        <spring.version>5.0.1.RELEASE</spring.version>
+        <spring-data.version>2.0.1.RELEASE</spring-data.version>
         <aspectjweaver.version>1.8.11</aspectjweaver.version>
     </properties>
 
@@ -131,13 +132,25 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>${spring-version}</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
-                <version>${spring-version}</version>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring-data.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>

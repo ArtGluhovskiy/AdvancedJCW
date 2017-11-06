@@ -155,7 +155,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
             out.write(bt);
         }
         javaTask = deserializeTask(out);
-        javaTask.setTaskID(rs.getInt("task_id"));
+        javaTask.setTaskID(rs.getLong("task_id"));
         javaTask.setPopularity(rs.getInt("popularity"));
         javaTask.setDifficultyGroup(rs.getString("difficulty_group"));
         javaTask.setShortDescr(rs.getString("short_desc"));

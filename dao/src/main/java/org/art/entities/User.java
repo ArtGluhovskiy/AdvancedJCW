@@ -67,7 +67,7 @@ public class User {
     private String status;
 
     @CreationTimestamp
-    @Column(name = "REG_DATE")
+    @Column(name = "REG_DATE", updatable = false)
     private Date regDate;
 
     @Column(name = "BIRTH_DATE")
