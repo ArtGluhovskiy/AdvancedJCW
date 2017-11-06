@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.art.dao.util.DbcpConnectionPool.close;
+import static org.art.dao.utils.DbcpConnectionPool.close;
 
 public class TaskOrderDaoImpl implements TaskOrderDao {
 

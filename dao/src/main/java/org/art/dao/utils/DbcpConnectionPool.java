@@ -1,4 +1,4 @@
-package org.art.dao.util;
+package org.art.dao.utils;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;

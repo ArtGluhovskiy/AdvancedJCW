@@ -1,105 +1,86 @@
 package org.art.dao.impl;
 
-import org.art.dao.UserDao;
-import org.art.dao.util.DbcpConnectionPool;
+import org.art.dao.utils.EMUtil;
 import org.art.entities.DifficultyGroup;
+import org.art.entities.TestEntity;
 import org.art.entities.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import java.sql.Connection;
+
+import javax.persistence.EntityManager;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-import static org.art.dao.util.DateTimeUtil.toSQLDate;
+import static org.art.dao.utils.DateTimeUtil.toSQLDate;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestUserDaoImpl {
-
-    static ThreadLocal<Connection> threadCache;
-    static DbcpConnectionPool connPool;
-    static UserDao userDao;
+class TestUserDaoImpl {
 
     @BeforeAll
     static void initAll() throws SQLException {
-        threadCache = new ThreadLocal<>();
-        connPool = DbcpConnectionPool.getInstance();
-        Connection conn = connPool.getConnection();
-        threadCache.set(conn);
-        userDao = UserDaoImpl.getInstance();
-        ((UserDaoImpl) userDao).setThreadCache(threadCache);
-
-        Statement st = conn.createStatement();
-
-        String createSchema = "CREATE SCHEMA TEST;";
-
-        st.execute(createSchema);
-
-        String createTable = "CREATE TABLE users (\n" +
-                "  user_id    INT(11)     AUTO_INCREMENT PRIMARY KEY,\n" +
-                "  rating     INT,\n" +
-                "  clan_name  VARCHAR(15),\n" +
-                "  login      VARCHAR(15),\n" +
-                "  password   VARCHAR(15),\n" +
-                "  first_name VARCHAR(15),\n" +
-                "  last_name  VARCHAR(15),\n" +
-                "  email      VARCHAR(25),\n" +
-                "  reg_date DATE," +
-                "  role       VARCHAR(10) DEFAULT 'user',\n" +
-                "  status     VARCHAR(10) DEFAULT 'active',\n" +
-                "  birth_date DATE,\n" +
-                "  level ENUM('BEGINNER', 'EXPERIENCED', 'EXPERT') DEFAULT 'BEGINNER',\n" +
-                "  CONSTRAINT clan_name_unique UNIQUE(clan_name)\n" +
-                ");";
-
-        st.execute(createTable);
-
+        EMUtil.initEMFactory("org.art.dao.test");
     }
 
     @Test
-    @DisplayName("User saving test")
-    void saveUserTest() throws Exception {
+    @DisplayName("Hibernate configuration test")
+    void test1() throws Exception {
 
-        //Start transaction
-        threadCache.get().setAutoCommit(false);
+        EntityManager em = EMUtil.createEntityManager();
+        em.getTransaction().begin();
 
-        //Amount of users in the database before saving
-        int userAmount = userDao.getAllUsers().size();
+        TestEntity entity = new TestEntity(null, "Hello test entity");
+
+        em.persist(entity);
+
+        em.getTransaction().commit();
+    }
+
+    @Test
+    @DisplayName("User persistence test")
+    void test2() throws Exception {
+
+        EntityManager em = EMUtil.createEntityManager();
+        em.getTransaction().begin();
 
         User user = new User("Sharks", "gooder", "8273gds", "Allen",
-                "Swift", "swift@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "Swift", "swift@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
                 "ACTIVE", toSQLDate("24-02-1993"), DifficultyGroup.BEGINNER.toString());
 
-        userDao.save(user);
-        assertEquals(userAmount + 1, userDao.getAllUsers().size());
+        user.setRating(1);
+        em.persist(user);
+        Long userId = user.getUserID();
+        System.out.println(userId);
+        em.getTransaction().commit();
+        em.clear();
 
-        threadCache.get().rollback();
+        User user1 = em.find(User.class, userId);
+        em.close();
+
+        assertAll(() -> assertEquals("Sharks", user1.getClanName()),
+                () -> assertEquals("gooder", user1.getLogin()),
+                () -> assertEquals("ACTIVE", user1.getStatus()));
     }
 
     @Test
     @DisplayName("User getting test")
     void getUserTest() throws Exception {
 
-        //Start transaction
-        threadCache.get().setAutoCommit(false);
 
-        User user = new User("Sharks", "gooder", "8273gds", "Allen",
-                "Swift", "swift@gmail.com", new Date(System.currentTimeMillis()), "user",
-                "ACTIVE", toSQLDate("24-02-1993"), DifficultyGroup.BEGINNER.toString());
+//        User user = new User("Sharks", "gooder", "8273gds", "Allen",
+//                "Swift", "swift@gmail.com", new Date(System.currentTimeMillis()), "user",
+//                "ACTIVE", toSQLDate("24-02-1993"), DifficultyGroup.BEGINNER.toString());
+//
+//        User user1 = userDao.save(user);
+//        User user2 = userDao.get(user1.getUserID());
+//        assertEquals(user1, user2);
 
-        User user1 = userDao.save(user);
-        User user2 = userDao.get(user1.getUserID());
-        assertEquals(user1, user2);
-
-        threadCache.get().rollback();
     }
 
     @AfterAll
     static void tearDown() throws SQLException {
-
-        //Closing connection
-        threadCache.get().close();
+        EMUtil.closeEMFactory();
     }
 }

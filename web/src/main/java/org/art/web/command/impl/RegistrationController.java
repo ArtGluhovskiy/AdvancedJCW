@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
-import static org.art.dao.util.DateTimeUtil.toSQLDate;
+import static org.art.dao.utils.DateTimeUtil.toSQLDate;
 import static org.art.services.validators.UserValidator.*;
 
 public class RegistrationController implements Controller {

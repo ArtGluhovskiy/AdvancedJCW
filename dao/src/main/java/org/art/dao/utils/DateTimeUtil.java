@@ -1,4 +1,4 @@
-package org.art.dao.util;
+package org.art.dao.utils;
 
 import java.sql.Date;
 import java.time.LocalDate;
