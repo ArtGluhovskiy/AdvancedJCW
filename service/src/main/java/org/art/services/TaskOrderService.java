@@ -38,20 +38,4 @@ public interface TaskOrderService extends Service<TaskOrder> {
      * @throws ServiceBusinessException if java task was not found in the database
      */
     void createNewOrder(User user, JavaTask task, long execTime) throws ServiceSystemException, ServiceBusinessException;
-
-    /**
-     * Creation of the table "task_orders" in the database
-     *
-     * @throws ServiceSystemException if {@link DAOSystemException} was thrown during
-     *                                the creation of "task_order" table in the database
-     */
-    void createTaskOrderTable() throws ServiceSystemException;
-
-    /**
-     * Deleting of the table "task_orders" from the database
-     *
-     * @throws ServiceSystemException if {@link DAOSystemException} was thrown during
-     *                                the deleting of "task_order" table in the database
-     */
-    void deleteTaskOrderTable() throws ServiceSystemException;
 }

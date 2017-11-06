@@ -46,5 +46,5 @@ public interface Service<T> {
      *                                  was thrown during the reading operation from the database
      * @throws ServiceBusinessException if entity was not found in the database
      */
-    int delete(long id) throws ServiceSystemException, ServiceBusinessException;
+    void delete(long id) throws ServiceSystemException, ServiceBusinessException;
 }

@@ -69,7 +69,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void delete(long id) throws DAOSystemException {
-
         try {
             userRepository.deleteById(id);
         } catch (Exception e) {

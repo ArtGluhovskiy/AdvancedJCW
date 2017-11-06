@@ -73,7 +73,7 @@ public class UserValidator {
      * @return false in case of incorrect data
      */
     public static boolean validateLogin(String login) {
-        UserService userService = UserServiceImpl.getInstance();
+        UserService userService = null;
         if (login == null || "".equals(login)) {
             return false;
         }
