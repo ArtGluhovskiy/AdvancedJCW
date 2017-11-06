@@ -21,21 +21,21 @@ public class TestEntityDaoImpl implements DAO<TestEntity> {
 
     @Override
     public TestEntity save(TestEntity testEntity) throws DAOSystemException {
-        throw new UnsupportedOperationException();
+        return testEntityRepository.save(testEntity);
     }
 
     @Override
     public TestEntity get(long id) throws DAOSystemException {
-        throw new UnsupportedOperationException();
+        return testEntityRepository.findById(id).orElse(null);
     }
 
     @Override
-    public int update(TestEntity testEntity) throws DAOSystemException {
-        throw new UnsupportedOperationException();
+    public TestEntity update(TestEntity testEntity) throws DAOSystemException {
+        return testEntityRepository.save(testEntity);
     }
 
     @Override
-    public int delete(long id) throws DAOSystemException {
-        throw new UnsupportedOperationException();
+    public void delete(long id) throws DAOSystemException {
+        testEntityRepository.deleteById(id);
     }
 }

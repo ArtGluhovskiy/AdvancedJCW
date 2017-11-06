@@ -165,7 +165,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
     }
 
     @Override
-    public int update(JavaTask javaTask) throws DAOSystemException {
+    public JavaTask update(JavaTask javaTask) throws DAOSystemException {
         PreparedStatement psUpdate = null;
         Connection conn = threadCache.get();
         int amount;
@@ -183,11 +183,11 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
         } finally {
             close(psUpdate);
         }
-        return amount;
+        return null;
     }
 
     @Override
-    public int delete(long id) throws DAOSystemException {
+    public void delete(long id) throws DAOSystemException {
         PreparedStatement psDelete = null;
         int dr;
         Connection conn = threadCache.get();
@@ -201,7 +201,6 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
         } finally {
             close(psDelete);
         }
-        return dr;
     }
 
     @Override

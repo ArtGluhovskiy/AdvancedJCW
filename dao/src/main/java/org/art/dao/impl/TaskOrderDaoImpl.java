@@ -113,7 +113,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
     }
 
     @Override
-    public int update(TaskOrder order) throws DAOSystemException {
+    public TaskOrder update(TaskOrder order) throws DAOSystemException {
         PreparedStatement psUpdate = null;
         Connection conn = threadCache.get();
         int updTaskOrders;
@@ -131,11 +131,11 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         } finally {
             close(psUpdate);
         }
-        return updTaskOrders;
+        return null;
     }
 
     @Override
-    public int delete(long id) throws DAOSystemException {
+    public void delete(long id) throws DAOSystemException {
         PreparedStatement psDelete = null;
         Connection conn = threadCache.get();
         int delAmount;
@@ -149,7 +149,6 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         } finally {
             close(psDelete);
         }
-        return delAmount;
     }
 
     @Override

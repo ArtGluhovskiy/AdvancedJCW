@@ -1,27 +1,24 @@
 package org.art.dao.impl;
 
+import org.art.dao.UserDao;
 import org.art.dao.exceptions.DAOSystemException;
 import org.art.dao.utils.EMUtil;
 import org.art.entities.DifficultyGroup;
-import org.art.entities.JavaTask;
-import org.art.entities.TestEntity;
 import org.art.entities.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.EntityManager;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.art.dao.utils.DateTimeUtil.toSQLDate;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestUserDaoImpl {
 
@@ -34,22 +31,8 @@ class TestUserDaoImpl {
     }
 
     @Test
-    @DisplayName("Hibernate configuration test")
-    void test1() throws Exception {
-
-        EntityManager em = EMUtil.createEntityManager();
-        em.getTransaction().begin();
-
-        TestEntity entity = new TestEntity(null, "Hello test entity");
-
-        em.persist(entity);
-
-        em.getTransaction().commit();
-    }
-
-    @Test
     @DisplayName("User persistence test")
-    void test2() throws Exception {
+    void test1() throws Exception {
 
         User user = new User("Sharks", "gooder", "8273gds", "Allen",
                 "Swift", "swift@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
@@ -83,30 +66,129 @@ class TestUserDaoImpl {
     }
 
     @Test
-    @DisplayName("Java task persistence test")
-    void test3() throws Exception {
+    @DisplayName("User CRUD operations test")
+    void test2() throws DAOSystemException {
+        User user1 = new User("Spoons", "harick", "87jhy", "Harry",
+                "Jane", "harry@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
+        User user2 = new User("Sharks", "rooben", "uieu749", "Robert",
+                "Nolen", "robert@gmail.com", new Date(System.currentTimeMillis() + 10000000), "user",
+                "ACTIVE", toSQLDate("19-07-1993"), DifficultyGroup.EXPERIENCED.toString());
+        User user3 = new User("Missles", "browns", "87hioly", "Bob",
+                "Roven", "bob@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
+                "ACTIVE", toSQLDate("13-01-1996"), DifficultyGroup.EXPERT.toString());
 
-        JavaTask task = new JavaTask();
+        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
+        assertNotNull(userDao);
 
-        EntityManager em = EMUtil.createEntityManager();
-        em.getTransaction().begin();
+        //Save operations
+        user1 = userDao.save(user1);
+        user2 = userDao.save(user2);
+        user3 = userDao.save(user3);
+        assertNotNull(user1);
+        assertNotNull(user2);
+        assertNotNull(user3);
 
-        em.persist(task);
-        assertNotNull(task.getId());
+        Long id1 = user1.getUserID();
+        Long id2 = user2.getUserID();
+        Long id3 = user3.getUserID();
 
-        em.getTransaction().commit();
-        em.close();
+        //Read operations
+        assertAll(() -> assertNotNull("harry@gmail.com", userDao.get(id1).getEmail()),
+                () -> assertNotNull("robert@gmail.com", userDao.get(id2).getEmail()),
+                () -> assertNotNull("bob@gmail.com", userDao.get(id3).getEmail()));
+
+        //Update operations
+        user1.setRating(10);
+        user2.setLogin("login");
+        user3.setFName("Art");
+
+        userDao.save(user1);
+        userDao.save(user2);
+        userDao.save(user3);
+
+        assertAll(() -> assertEquals(10, userDao.get(id1).getRating()),
+                () -> assertEquals("login", userDao.get(id2).getLogin()),
+                () -> assertEquals("Art", userDao.get(id3).getFName()));
+
+        //Delete operations
+        userDao.delete(id1);
+        assertNull(userDao.get(id1));
     }
 
     @Test
-    @DisplayName("Spring Data with TestEntity test")
+    @DisplayName("GetUsersByClanName test")
+    void test3() throws DAOSystemException {
+        User user = new User("Spoons", "harick", "87jhy", "Harry",
+                "Jane", "harry@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
+
+        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
+        assertNotNull(userDao);
+
+        User u = userDao.save(user);
+        assertNotNull(u);
+        List<User> users = userDao.getUsersByClanName("Spoons");
+        assertEquals(1, users.size());
+        assertEquals(users.get(0).getFName(), "Harry");
+    }
+
+    @Test
+    @DisplayName("GetUserByLogin test")
     void test4() throws DAOSystemException {
-        TestEntityDaoImpl testEntityDao = context.getBean("testEntityDaoImpl", TestEntityDaoImpl.class);
-        assertNotNull(testEntityDao);
-        TestEntity testEntity = new TestEntity(null, "Hello from test entity");
-        testEntityDao.save(testEntity);
+        User user = new User("Sparks", "patrick", "87jhy", "Harry",
+                "Jane", "harry@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
 
+        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
+        assertNotNull(userDao);
 
+        User u = userDao.save(user);
+        assertNotNull(u);
+        User rUser = userDao.getUserByLogin("patrick");
+        assertEquals("Sparks", rUser.getClanName());
+    }
+
+    @Test
+    @DisplayName("GetTopUsers test")
+    void test5() throws DAOSystemException {
+        User user1 = new User("Spons1", "harick1", "87jhy1", "Harry",
+                "Jane", "harry1@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
+        User user2 = new User("Shacks1", "rooben1", "uieu7491", "Robert",
+                "Nolen", "robert1@gmail.com", new Date(System.currentTimeMillis() + 10000000), "user",
+                "ACTIVE", toSQLDate("19-07-1993"), DifficultyGroup.EXPERIENCED.toString());
+        User user3 = new User("Missles1", "browns1", "87hioly1", "Bob",
+                "Roven", "bob1@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
+                "ACTIVE", toSQLDate("13-01-1996"), DifficultyGroup.EXPERT.toString());
+        user1.setRating(2);
+        user2.setRating(1);
+        user3.setRating(5);
+
+        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
+        assertNotNull(userDao);
+        userDao.save(user1);
+        userDao.save(user2);
+        userDao.save(user3);
+
+        List<User> users = userDao.getTopUsers(2);
+        assertAll(() -> assertEquals(2, users.size()),
+                () -> assertTrue(users.get(0).getRating() >= users.get(1).getRating()));
+    }
+
+    @Test
+    @DisplayName("GetAllUsers test")
+    void test6() throws DAOSystemException {
+        User user1 = new User("Spons2", "harick2", "87jhy12", "Harry",
+                "Jane", "harry2@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
+
+        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
+        assertNotNull(userDao);
+
+        userDao.save(user1);
+        List<User> users = userDao.getAllUsers();
+        assertNotEquals(0, users.size());
     }
 
     @AfterAll

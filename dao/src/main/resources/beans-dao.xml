@@ -46,8 +46,9 @@
           class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
-    <tx:annotation-driven/>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean id="testEntityDaoImpl" class="org.art.dao.impl.TestEntityDaoImpl"/>
+    <bean id="userDaoImpl" class="org.art.dao.impl.UserDaoImpl"/>
 
 </beans>
