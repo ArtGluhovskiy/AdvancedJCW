@@ -4,6 +4,7 @@ import org.art.dao.UserDao;
 import org.art.dao.exceptions.DAOSystemException;
 import org.art.dao.utils.EMUtil;
 import org.art.entities.DifficultyGroup;
+import org.art.entities.TaskOrder;
 import org.art.entities.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -190,6 +191,67 @@ class TestUserDaoImpl {
         List<User> users = userDao.getAllUsers();
         assertNotEquals(0, users.size());
     }
+
+    @Test
+    @DisplayName("Get all task orders test")
+    void test7() {
+        User user = new User("Spons3", "harick3", "87jhy1267", "Harry",
+                "Jane", "harry2@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
+        TaskOrder order1 = new TaskOrder("NOT SOLVED");
+        TaskOrder order2 = new TaskOrder("NOT SOLVED");
+        TaskOrder order3 = new TaskOrder("NOT SOLVED");
+        order1.setUser(user);
+        order2.setUser(user);
+        order3.setUser(user);
+        user.getOrders().add(order1);
+        user.getOrders().add(order2);
+        user.getOrders().add(order3);
+
+        EntityManager em = EMUtil.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(user);
+        Long id = user.getUserID();
+        em.getTransaction().commit();
+        em.clear();
+
+        User u = em.find(User.class, id);
+        assertNotNull(u);
+        assertEquals(3, u.getOrders().size());
+    }
+
+    @Test
+    @DisplayName("Delete user with his orders test")
+    void test8() {
+        User user = new User("Spons4", "harick4", "87jhy12647", "Harry",
+                "Jane", "harry4@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
+        TaskOrder order1 = new TaskOrder("NOT SOLVED");
+        TaskOrder order2 = new TaskOrder("NOT SOLVED");
+        TaskOrder order3 = new TaskOrder("NOT SOLVED");
+        order1.setUser(user);
+        order2.setUser(user);
+        order3.setUser(user);
+        user.getOrders().add(order1);
+        user.getOrders().add(order2);
+        user.getOrders().add(order3);
+
+        EntityManager em = EMUtil.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(user);
+        Long id = user.getUserID();
+        em.flush();
+        em.clear();
+
+        user = em.merge(user);
+        em.remove(user);
+        em.getTransaction().commit();
+        em.clear();
+
+        User u = em.find(User.class, id);
+        assertNull(u);
+    }
+
 
     @AfterAll
     static void tearDown() throws SQLException {

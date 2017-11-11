@@ -32,20 +32,4 @@ public interface TaskOrderDao extends DAO<TaskOrder> {
      *                            was thrown during the task order reading from the database
      */
     TaskOrder getNotSolvedOrder(User user) throws DAOSystemException;
-
-    /**
-     * Creation of the table "task_orders" in the database
-     *
-     * @throws DAOSystemException if {@link java.sql.SQLException}
-     *                            was thrown during the table creation in the database
-     */
-    void createTaskOrderTable() throws DAOSystemException;
-
-    /**
-     * Deleting of the table "task_orders" from the database
-     *
-     * @throws DAOSystemException if {@link java.sql.SQLException}
-     *                            was thrown during the table deleting from the database
-     */
-    void deleteTaskOrderTable() throws DAOSystemException;
 }

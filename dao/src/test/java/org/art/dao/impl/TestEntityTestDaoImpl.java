@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestEntityTestDaoImpl {
+class TestEntityTestDaoImpl {
     static ApplicationContext context;
 
     @BeforeAll

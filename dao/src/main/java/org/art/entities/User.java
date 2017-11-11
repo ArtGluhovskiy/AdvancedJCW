@@ -6,9 +6,12 @@ import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.art.dao.utils.DateTimeUtil.defineUserAge;
 
@@ -29,7 +32,7 @@ public class User {
             parameters = {
                     @Parameter(
                             name = "sequence_name",
-                            value = "JCW_SEQUENCE"
+                            value = "USER_SEQUENCE"
                     )
             }
     )
@@ -75,6 +78,10 @@ public class User {
 
     @Column(name = "LEVEL")
     private String level;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+               cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<TaskOrder> orders = new ArrayList<>();
 
     @Transient
     private int age;

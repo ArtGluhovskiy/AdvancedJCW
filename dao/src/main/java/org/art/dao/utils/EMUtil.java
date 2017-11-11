@@ -9,6 +9,8 @@ public class EMUtil {
 
     private static EntityManagerFactory emFactory;
 
+    private static ThreadLocal<EntityManager> threadCache;
+
     public static EntityManager createEntityManager() {
         if (emFactory == null) {
             emFactory = Persistence.createEntityManagerFactory("org.art.dao");
@@ -30,6 +32,16 @@ public class EMUtil {
 
     public static void closeEMFactory() {
         emFactory.close();
+    }
+
+    public static EntityManager getThreadCachedEM() {
+        EntityManager em = threadCache.get();
+        if (em == null) {
+            em = createEntityManager();
+            threadCache.set(em);
+            return em;
+        }
+        return em;
     }
 }
 
