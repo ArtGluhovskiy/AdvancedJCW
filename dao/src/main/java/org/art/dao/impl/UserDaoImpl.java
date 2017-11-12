@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -44,7 +43,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User get(long id) throws DAOSystemException {
+    public User get(Long id) throws DAOSystemException {
         User user;
         try {
             user = userRepository.findById(id).orElse(null);
@@ -68,7 +67,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void delete(long id) throws DAOSystemException {
+    public void delete(Long id) throws DAOSystemException {
         try {
             userRepository.deleteById(id);
         } catch (Exception e) {
@@ -105,7 +104,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> getTopUsers(int usersAmount) throws DAOSystemException {
         List<User> users;
         try {
-           users = userRepository.findAll(PageRequest.of(0, usersAmount, Sort.Direction.DESC,
+            users = userRepository.findAll(PageRequest.of(0, usersAmount, Sort.Direction.DESC,
                     "rating")).getContent();
         } catch (Exception e) {
             log.info("Cannot get users from the database!", e);

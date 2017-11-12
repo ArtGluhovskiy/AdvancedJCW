@@ -1,25 +1,31 @@
 package org.art.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This is an implementation of a java task for application. This class contains
  * all information needed for user, class loader, method invocation etc.
  */
 @Data
-@AllArgsConstructor
-@Entity(name = "JAVA_TASKS")
+@DynamicUpdate
+@Entity
+@Table(name = "JAVA_TASKS")
 public class JavaTask implements Serializable {
+
+    public JavaTask(int popularity) {
+        this.popularity = popularity;
+    }
 
     @Transient
     private static final long SerialVersionUID = 1L;
@@ -44,6 +50,10 @@ public class JavaTask implements Serializable {
 
     @Column(name = "POPULARITY")
     private int popularity;
+
+    @OneToMany(mappedBy = "javaTask", fetch = FetchType.LAZY,
+               cascade = {CascadeType.PERSIST})
+    private Set<TaskOrder> orders = new HashSet<>();
 
 //    @Enumerated(value = EnumType.STRING)
     @Column(name = "DIF_GROUP")
@@ -149,4 +159,6 @@ public class JavaTask implements Serializable {
                 .append("***")
                 .toString();
     }
+
+
 }

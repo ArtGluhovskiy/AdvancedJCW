@@ -18,6 +18,17 @@ import java.sql.Date;
 @Table(name = "TASK_ORDERS")
 public class TaskOrder {
 
+
+    public TaskOrder(String status) {
+        this.status = status;
+    }
+
+    public TaskOrder(String status, User user, JavaTask task) {
+        this.status = status;
+        this.user = user;
+        this.javaTask = task;
+    }
+
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
     @GenericGenerator(
@@ -33,7 +44,7 @@ public class TaskOrder {
     @Column(name = "ORDER_ID")
     private Long orderID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "TASK_ID")
     private JavaTask javaTask;
 
@@ -47,13 +58,9 @@ public class TaskOrder {
     @Column(name = "EXEC_TIME")
     private long execTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "USER_ID")
     private User user;
-
-    public TaskOrder(String status) {
-        this.status = status;
-    }
 
     @Override
     public String toString() {
@@ -63,5 +70,30 @@ public class TaskOrder {
                 .append("* status = " + status + "\n")
                 .append("***")
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TaskOrder order = (TaskOrder) o;
+
+        if (execTime != order.execTime) return false;
+        if (orderID != null ? !orderID.equals(order.orderID) : order.orderID != null) return false;
+        if (javaTask != null ? !javaTask.equals(order.javaTask) : order.javaTask != null) return false;
+        if (status != null ? !status.equals(order.status) : order.status != null) return false;
+        return user != null ? user.equals(order.user) : order.user == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (orderID != null ? orderID.hashCode() : 0);
+        result = 31 * result + (javaTask != null ? javaTask.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (int) (execTime ^ (execTime >>> 32));
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        return result;
     }
 }

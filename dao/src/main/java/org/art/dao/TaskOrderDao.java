@@ -20,7 +20,7 @@ public interface TaskOrderDao extends DAO<TaskOrder> {
      * @throws DAOSystemException if {@link java.sql.SQLException}
      *                            was thrown during the task orders reading from the database
      */
-    List<OrderDTO> getUserTaskOrders(long id) throws DAOSystemException;
+    List<OrderDTO> getUserSolvedTaskOrders(Long id) throws DAOSystemException;
 
     /**
      * Finds the order with the task which has not already solved in

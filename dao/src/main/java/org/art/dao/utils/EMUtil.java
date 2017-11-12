@@ -9,7 +9,7 @@ public class EMUtil {
 
     private static EntityManagerFactory emFactory;
 
-    private static ThreadLocal<EntityManager> threadCache;
+    private static ThreadLocal<EntityManager> threadCache = new ThreadLocal<>();
 
     public static EntityManager createEntityManager() {
         if (emFactory == null) {

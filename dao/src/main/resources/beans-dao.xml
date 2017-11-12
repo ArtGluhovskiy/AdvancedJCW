@@ -50,5 +50,6 @@
 
     <bean id="testEntityDaoImpl" class="org.art.dao.impl.TestEntityDaoImpl"/>
     <bean id="userDaoImpl" class="org.art.dao.impl.UserDaoImpl"/>
+    <bean id="taskOrderDaoImpl" class="org.art.dao.impl.TaskOrderDaoImpl"/>
 
 </beans>

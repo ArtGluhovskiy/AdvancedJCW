@@ -27,7 +27,7 @@ public interface DAO<T> {
      * @throws DAOSystemException if {@link java.sql.SQLException}
      *                            was thrown during the reading operation from the database
      */
-    T get(long id) throws DAOSystemException;
+    T get(Long id) throws DAOSystemException;
 
     /**
      * This method updates entity in the database
@@ -46,5 +46,5 @@ public interface DAO<T> {
      * @throws DAOSystemException if {@link java.sql.SQLException}
      *                            was thrown during the deleting operation from the database
      */
-    void delete(long id) throws DAOSystemException;
+    void delete(Long id) throws DAOSystemException;
 }

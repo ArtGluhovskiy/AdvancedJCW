@@ -25,7 +25,7 @@ public class TestEntityDaoImpl implements DAO<TestEntity> {
     }
 
     @Override
-    public TestEntity get(long id) throws DAOSystemException {
+    public TestEntity get(Long id) throws DAOSystemException {
         return testEntityRepository.findById(id).orElse(null);
     }
 
@@ -35,7 +35,7 @@ public class TestEntityDaoImpl implements DAO<TestEntity> {
     }
 
     @Override
-    public void delete(long id) throws DAOSystemException {
+    public void delete(Long id) throws DAOSystemException {
         testEntityRepository.deleteById(id);
     }
 }

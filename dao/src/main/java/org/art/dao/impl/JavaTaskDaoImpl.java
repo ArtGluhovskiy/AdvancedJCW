@@ -101,7 +101,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
     }
 
     @Override
-    public JavaTask get(long id) throws DAOSystemException {
+    public JavaTask get(Long id) throws DAOSystemException {
         PreparedStatement psGet = null;
         JavaTask javaTask = null;
         ResultSet rs = null;
@@ -187,7 +187,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
     }
 
     @Override
-    public void delete(long id) throws DAOSystemException {
+    public void delete(Long id) throws DAOSystemException {
         PreparedStatement psDelete = null;
         int dr;
         Connection conn = threadCache.get();
