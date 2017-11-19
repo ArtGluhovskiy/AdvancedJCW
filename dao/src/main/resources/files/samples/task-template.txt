@@ -43,21 +43,21 @@ public class JavaTask implements Serializable {
             }
     )
     @Column(name = "TASK_ID")
-    private Long taskId;
+    private Long id;
 
     @Column(name = "POPULARITY")
     private int popularity;
 
     @OneToMany(mappedBy = "javaTask", fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST})
+               cascade = {CascadeType.PERSIST})
     private Set<TaskOrder> orders = new HashSet<>();
 
-    //    @Enumerated(value = EnumType.STRING)
+//    @Enumerated(value = EnumType.STRING)
     @Column(name = "DIF_GROUP")
     private String difficultyGroup = DifficultyGroup.EXPERT.toString();
 
     @Column(name = "DESCR")
-    private String shortDescr = "Advanced array sorting";
+    private String shortDescr;
 
     @CreationTimestamp
     @Column(name = "REG_DATE", updatable = false)
@@ -65,7 +65,7 @@ public class JavaTask implements Serializable {
 
     // Efficient time of the algorithm (in mcs)
     @Column(name = "ELAPSED_TIME")
-    private long elapsedTime = 100000;
+    private long elapsedTime;
 
     @Lob
     @Column(name = "BINARY_TASK")
@@ -73,30 +73,15 @@ public class JavaTask implements Serializable {
 
     // Task description and test info for user
     @Transient
-    private String description = "Congratulations! You have reached the highest level.<br>" +
-            "So, it's time to try hard! Enough school tasks!<br>" +
-            "This time you need to write an algorithm of array sorting...<br>" +
-            "The task seems too easy at first sight.<br>" +
-            "But! You need to write more efficient algorithm than simple bubble sort." +
-            "Forget it! And all that O(n2) staff! You should use O(n logn) algorithms if " +
-            "you want to complete this task successfully! I recommend you quick or merge sort!";
+    private String description;
 
     @Transient
-    private String topics = "Java Core, Sorting algorithms, Arrays";
+    private String topics;
 
     @Transient
-    private String testInfo = "import org.junit.Test;<br>" +
-            "import static org.junit.Assert.*;<br>" +
-            "<br>" +
-            "public class AdvancedArraySortingTest {<br>" +
-            "&#8195;&#8195;@Test<br>" +
-            "&#8195;&#8195;public void sortTest() throws Exception {<br>" +
-            "&#8195;&#8195;&#8195;&#8195;AdvancedArraySorting sorter = new AdvancedArraySorting();<br>" +
-            "&#8195;&#8195;&#8195;&#8195;assertEquals(new int[-32, 2, 5, 32, 90], sorter.sort(new int[2, 32, 5, -32, 90]));<br>" +
-            "&#8195;&#8195;}<br>" +
-            "}";
+    private String testInfo;
 
-    // Value of the task
+    // Rating value of the task
     @Transient
     private int value = 10;
 
@@ -108,13 +93,13 @@ public class JavaTask implements Serializable {
     private Object result;
 
     @Transient
-    private String className = "AdvancedArraySorting";
+    private String className;
 
     @Transient
-    private String methodName = "sort";
+    private String methodName;
 
     @Transient
-    private String methodString = "public int[] sort(int[] array) {";
+    private String methodString;
 
     @Transient
     private Object[] testMethodParameters;
@@ -123,22 +108,15 @@ public class JavaTask implements Serializable {
     private Class[] methodParametersType = new Class[]{int[].class};
 
     public JavaTask() {
-        int[] array = new int[100_000];
-        int k = 0;
-        for (int i = array.length; i > 0; i--) {
-            array[k] = i + 2;
-            k++;
-        }
-        this.testMethodParameters = new Object[] {array};
-        int[] arrayCopy = Arrays.copyOf(array, array.length);
-        Arrays.sort(arrayCopy);
-        this.result = arrayCopy;
+
+        //Test method parameters and results definition
+
     }
 
     @Override
     public String toString() {
         return new StringBuilder("*** JavaTask info:\n")
-                .append("* task id: " + taskId + ";\n")
+                .append("* task id: " + id + ";\n")
                 .append("* popularity: " + popularity + ";\n")
                 .append("* task value: " + value + ";\n")
                 .append("* task difficulty: " + difficultyGroup + ";\n")

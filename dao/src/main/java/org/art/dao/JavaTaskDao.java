@@ -23,7 +23,7 @@ public interface JavaTaskDao extends DAO<JavaTask> {
      * @throws DAOSystemException if {@link java.sql.SQLException}
      *                            was thrown during the task reading from the database
      */
-    JavaTask getNextTaskByDiffGroup(String difGroup, long taskID) throws DAOSystemException;
+    JavaTask getNextTaskByDiffGroup(String difGroup, Long taskID) throws DAOSystemException;
 
     /**
      * This method finds the most popular (with the highest popularity) tasks in the database
@@ -43,20 +43,4 @@ public interface JavaTaskDao extends DAO<JavaTask> {
      *                            was thrown during the tasks reading from the database
      */
     List<JavaTask> getAll() throws DAOSystemException;
-
-    /**
-     * Creation of the table "java_tasks" in the database
-     *
-     * @throws DAOSystemException if {@link java.sql.SQLException}
-     *                            was thrown during the table creation in the database
-     */
-    void createJavaTasksTable() throws DAOSystemException;
-
-    /**
-     * Deleting of the table "java_tasks" from the database
-     *
-     * @throws DAOSystemException if {@link java.sql.SQLException}
-     *                            was thrown during the table deleting from the database
-     */
-    void deleteJavaTasksTable() throws DAOSystemException;
 }

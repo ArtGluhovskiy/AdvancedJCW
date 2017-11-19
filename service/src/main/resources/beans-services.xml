@@ -9,5 +9,7 @@
     <import resource="beans-dao.xml"/>
 
     <bean id="userServiceImpl" class="org.art.services.impl.UserServiceImpl"/>
+    <bean id="taskOrderServiceImpl" class="org.art.services.impl.TaskOrderServiceImpl"/>
+    <bean id="javaTaskServiceImpl" class="org.art.services.impl.JavaTaskServiceImpl"/>
 
 </beans>

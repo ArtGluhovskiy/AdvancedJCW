@@ -32,4 +32,14 @@ public interface TaskOrderDao extends DAO<TaskOrder> {
      *                            was thrown during the task order reading from the database
      */
     TaskOrder getNotSolvedOrder(User user) throws DAOSystemException;
+
+    /**
+     * Finds all user's task orders
+     *
+     * @param user the user whose order you need to find
+     * @return task order with the task which has not already solved
+     * @throws DAOSystemException if {@link java.sql.SQLException}
+     *                            was thrown during the task order reading from the database
+     */
+    List<TaskOrder> getOrders(User user) throws DAOSystemException;
 }

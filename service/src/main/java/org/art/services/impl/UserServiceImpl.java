@@ -25,10 +25,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    @Autowired(required = false)
+    @Autowired
     private TaskOrderDao orderDao;
 
-    @Autowired(required = false)
+    @Autowired
     private JavaTaskDao taskDao;
 
     @Override
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User get(long id) throws ServiceSystemException, ServiceBusinessException {
+    public User get(Long id) throws ServiceSystemException, ServiceBusinessException {
         User user;
         try {
             user = userDao.get(id);
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user) throws ServiceSystemException, ServiceBusinessException {
+    public User update(User user) throws ServiceSystemException, ServiceBusinessException {
         User modifUser;
         try {
             modifUser = userDao.update(user);
@@ -70,10 +70,11 @@ public class UserServiceImpl implements UserService {
             log.error("Cannot update user in the database!", e);
             throw new ServiceSystemException("Cannot update user in the database!", e);
         }
+        return modifUser;
     }
 
     @Override
-    public void delete(long id) throws ServiceBusinessException, ServiceSystemException {
+    public void delete(Long id) throws ServiceBusinessException, ServiceSystemException {
         try {
             userDao.delete(id);
         } catch (DAOSystemException e) {
@@ -141,32 +142,4 @@ public class UserServiceImpl implements UserService {
         }
         return usersList;
     }
-
-//    @Override
-//    public void createUsersTable() throws ServiceSystemException {
-//        Connection conn = connPool.getConnection();
-//        threadCache.set(conn);
-//        try {
-//            userDao.createUsersTable();
-//        } catch (DAOSystemException e) {
-//            log.info("Cannot create users table in the database!", e);
-//            throw new ServiceSystemException("Cannot create users table in the database!", e);
-//        } finally {
-//            ConnectionPoolManager.close(conn);
-//        }
-//    }
-//
-//    @Override
-//    public void deleteUsersTable() throws ServiceSystemException {
-//        Connection conn = connPool.getConnection();
-//        threadCache.set(conn);
-//        try {
-//            userDao.deleteUsersTable();
-//        } catch (DAOSystemException e) {
-//            log.info("Cannot delete users table from the database!", e);
-//            throw new ServiceSystemException("Cannot delete users table from the database!", e);
-//        } finally {
-//            ConnectionPoolManager.close(conn);
-//        }
-//    }
 }

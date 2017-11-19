@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestTaskOrderDaoImpl {
 
     static ApplicationContext context;
-    static UserDaoImpl userDao;
+    static UserDao userDao;
     static TaskOrderDao orderDao;
 
     @BeforeAll
@@ -36,7 +36,7 @@ class TestTaskOrderDaoImpl {
         context = new ClassPathXmlApplicationContext("beans-dao.xml");
         orderDao = context.getBean("taskOrderDaoImpl", TaskOrderDao.class);
         assertNotNull(orderDao);
-        userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
+        userDao = context.getBean("userDaoImpl", UserDao.class);
         assertNotNull(userDao);
     }
 

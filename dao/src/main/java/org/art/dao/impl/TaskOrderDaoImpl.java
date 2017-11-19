@@ -92,7 +92,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
             em.getTransaction().commit();
         } catch (Exception e) {
             log.info("Cannot get task orders from the database! User ID: " + id, e);
-            throw new DAOSystemException("Cannot get task order from the database! User ID: " + id, e);
+            throw new DAOSystemException("Cannot get task orders from the database! User ID: " + id, e);
         }
         return orders;
     }
@@ -107,6 +107,18 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
             throw new DAOSystemException("Cannot get task order from the database!", e);
         }
         return order;
+    }
+
+    @Override
+    public List<TaskOrder> getOrders(User user) throws DAOSystemException {
+        List<TaskOrder> orders;
+        try {
+            orders = orderRepository.getTaskOrderByUser(user);
+        } catch (Exception e) {
+            log.info("Cannot get task orders from the database!", e);
+            throw new DAOSystemException("Cannot get task orders from the database!", e);
+        }
+        return orders;
     }
 
 //    @Override

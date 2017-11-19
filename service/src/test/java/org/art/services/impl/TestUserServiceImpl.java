@@ -62,11 +62,11 @@ class TestUserServiceImpl {
         //Delete operations
         userService.delete(id1);
         assertThrows(ServiceBusinessException.class, () -> userService.get(id1));
-        assertThrows(Exception.class, () -> userService.delete(1000));
+        assertThrows(Exception.class, () -> userService.delete(1000L));
     }
 
     @AfterAll
-    static void tearDown() throws SQLException {
+    static void tearDownAll() throws SQLException {
 
     }
 }

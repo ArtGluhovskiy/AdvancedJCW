@@ -5,50 +5,64 @@ import org.apache.logging.log4j.Logger;
 import org.art.dao.JavaTaskDao;
 import org.art.dao.TaskOrderDao;
 import org.art.dao.UserDao;
+import org.art.dao.exceptions.DAOSystemException;
 import org.art.entities.JavaTask;
 import org.art.entities.TaskOrder;
 import org.art.entities.User;
 import org.art.services.JavaTaskService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class JavaTaskServiceImpl implements JavaTaskService {
 
     private static final Logger log = LogManager.getLogger(JavaTaskServiceImpl.class);
 
+    @Autowired
     private JavaTaskDao javaTaskDao;
+
+    @Autowired
     private TaskOrderDao orderDao;
+
+    @Autowired
     private UserDao userDao;
 
     @Override
     public JavaTask save(JavaTask javaTask) throws ServiceSystemException {
-//        try {
-//
-//        } catch (DAOSystemException e) {
-//            log.info("Exception while saving task into database!", e);
-//            throw new ServiceSystemException("Exception while saving task into database!", e);
-//        }
+        JavaTask savedTask;
+        try {
+            savedTask = javaTaskDao.save(javaTask);
+        } catch (DAOSystemException e) {
+            log.info("Exception while saving task into the database!", e);
+            throw new ServiceSystemException("Exception while saving task into the database!", e);
+        }
+        return savedTask;
+    }
+
+    @Override
+    public JavaTask get(Long id) throws ServiceSystemException, ServiceBusinessException {
+        JavaTask javaTask;
+        try {
+            javaTask = javaTaskDao.get(id);
+            if (javaTask == null) {
+                throw new ServiceBusinessException("No task with such ID was found!");
+            }
+        } catch (DAOSystemException e) {
+            log.info("Exception while getting task from the database! Task ID: " + id, e);
+            throw new ServiceSystemException("Exception while getting task from the database! Task ID: " + id, e);
+        }
         return javaTask;
     }
 
     @Override
-    public JavaTask get(long id) throws ServiceSystemException, ServiceBusinessException {
-        JavaTask javaTask = null;
-//        try {
-//            if (javaTask == null) {
-//                throw new ServiceBusinessException("No task with such ID was found!");
-//            }
-//        } catch (DAOSystemException e) {
-//            log.info("Exception while getting task from database! Task ID: " + id, e);
-//            throw new ServiceSystemException("Exception while getting task from database! Task ID: " + id, e);
-//        }
-        return javaTask;
-    }
-
-    @Override
-    public void update(JavaTask javaTask) throws ServiceSystemException, ServiceBusinessException {
+    public JavaTask update(JavaTask javaTask) throws ServiceSystemException, ServiceBusinessException {
+        JavaTask updTask = null;
 //        try {
 //            if (updRows == 0) {
 //                throw new ServiceBusinessException("No task with such ID was found!");
@@ -58,10 +72,11 @@ public class JavaTaskServiceImpl implements JavaTaskService {
 //            log.info("Exception while updating task in database!", e);
 //            throw new ServiceSystemException("Exception while updating task in database!", e);
 //        }
+        return updTask;
     }
 
     @Override
-    public void delete(long id) throws ServiceSystemException, ServiceBusinessException {
+    public void delete(Long id) throws ServiceSystemException, ServiceBusinessException {
 //        int delRows;
 //        try {
 //            if (delRows == 0) {
