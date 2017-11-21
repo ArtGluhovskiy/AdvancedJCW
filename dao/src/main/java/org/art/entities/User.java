@@ -1,30 +1,91 @@
 package org.art.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Parameter;
 
+import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.art.dao.util.DateTimeUtil.defineUserAge;
+import static org.art.dao.utils.DateTimeUtil.defineUserAge;
 
 /**
  * This class is an implementation of user entity
  */
 @Data
+@NoArgsConstructor
+@DynamicUpdate
+@Entity(name = "USERS")
+@Table(name = "USERS")
 public class User {
 
-    private long userID;
+    @Id
+    @GeneratedValue(generator = "ID_GENERATOR")
+    @GenericGenerator(
+            name = "ID_GENERATOR",
+            strategy = "enhanced-sequence",
+            parameters = {
+                    @Parameter(
+                            name = "sequence_name",
+                            value = "USER_SEQUENCE"
+                    )
+            }
+    )
+    @Column(name = "USER_ID")
+    private Long userID;
+
+    @Column(name = "RATING")
     private int rating = 0;
+
+    @Column(name = "CLAN_NAME")
     private String clanName;
+
+    @NotNull
+    @Column(name = "LOGIN")
     private String login;
+
+    @NotNull
+    @Column(name = "PASSWORD")
     private String password;
+
+    @Column(name = "F_NAME")
     private String fName;
+
+    @Column(name = "L_NAME")
     private String lName;
+
+    @NotNull
+    @Column(name = "EMAIL")
     private String email;
+
+    @Column(name = "ROLE")
     private String role;
+
+    @Column(name = "STATUS")
     private String status;
+
+    @CreationTimestamp
+    @Column(name = "REG_DATE", updatable = false)
     private Date regDate;
+
+    @Column(name = "BIRTH_DATE")
     private Date birthDate;
+
+    @Column(name = "LEVEL")
     private String level;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+               cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<TaskOrder> orders = new ArrayList<>();
+
+    @Transient
     private int age;
 
     public User(String clan, String login, String password, String fName, String lName, String email, Date regDate,

@@ -20,7 +20,17 @@ public interface TaskOrderDao extends DAO<TaskOrder> {
      * @throws DAOSystemException if {@link java.sql.SQLException}
      *                            was thrown during the task orders reading from the database
      */
-    List<OrderDTO> getUserTaskOrders(long id) throws DAOSystemException;
+    List<OrderDTO> getUserSolvedTaskOrders(Long id) throws DAOSystemException;
+
+    /**
+     * This method returns the list of all user's orders {@link OrderDTO}
+     *
+     * @param id user ID
+     * @return the list of the task order
+     * @throws DAOSystemException if {@link java.sql.SQLException}
+     *                            was thrown during the task orders reading from the database
+     */
+    List<OrderDTO> getAllUserSolvedTaskOrders(Long id) throws DAOSystemException;
 
     /**
      * Finds the order with the task which has not already solved in
@@ -34,18 +44,12 @@ public interface TaskOrderDao extends DAO<TaskOrder> {
     TaskOrder getNotSolvedOrder(User user) throws DAOSystemException;
 
     /**
-     * Creation of the table "task_orders" in the database
+     * Finds all user's task orders
      *
+     * @param user the user whose order you need to find
+     * @return task order with the task which has not already solved
      * @throws DAOSystemException if {@link java.sql.SQLException}
-     *                            was thrown during the table creation in the database
+     *                            was thrown during the task order reading from the database
      */
-    void createTaskOrderTable() throws DAOSystemException;
-
-    /**
-     * Deleting of the table "task_orders" from the database
-     *
-     * @throws DAOSystemException if {@link java.sql.SQLException}
-     *                            was thrown during the table deleting from the database
-     */
-    void deleteTaskOrderTable() throws DAOSystemException;
+    List<TaskOrder> getOrders(User user) throws DAOSystemException;
 }

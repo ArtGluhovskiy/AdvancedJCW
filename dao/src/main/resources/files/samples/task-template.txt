@@ -1,0 +1,137 @@
+package org.art.entities;
+
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Date;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * This is an implementation of a java task for application. This class contains
+ * all information needed for user, class loader, method invocation etc.
+ */
+@Data
+@DynamicUpdate
+@Entity
+@Table(name = "JAVA_TASKS")
+public class JavaTask implements Serializable {
+
+    public JavaTask(int popularity) {
+        this.popularity = popularity;
+    }
+
+    @Transient
+    private static final long SerialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(generator = "ID_GENERATOR")
+    @GenericGenerator(
+            name = "ID_GENERATOR",
+            strategy = "enhanced-sequence",
+            parameters = {
+                    @Parameter(
+                            name = "sequence_name",
+                            value = "TASK_SEQUENCE"
+                    )
+            }
+    )
+    @Column(name = "TASK_ID")
+    private Long id;
+
+    @Column(name = "POPULARITY")
+    private int popularity;
+
+    @OneToMany(mappedBy = "javaTask", fetch = FetchType.LAZY,
+               cascade = {CascadeType.PERSIST})
+    private Set<TaskOrder> orders = new HashSet<>();
+
+//    @Enumerated(value = EnumType.STRING)
+    @Column(name = "DIF_GROUP")
+    private String difficultyGroup = DifficultyGroup.EXPERT.toString();
+
+    @Column(name = "DESCR")
+    private String shortDescr;
+
+    @CreationTimestamp
+    @Column(name = "REG_DATE", updatable = false)
+    private Date regDate;
+
+    // Efficient time of the algorithm (in mcs)
+    @Column(name = "ELAPSED_TIME")
+    private long elapsedTime;
+
+    @Lob
+    @Column(name = "BINARY_TASK")
+    private byte[] binTask;
+
+    // Task description and test info for user
+    @Transient
+    private String description;
+
+    @Transient
+    private String topics;
+
+    @Transient
+    private String testInfo;
+
+    // Rating value of the task
+    @Transient
+    private int value = 10;
+
+    // Parameters for class loader and method invocation
+    @Transient
+    private int parametersNumber = 1;
+
+    @Transient
+    private Object result;
+
+    @Transient
+    private String className;
+
+    @Transient
+    private String methodName;
+
+    @Transient
+    private String methodString;
+
+    @Transient
+    private Object[] testMethodParameters;
+
+    @Transient
+    private Class[] methodParametersType = new Class[]{int[].class};
+
+    public JavaTask() {
+
+        //Test method parameters and results definition
+
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder("*** JavaTask info:\n")
+                .append("* task id: " + id + ";\n")
+                .append("* popularity: " + popularity + ";\n")
+                .append("* task value: " + value + ";\n")
+                .append("* task difficulty: " + difficultyGroup + ";\n")
+                .append("* short task description:\n \"" + shortDescr + "\"\n")
+                .append("* full description of the task:\n \"" + description + "\"\n")
+                .append("* test information:\n" + testInfo + "\n")
+                .append("* elapsed time: " + elapsedTime + ";\n")
+                .append("* registration date of the task: \"" + regDate + "\";\n")
+                .append("* class name: \"" + className + "\";\n")
+                .append("* name of the target method: \"" + methodName + "\";\n")
+                .append("* number of the method parameters: " + parametersNumber + ";\n")
+                .append("* method parameters for testing: " + Arrays.toString(testMethodParameters) + ";\n")
+                .append("* types of method parameters: " + Arrays.toString(methodParametersType) + ";\n")
+                .append("* required method result: " + result + ".\n")
+                .append("***")
+                .toString();
+    }
+}

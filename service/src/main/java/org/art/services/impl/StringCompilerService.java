@@ -1,11 +1,12 @@
 package org.art.services.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.entities.JavaTask;
 import org.art.services.exceptions.ServiceCompilationException;
-import org.apache.log4j.Logger;
 
 import javax.tools.*;
-import java.io.*;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 public class StringCompilerService<T> {
 
     private boolean diagnosticsOn = false;
-    public static final Logger log = Logger.getLogger(StringCompilerService.class);
+    public static final Logger log = LogManager.getLogger(StringCompilerService.class);
 
     public StringCompilerService(boolean diagnosticsOn) {
         this.diagnosticsOn = diagnosticsOn;

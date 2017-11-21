@@ -1,1 +1,4 @@
+org\art\dao\impl\TestJavaTaskDaoImpl.class
+org\art\dao\impl\TestTaskOrderDaoImpl.class
 org\art\dao\impl\TestUserDaoImpl.class
+org\art\dao\impl\TestEntityTestDaoImpl.class

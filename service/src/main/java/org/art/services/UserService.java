@@ -51,20 +51,4 @@ public interface UserService extends Service<User> {
      *                                  was thrown during the users reading from the database
      */
     List<User> getAllUsers() throws ServiceBusinessException, ServiceSystemException;
-
-    /**
-     * Creating table "users" in the database
-     *
-     * @throws ServiceSystemException if {@link DAOSystemException}
-     *                                was thrown during the table creation in the database
-     */
-    void createUsersTable() throws ServiceSystemException;
-
-    /**
-     * Deleting table "users" from the database
-     *
-     * @throws ServiceSystemException if {@link DAOSystemException}
-     *                                was thrown during the table deleting from the database
-     */
-    void deleteUsersTable() throws ServiceSystemException;
 }

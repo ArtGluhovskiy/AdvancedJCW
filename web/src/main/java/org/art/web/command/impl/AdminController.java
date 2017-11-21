@@ -3,12 +3,14 @@ package org.art.web.command.impl;
 import org.art.dto.OrderDTO;
 import org.art.entities.JavaTask;
 import org.art.entities.User;
-import org.art.services.*;
+import org.art.services.JavaTaskService;
+import org.art.services.TaskOrderService;
+import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
-import org.art.services.impl.*;
 import org.art.web.command.Controller;
-import com.sun.org.apache.xpath.internal.operations.Or;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +18,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-import java.util.ListIterator;
 
 public class AdminController implements Controller {
 
-    JavaTaskService taskService = JavaTaskServiceImpl.getInstance();
-    TaskOrderService orderService = TaskOrderServiceImpl.getInstance();
-    UserService userService = UserServiceImpl.getInstance();
+    static ApplicationContext context;
+    static UserService userService;
+    static JavaTaskService taskService;
+    static TaskOrderService orderService;
+
+    static {
+        context = new ClassPathXmlApplicationContext("beans-services.xml");
+        userService = context.getBean("userServiceImpl", UserService.class);
+        taskService = context.getBean("javaTaskServiceImpl", JavaTaskService.class);
+        orderService = context.getBean("taskOrderServiceImpl", TaskOrderService.class);
+    }
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -108,7 +117,7 @@ public class AdminController implements Controller {
         Long userID = Long.parseLong(req.getParameter("userID"));
         try {
             user = userService.get(userID);
-            orderList = orderService.getUserTaskOrders(userID);
+            orderList = orderService.getAllUserSolvedTaskOrders(user.getUserID());
             req.getSession().setAttribute("userInfo", user);
             req.getSession().setAttribute("orderList", orderList);
         } catch (ServiceSystemException e) {

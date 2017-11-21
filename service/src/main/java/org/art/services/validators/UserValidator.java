@@ -1,9 +1,10 @@
 package org.art.services.validators;
 
 import org.art.entities.User;
-import org.art.services.exceptions.ServiceException;
 import org.art.services.UserService;
-import org.art.services.impl.UserServiceImpl;
+import org.art.services.exceptions.ServiceException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,6 +14,14 @@ import java.util.regex.Pattern;
  * login, email etc.)
  */
 public class UserValidator {
+
+    static ApplicationContext context;
+    static UserService userService;
+
+    static {
+        context = new ClassPathXmlApplicationContext("beans-services.xml");
+        userService = context.getBean("userServiceImpl", UserService.class);
+    }
 
     /**
      * User data validation
@@ -73,7 +82,7 @@ public class UserValidator {
      * @return false in case of incorrect data
      */
     public static boolean validateLogin(String login) {
-        UserService userService = UserServiceImpl.getInstance();
+
         if (login == null || "".equals(login)) {
             return false;
         }
@@ -84,7 +93,8 @@ public class UserValidator {
             //User with such login was not found. That's OK!
             return true;
         }
-        return true;
+        //User with such login already exists
+        return false;
     }
 
     /**

@@ -3,10 +3,15 @@ package org.art.web.command.impl;
 import org.art.entities.JavaTask;
 import org.art.entities.User;
 import org.art.services.JavaTaskService;
+import org.art.services.TaskOrderService;
+import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
 import org.art.services.impl.JavaTaskServiceImpl;
 import org.art.web.command.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +21,13 @@ import java.io.IOException;
 
 public class ApplicationController implements Controller {
 
-    JavaTaskService taskService = JavaTaskServiceImpl.getInstance();
+    static ApplicationContext context;
+    static JavaTaskService taskService;
+
+    static {
+        context = new ClassPathXmlApplicationContext("beans-services.xml");
+        taskService = context.getBean("javaTaskServiceImpl", JavaTaskService.class);
+    }
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

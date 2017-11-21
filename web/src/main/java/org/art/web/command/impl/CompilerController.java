@@ -1,8 +1,12 @@
 package org.art.web.command.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.entities.JavaTask;
 import org.art.entities.User;
+import org.art.services.JavaTaskService;
 import org.art.services.TaskOrderService;
+import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceCompilationException;
 import org.art.services.exceptions.ServiceSystemException;
@@ -10,7 +14,9 @@ import org.art.services.impl.ResultsAnalyzer;
 import org.art.services.impl.StringCompilerService;
 import org.art.services.impl.TaskOrderServiceImpl;
 import org.art.web.command.Controller;
-import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +26,15 @@ import java.io.IOException;
 
 public class CompilerController implements Controller {
 
-    public static final Logger log = Logger.getLogger(CompilerController.class);
+    public static final Logger log = LogManager.getLogger(CompilerController.class);
+
+    static ApplicationContext context;
+    static TaskOrderService orderService;
+
+    static {
+        context = new ClassPathXmlApplicationContext("beans-services.xml");
+        orderService = context.getBean("taskOrderServiceImpl", TaskOrderService.class);
+    }
 
     /**
      * {@code CompilerController} is responsible for code compilation
@@ -75,7 +89,7 @@ public class CompilerController implements Controller {
      * user rating increase; task popularity increase etc.
      */
     private void modifyUserData(HttpSession session, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        TaskOrderService orderService = TaskOrderServiceImpl.getInstance();
+
         User user = (User) session.getAttribute("user");
         JavaTask task = (JavaTask) session.getAttribute("task");
         long execTime = (long) req.getAttribute("elapsedTime");
@@ -87,8 +101,8 @@ public class CompilerController implements Controller {
             return;
         } catch (ServiceBusinessException e) {
             /*NOP*/
-            //This exception is thrown if no "NOT SOLVED" task order was created.
-            //It means that there are no more tasks to solve.
+            //"NOT SOLVED" task order wasn't created.
+            //There are no more tasks to solve.
             //Method ignores this exception at THIS stage.
             //ServiceBusinessException will be thrown and catch later.
         }

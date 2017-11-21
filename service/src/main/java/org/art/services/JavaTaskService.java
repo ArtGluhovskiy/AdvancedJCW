@@ -57,20 +57,4 @@ public interface JavaTaskService extends Service<JavaTask> {
      * @throws ServiceBusinessException if no java tasks were found in the database
      */
     List<JavaTask> getAll() throws ServiceSystemException, ServiceBusinessException;
-
-    /**
-     * Creation of the table "java_tasks" in the database
-     *
-     * @throws ServiceSystemException if {@link DAOSystemException} was thrown during
-     *                                the creation of "java_tasks" table in the database
-     */
-    void createJavaTasksTable() throws ServiceSystemException;
-
-    /**
-     * Deleting of the table "java_tasks" from the database
-     *
-     * @throws ServiceSystemException if {@link DAOSystemException} was thrown during
-     *                                the deleting of "java_tasks" table from the database
-     */
-    void deleteJavaTasksTable() throws ServiceSystemException;
 }

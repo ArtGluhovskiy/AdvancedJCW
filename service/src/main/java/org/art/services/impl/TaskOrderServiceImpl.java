@@ -1,161 +1,127 @@
 package org.art.services.impl;
 
-import org.art.dao.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.art.dao.JavaTaskDao;
+import org.art.dao.TaskOrderDao;
+import org.art.dao.UserDao;
 import org.art.dao.exceptions.DAOSystemException;
-import org.art.dao.impl.*;
-import org.art.db.ConnectionPoolManager;
 import org.art.dto.OrderDTO;
-import org.art.entities.*;
-import org.art.services.exceptions.*;
-import org.art.services.*;
+import org.art.entities.DifficultyGroup;
+import org.art.entities.JavaTask;
+import org.art.entities.TaskOrder;
+import org.art.entities.User;
+import org.art.services.TaskOrderService;
+import org.art.services.exceptions.ServiceBusinessException;
+import org.art.services.exceptions.ServiceSystemException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Connection;
 import java.util.List;
 
-public class TaskOrderServiceImpl extends TransactionManager implements TaskOrderService {
+@Service
+@Transactional
+public class TaskOrderServiceImpl implements TaskOrderService {
 
-    private static TaskOrderService INSTANCE;
+    private static final Logger log = LogManager.getLogger(TaskOrderServiceImpl.class);
 
-    private TaskOrderDao orderDao;
-    private JavaTaskDao taskDao;
+    @Autowired
     private UserDao userDao;
-    private ConnectionPoolManager connPool;
 
-    private TaskOrderServiceImpl() {
-        connPool = ConnectionPoolManager.getInstance();
-        threadCache = connPool.getThreadCache();
-        orderDao = TaskOrderDaoImpl.getInstance();
-        ((TaskOrderDaoImpl) orderDao).setThreadCache(threadCache);
-        userDao = UserDaoImpl.getInstance();
-        ((UserDaoImpl) userDao).setThreadCache(threadCache);
-        taskDao = JavaTaskDaoImpl.getInstance();
-        ((JavaTaskDaoImpl) taskDao).setThreadCache(threadCache);
-    }
+    @Autowired
+    private TaskOrderDao orderDao;
 
-    public static TaskOrderService getInstance() {
-        TaskOrderService taskOrderService = INSTANCE;
-        if (taskOrderService == null) {
-            synchronized (TaskOrderServiceImpl.class) {
-                taskOrderService = INSTANCE;
-                if (taskOrderService == null) {
-                    INSTANCE = taskOrderService = new TaskOrderServiceImpl();
-                }
-            }
-        }
-        return taskOrderService;
-    }
+    @Autowired
+    private JavaTaskDao taskDao;
 
     @Override
     public TaskOrder save(TaskOrder order) throws ServiceSystemException {
-        Connection conn = connPool.getConnection();
-        threadCache.set(conn);
+        TaskOrder savedOrder;
         try {
-            startTransaction();
-            orderDao.save(order);
-            endTransaction();
+            savedOrder = orderDao.save(order);
         } catch (DAOSystemException e) {
-            tryRollBackTransaction(e);
-            log.info("Exception while saving task order into database!", e);
-            throw new ServiceSystemException("Exception while saving task order into database!", e);
-        } finally {
-            ConnectionPoolManager.close(conn);
+            log.info("Exception while saving task order into the database!", e);
+            throw new ServiceSystemException("Exception while saving task order into the database!", e);
         }
-        return order;
+        return savedOrder;
     }
 
     @Override
-    public TaskOrder get(long id) throws ServiceSystemException, ServiceBusinessException {
+    public TaskOrder get(Long id) throws ServiceSystemException, ServiceBusinessException {
         TaskOrder order;
-        Connection conn = connPool.getConnection();
-        threadCache.set(conn);
         try {
-            startTransaction();
             order = orderDao.get(id);
-            endTransaction();
             if (order == null) {
                 throw new ServiceBusinessException("No order was found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting task order from database!", e);
-            throw new ServiceSystemException("Exception while getting task order from database!", e);
-        } finally {
-            ConnectionPoolManager.close(conn);
+            log.info("Exception while getting task order from the database!", e);
+            throw new ServiceSystemException("Exception while getting task order from the database!", e);
         }
         return order;
     }
 
     @Override
-    public void update(TaskOrder order) throws ServiceSystemException, ServiceBusinessException {
-        Connection conn = connPool.getConnection();
-        int updAmount;
-        threadCache.set(conn);
+    public TaskOrder update(TaskOrder order) throws ServiceSystemException, ServiceBusinessException {
+        TaskOrder updOrder;
         try {
-            startTransaction();
-            updAmount = orderDao.update(order);
-            endTransaction();
-            if (updAmount == 0) {
+            updOrder = orderDao.update(order);
+            if (updOrder == null) {
                 throw new ServiceBusinessException("No task order with such ID was found!");
             }
         } catch (DAOSystemException e) {
-            tryRollBackTransaction(e);
-            log.info("Exception while updating task order in database!", e);
-            throw new ServiceSystemException("Exception while updating task order in database!", e);
-        } finally {
-            ConnectionPoolManager.close(conn);
+            log.info("Exception while updating task order in the database!", e);
+            throw new ServiceSystemException("Exception while updating task order in the database!", e);
+        }
+        return updOrder;
+    }
+
+    @Override
+    public void delete(Long id) throws ServiceSystemException, ServiceBusinessException {
+        try {
+            orderDao.delete(id);
+        } catch (DAOSystemException e) {
+            log.info("Exception while deleting task order from the database! ID: " + id, e);
+            throw new ServiceSystemException("Exception while deleting task order from the database! ID: " + id, e);
         }
     }
 
     @Override
-    public int delete(long id) throws ServiceSystemException, ServiceBusinessException {
-        Connection conn = connPool.getConnection();
-        int delAmount;
-        threadCache.set(conn);
+    public List<OrderDTO> getUserSolvedTaskOrders(Long id) throws ServiceSystemException, ServiceBusinessException {
+        List<OrderDTO> complOrders;
         try {
-            startTransaction();
-            delAmount = orderDao.delete(id);
-            endTransaction();
-            if (delAmount == 0) {
-                throw new ServiceBusinessException("No task order with such ID was found! ID: " + id);
+            complOrders = orderDao.getUserSolvedTaskOrders(id);
+            if (complOrders.size() == 0) {
+                throw new ServiceBusinessException("No orders were found in the DB!");
             }
         } catch (DAOSystemException e) {
-            tryRollBackTransaction(e);
-            log.info("Exception while deleting task order from database! ID: " + id, e);
-            throw new ServiceSystemException("Exception while deleting task order from database! ID: " + id, e);
-        } finally {
-            ConnectionPoolManager.close(conn);
+            log.info("Exception while getting task orders from the database! ID: " + id, e);
+            throw new ServiceSystemException("Exception while getting task orders from the database! ID: " + id, e);
         }
-        return delAmount;
+        return complOrders;
     }
 
     @Override
-    public List<OrderDTO> getUserTaskOrders(long id) throws ServiceSystemException, ServiceBusinessException {
-        Connection conn = connPool.getConnection();
+    public List<OrderDTO> getAllUserSolvedTaskOrders(Long id) throws ServiceSystemException, ServiceBusinessException {
         List<OrderDTO> complOrders;
-        threadCache.set(conn);
         try {
-            startTransaction();
-            complOrders = orderDao.getUserTaskOrders(id);
-            endTransaction();
+            complOrders = orderDao.getAllUserSolvedTaskOrders(id);
             if (complOrders.size() == 0) {
                 throw new ServiceBusinessException("No orders were found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting task orders from database! ID: " + id, e);
-            throw new ServiceSystemException("Exception while getting task orders from database! ID: " + id, e);
-        } finally {
-            ConnectionPoolManager.close(conn);
+            log.info("Exception while getting task orders from the database! ID: " + id, e);
+            throw new ServiceSystemException("Exception while getting task orders from the database! ID: " + id, e);
         }
         return complOrders;
     }
 
     @Override
     public void createNewOrder(User user, JavaTask task, long execTime) throws ServiceSystemException, ServiceBusinessException {
-        Connection conn = connPool.getConnection();
-        threadCache.set(conn);
         TaskOrder order;
         JavaTask newTask;
         try {
-            startTransaction();
             //User rating modifying
             user.setRating(user.getRating() + task.getValue());
             userDao.update(user);
@@ -171,20 +137,30 @@ public class TaskOrderServiceImpl extends TransactionManager implements TaskOrde
             newTask = getNewTask(user, task);
             if (newTask == null) {
                 //If there are no more tasks for EXPERT user
-                endTransaction();
                 throw new ServiceBusinessException("There is no more tasks for user");
             }
             //Creation of new "NOT SOLVED" task order with a new task
-            order = new TaskOrder(user.getUserID(), newTask.getTaskID(), "NOT SOLVED");
+            order = new TaskOrder("NOT SOLVED", user, newTask);
             orderDao.save(order);
-            endTransaction();
         } catch (DAOSystemException e) {
-            tryRollBackTransaction(e);
             log.info("Cannot update user in the database!", e);
             throw new ServiceSystemException("Cannot update user in the database!", e);
-        } finally {
-            ConnectionPoolManager.close(conn);
         }
+    }
+
+    @Override
+    public List<TaskOrder> getOrders(User user) throws ServiceSystemException, ServiceBusinessException {
+        List<TaskOrder> orders;
+        try {
+            orders = orderDao.getOrders(user);
+            if (orders.size() == 0) {
+                throw new ServiceBusinessException("No orders were found!");
+            }
+        } catch (DAOSystemException e) {
+            log.info("Exception while getting task orders from the database! ID: " + user.getUserID(), e);
+            throw new ServiceSystemException("Exception while getting task orders from the database! ID: " + user.getUserID(), e);
+        }
+        return orders;
     }
 
     /**
@@ -201,7 +177,7 @@ public class TaskOrderServiceImpl extends TransactionManager implements TaskOrde
      */
     private JavaTask getNewTask(User user, JavaTask task) throws DAOSystemException, ServiceBusinessException {
         JavaTask newTask;
-        newTask = taskDao.getNextTaskByDiffGroup(user.getLevel(), task.getTaskID());
+        newTask = taskDao.getNextTaskByDiffGroup(user.getLevel(), task.getTaskId());
         if (newTask == null) {
             //There is no more tasks with such difficulty in the database
             //So, we change the user level to a higher one
@@ -212,7 +188,7 @@ public class TaskOrderServiceImpl extends TransactionManager implements TaskOrde
             }
             //Updating user with a new level in database
             userDao.update(user);
-            newTask = taskDao.getNextTaskByDiffGroup(user.getLevel(), task.getTaskID());
+            newTask = taskDao.getNextTaskByDiffGroup(user.getLevel(), task.getTaskId());
         }
         return newTask;
     }
@@ -232,43 +208,6 @@ public class TaskOrderServiceImpl extends TransactionManager implements TaskOrde
             return user;
         } else {
             return null;
-        }
-    }
-
-    @Override
-    public void createTaskOrderTable() throws ServiceSystemException {
-        Connection conn = connPool.getConnection();
-        threadCache.set(conn);
-        try {
-            orderDao.createTaskOrderTable();
-        } catch (DAOSystemException e) {
-            log.info("Exception while creating task orders table in database!", e);
-            throw new ServiceSystemException("Exception while creating task orders table in database!", e);
-        } finally {
-            ConnectionPoolManager.close(conn);
-        }
-    }
-
-    @Override
-    public void deleteTaskOrderTable() throws ServiceSystemException {
-        Connection conn = connPool.getConnection();
-        threadCache.set(conn);
-        try {
-            orderDao.deleteTaskOrderTable();
-        } catch (DAOSystemException e) {
-            log.info("Exception while deleting task orders table from database!", e);
-            throw new ServiceSystemException("Exception while deleting task orders table from database!", e);
-        } finally {
-            ConnectionPoolManager.close(conn);
-        }
-    }
-
-    public void tryRollBackTransaction(Exception e) {
-        try {
-            backTransaction();
-        } catch (DAOSystemException e1) {
-            log.info("Exception while rolling back the transaction! This exception was added to suppressed.", e);
-            e.addSuppressed(e1);
         }
     }
 }

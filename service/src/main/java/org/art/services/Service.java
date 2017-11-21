@@ -25,17 +25,18 @@ public interface Service<T> {
      *                                  was thrown during the reading operation from the database
      * @throws ServiceBusinessException if no entity with such ID was found
      */
-    T get(long id) throws ServiceSystemException, ServiceBusinessException;
+    T get(Long id) throws ServiceSystemException, ServiceBusinessException;
 
     /**
      * This service method updates entity in the database
      *
      * @param t entity with fields you need to update
+     * @return updated entity
      * @throws ServiceSystemException   if {@link DAOSystemException}
      *                                  was thrown during the reading operation from the database
      * @throws ServiceBusinessException if entity was not found in the database
      */
-    void update(T t) throws ServiceSystemException, ServiceBusinessException;
+    T update(T t) throws ServiceSystemException, ServiceBusinessException;
 
     /**
      * Method deletes entity from the database
@@ -46,5 +47,5 @@ public interface Service<T> {
      *                                  was thrown during the reading operation from the database
      * @throws ServiceBusinessException if entity was not found in the database
      */
-    int delete(long id) throws ServiceSystemException, ServiceBusinessException;
+    void delete(Long id) throws ServiceSystemException, ServiceBusinessException;
 }

@@ -22,7 +22,18 @@ public interface TaskOrderService extends Service<TaskOrder> {
      *                                  the task orders reading from the database
      * @throws ServiceBusinessException if no java task orders were found in the database
      */
-    List<OrderDTO> getUserTaskOrders(long id) throws ServiceSystemException, ServiceBusinessException;
+    List<OrderDTO> getUserSolvedTaskOrders(Long id) throws ServiceSystemException, ServiceBusinessException;
+
+    /**
+     * This service method returns the list of all user's orders {@link OrderDTO}
+     *
+     * @param id user ID
+     * @return the list of the task orders
+     * @throws ServiceSystemException   if {@link DAOSystemException} was thrown during
+     *                                  the task orders reading from the database
+     * @throws ServiceBusinessException if no java task orders were found in the database
+     */
+    List<OrderDTO> getAllUserSolvedTaskOrders(Long id) throws ServiceSystemException, ServiceBusinessException;
 
     /**
      * Service method for creation of task order with a new task
@@ -35,23 +46,18 @@ public interface TaskOrderService extends Service<TaskOrder> {
      * @param execTime algorithm execution time of solved task
      * @throws ServiceSystemException   if {@link DAOSystemException} was thrown during
      *                                  the creation of new task order in the database
-     * @throws ServiceBusinessException if java task was not found in the database
+     * @throws ServiceBusinessException if there are no more tasks for user
      */
     void createNewOrder(User user, JavaTask task, long execTime) throws ServiceSystemException, ServiceBusinessException;
 
     /**
-     * Creation of the table "task_orders" in the database
+     * Finds all user's task orders
      *
-     * @throws ServiceSystemException if {@link DAOSystemException} was thrown during
-     *                                the creation of "task_order" table in the database
+     * @param user the user whose order you need to find
+     * @return task order with the task which has not already solved
+     * @throws ServiceSystemException   if {@link DAOSystemException} was thrown during
+     *                                  the creation of new task order in the database
+     * @throws ServiceBusinessException if java task order was not found in the database
      */
-    void createTaskOrderTable() throws ServiceSystemException;
-
-    /**
-     * Deleting of the table "task_orders" from the database
-     *
-     * @throws ServiceSystemException if {@link DAOSystemException} was thrown during
-     *                                the deleting of "task_order" table in the database
-     */
-    void deleteTaskOrderTable() throws ServiceSystemException;
+    List<TaskOrder> getOrders(User user) throws ServiceSystemException, ServiceBusinessException;
 }

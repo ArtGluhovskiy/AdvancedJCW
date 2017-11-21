@@ -2,7 +2,7 @@ package org.art.dto;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * OrderDTO is actually the mixture of data from

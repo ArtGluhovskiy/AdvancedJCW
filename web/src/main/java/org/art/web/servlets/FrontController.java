@@ -1,6 +1,5 @@
 package org.art.web.servlets;
 
-import org.art.services.exceptions.ServiceCompilationException;
 import org.art.web.command.enums.CommandType;
 import org.art.web.handlers.RequestHandler;
 

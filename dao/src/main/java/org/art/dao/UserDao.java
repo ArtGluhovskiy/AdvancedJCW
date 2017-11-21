@@ -45,20 +45,4 @@ public interface UserDao extends DAO<User> {
      *                            was thrown during the users reading from the database
      */
     List<User> getAllUsers() throws DAOSystemException;
-
-    /**
-     * Creating table "users" in the database
-     *
-     * @throws DAOSystemException if {@link java.sql.SQLException}
-     *                            was thrown during the table creation in the database
-     */
-    void createUsersTable() throws DAOSystemException;
-
-    /**
-     * Deleting table "users" from the database
-     *
-     * @throws DAOSystemException if {@link java.sql.SQLException}
-     *                            was thrown during the table deleting from the database
-     */
-    void deleteUsersTable() throws DAOSystemException;
 }

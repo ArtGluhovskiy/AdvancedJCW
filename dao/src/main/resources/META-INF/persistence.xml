@@ -1,0 +1,27 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+    <persistence-unit name="org.art.dao" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>org.art.entities.User</class>
+        <class>org.art.entities.JavaTask</class>
+        <class>org.art.entities.TaskOrder</class>
+        <class>org.art.entities.TestEntity</class>
+
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jcwdb?createDatabaseIfNotExist=true"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="root"/>
+            <property name="hibernate.dialect.storage_engine" value="innodb"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL55Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.use_sql_comments" value="false"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.connection.pool_size" value="10"/>
+            <!--<property name="hibernate.physical_naming_strategy" value="org.art.utils.CustomNamingStrategy"/>-->
+        </properties>
+    </persistence-unit>
+</persistence>
