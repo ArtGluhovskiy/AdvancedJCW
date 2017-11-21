@@ -1,7 +1,12 @@
 package org.art.services.impl;
 
+import org.art.entities.DifficultyGroup;
 import org.art.entities.JavaTask;
+import org.art.entities.TaskOrder;
+import org.art.entities.User;
 import org.art.services.JavaTaskService;
+import org.art.services.TaskOrderService;
+import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
 import org.junit.jupiter.api.AfterAll;
@@ -11,24 +16,33 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
+import static org.art.dao.utils.DateTimeUtil.toSQLDate;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestJavaTaskServiceImpl {
 
     static ApplicationContext context;
+    static JavaTaskService taskService;
+    static UserService userService;
+    static TaskOrderService orderService;
 
     @BeforeAll
     static void initAll() throws SQLException {
         context = new ClassPathXmlApplicationContext("beans-services.xml");
+        taskService = context.getBean("javaTaskServiceImpl", JavaTaskService.class);
+        userService = context.getBean("userServiceImpl", UserService.class);
+        orderService = context.getBean("taskOrderServiceImpl", TaskOrderService.class);
     }
 
     @Test
     @DisplayName("Java task solution test")
     void test1() throws ServiceSystemException, ServiceBusinessException {
         StringCompilerService stringCompiler = new StringCompilerService(false);
-        JavaTaskService taskService = context.getBean("javaTaskServiceImpl", JavaTaskService.class);
         // TODO: get task from DB or create new?
         JavaTask task = new JavaTask();
         //Save task to DB
@@ -81,6 +95,42 @@ public class TestJavaTaskServiceImpl {
 
         //Results analyzing
         assertArrayEquals((int[]) task.getResult(), (int[]) results.getMethodResult());
+    }
+
+    @Test
+    @DisplayName("Get next task by difficulty group test")
+    void test2() throws ServiceSystemException, ServiceBusinessException {
+
+        User user = new User("Sponss2", "haricks2", "87jhy1s2", "Harry",
+                "Jane", "harrys2@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.EXPERIENCED.toString());
+        userService.save(user);
+        JavaTask task1 = new JavaTask();
+        JavaTask task2 = new JavaTask();
+        JavaTask task3 = new JavaTask();
+        task1.setDifficultyGroup(DifficultyGroup.EXPERIENCED.toString());
+        task2.setDifficultyGroup(DifficultyGroup.EXPERT.toString());
+        task3.setDifficultyGroup(DifficultyGroup.EXPERIENCED.toString());
+        task3.setShortDescr("Next task");
+        taskService.save(task1);
+        taskService.save(task2);
+        taskService.save(task3);
+        Long taskId = task1.getTaskId();
+
+        TaskOrder order1 = new TaskOrder("SOLVED", user, task1);
+        TaskOrder order2 = new TaskOrder("SOLVED", user, task2);
+        orderService.save(order1);
+        orderService.save(order2);
+
+        int initUserOrdersAmount = orderService.getOrders(user).size();
+        JavaTask newTask = taskService.getNextTaskByDiffGroup(user, taskId);
+        //New user task order with "NOT SOLVED" status must be created
+        List<TaskOrder> userOrders = orderService.getOrders(user);
+        int updatedUserOrdersAmount = userOrders.size();
+
+        assertEquals("Next task", newTask.getShortDescr());
+        assertEquals(initUserOrdersAmount + 1, updatedUserOrdersAmount);
+        assertEquals("NOT SOLVED", userOrders.get(updatedUserOrdersAmount - 1).getStatus());
     }
 
     @AfterAll

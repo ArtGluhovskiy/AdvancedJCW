@@ -62,59 +62,46 @@ public class JavaTaskServiceImpl implements JavaTaskService {
 
     @Override
     public JavaTask update(JavaTask javaTask) throws ServiceSystemException, ServiceBusinessException {
-        JavaTask updTask = null;
-//        try {
-//            if (updRows == 0) {
-//                throw new ServiceBusinessException("No task with such ID was found!");
-//            }
-//        } catch (DAOSystemException e) {
-//            tryRollBackTransaction(e);
-//            log.info("Exception while updating task in database!", e);
-//            throw new ServiceSystemException("Exception while updating task in database!", e);
-//        }
+        JavaTask updTask;
+        try {
+            updTask = javaTaskDao.update(javaTask);
+            if (updTask == null) {
+                throw new ServiceBusinessException("Java task updating failed!");
+            }
+        } catch (DAOSystemException e) {
+            log.info("Exception while updating task in the database!", e);
+            throw new ServiceSystemException("Exception while updating task in the database!", e);
+        }
         return updTask;
     }
 
     @Override
     public void delete(Long id) throws ServiceSystemException, ServiceBusinessException {
-//        int delRows;
-//        try {
-//            if (delRows == 0) {
-//                throw new ServiceBusinessException("No task with such ID was found!");
-//            }
-//        } catch (DAOSystemException e) {
-//            log.info("Exception while deleting task from database!", e);
-//            throw new ServiceSystemException("Exception while deleting task from database!", e);
-//        }
-//        return delRows;
+        try {
+            javaTaskDao.delete(id);
+        } catch (DAOSystemException e) {
+            log.info("Exception while deleting task from database!", e);
+            throw new ServiceSystemException("Exception while deleting task from database!", e);
+        }
     }
 
     @Override
     public JavaTask getNextTaskByDiffGroup(User user, long solvedTaskID) throws ServiceBusinessException, ServiceSystemException {
-        JavaTask newTask = null;
+        JavaTask newTask;
         TaskOrder order;
-//        try {
-//            startTransaction();
-//            //Getting next task in database
-//            newTask = javaTaskDao.getNextTaskByDiffGroup(user.getLevel(), solvedTaskID);
-//            //After registration user rating increases by 1
-//            if (solvedTaskID == 0) {
-//
-//            }
-//            //Creation of new "NOT SOLVED" task order with new task
-//            order = new TaskOrder(user.getUserID(), newTask.getTaskID(), "NOT SOLVED");
-//            TaskOrder order1 = orderDao.save(order);
-//            endTransaction();
-//            if (newTask == null) {
-//                throw new ServiceBusinessException("No task with such ID was found!");
-//            }
-//        } catch (DAOSystemException e) {
-//            tryRollBackTransaction(e);
-//            log.info("Exception while getting task from database!", e);
-//            throw new ServiceSystemException("Exception while getting task from database!", e);
-//        } finally {
-//            ConnectionPoolManager.close(conn);
-//        }
+        try {
+            //Get the next task with appropriate difficulty group from the database
+            newTask = javaTaskDao.getNextTaskByDiffGroup(user.getLevel(), solvedTaskID);
+            if (newTask == null) {
+                throw new ServiceBusinessException("No more tasks with such difficulty group were found!");
+            }
+            //Creation of new "NOT SOLVED" task order with new task
+            order = new TaskOrder("NOT SOLVED", user, newTask);
+            orderDao.save(order);
+        } catch (DAOSystemException e) {
+            log.info("Exception while getting task from database!", e);
+            throw new ServiceSystemException("Exception while getting task from database!", e);
+        }
         return newTask;
     }
 

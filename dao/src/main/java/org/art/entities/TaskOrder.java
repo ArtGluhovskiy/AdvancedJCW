@@ -44,7 +44,7 @@ public class TaskOrder {
     @Column(name = "ORDER_ID")
     private Long orderID;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TASK_ID")
     private JavaTask javaTask;
 
@@ -58,7 +58,7 @@ public class TaskOrder {
     @Column(name = "EXEC_TIME")
     private long execTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
