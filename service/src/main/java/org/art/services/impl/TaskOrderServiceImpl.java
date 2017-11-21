@@ -93,6 +93,21 @@ public class TaskOrderServiceImpl implements TaskOrderService {
         try {
             complOrders = orderDao.getUserSolvedTaskOrders(id);
             if (complOrders.size() == 0) {
+                throw new ServiceBusinessException("No orders were found in the DB!");
+            }
+        } catch (DAOSystemException e) {
+            log.info("Exception while getting task orders from the database! ID: " + id, e);
+            throw new ServiceSystemException("Exception while getting task orders from the database! ID: " + id, e);
+        }
+        return complOrders;
+    }
+
+    @Override
+    public List<OrderDTO> getAllUserSolvedTaskOrders(Long id) throws ServiceSystemException, ServiceBusinessException {
+        List<OrderDTO> complOrders;
+        try {
+            complOrders = orderDao.getAllUserSolvedTaskOrders(id);
+            if (complOrders.size() == 0) {
                 throw new ServiceBusinessException("No orders were found!");
             }
         } catch (DAOSystemException e) {

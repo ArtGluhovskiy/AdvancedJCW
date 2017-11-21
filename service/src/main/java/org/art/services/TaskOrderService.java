@@ -25,6 +25,17 @@ public interface TaskOrderService extends Service<TaskOrder> {
     List<OrderDTO> getUserSolvedTaskOrders(Long id) throws ServiceSystemException, ServiceBusinessException;
 
     /**
+     * This service method returns the list of all user's orders {@link OrderDTO}
+     *
+     * @param id user ID
+     * @return the list of the task orders
+     * @throws ServiceSystemException   if {@link DAOSystemException} was thrown during
+     *                                  the task orders reading from the database
+     * @throws ServiceBusinessException if no java task orders were found in the database
+     */
+    List<OrderDTO> getAllUserSolvedTaskOrders(Long id) throws ServiceSystemException, ServiceBusinessException;
+
+    /**
      * Service method for creation of task order with a new task
      * with appropriate difficulty group. This method also provides
      * modifying of old task order (modifying of task order status,

@@ -97,6 +97,26 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         return orders;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<OrderDTO> getAllUserSolvedTaskOrders(Long id) throws DAOSystemException {
+        List<OrderDTO> orders;
+        EntityManager em = EMUtil.getThreadCachedEM();
+        try {
+            em.getTransaction().begin();
+            orders = em.createQuery("select new org.art.dto.OrderDTO(u.userID, u.login," +
+                    " t.difficultyGroup, t.shortDescr, o.regDate, o.status, t.regDate, t.popularity, t.elapsedTime," +
+                    " o.execTime, o.orderID) from USERS u inner join u.orders o inner join o.javaTask t " +
+                    "where u.userID = :id").setParameter("id", id).getResultList();
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            log.info("Cannot get task orders from the database! User ID: " + id, e);
+            throw new DAOSystemException("Cannot get task orders from the database! User ID: " + id, e);
+        }
+        return orders;
+    }
+
     @Override
     public TaskOrder getNotSolvedOrder(User user) throws DAOSystemException {
         TaskOrder order;

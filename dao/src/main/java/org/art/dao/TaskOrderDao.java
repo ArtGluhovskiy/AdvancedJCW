@@ -23,6 +23,16 @@ public interface TaskOrderDao extends DAO<TaskOrder> {
     List<OrderDTO> getUserSolvedTaskOrders(Long id) throws DAOSystemException;
 
     /**
+     * This method returns the list of all user's orders {@link OrderDTO}
+     *
+     * @param id user ID
+     * @return the list of the task order
+     * @throws DAOSystemException if {@link java.sql.SQLException}
+     *                            was thrown during the task orders reading from the database
+     */
+    List<OrderDTO> getAllUserSolvedTaskOrders(Long id) throws DAOSystemException;
+
+    /**
      * Finds the order with the task which has not already solved in
      * the "task_orders" table
      *

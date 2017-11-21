@@ -2,11 +2,16 @@ package org.art.web.command.impl;
 
 import org.art.entities.DifficultyGroup;
 import org.art.entities.User;
+import org.art.services.JavaTaskService;
+import org.art.services.TaskOrderService;
 import org.art.services.UserService;
 import org.art.services.exceptions.ServiceSystemException;
 import org.art.services.impl.UserServiceImpl;
 import org.art.web.auth.Encoder;
 import org.art.web.command.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +24,13 @@ import static org.art.services.validators.UserValidator.*;
 
 public class RegistrationController implements Controller {
 
-    UserService userService = UserServiceImpl.getInstance();
+    static ApplicationContext context;
+    static UserService userService;
+
+    static {
+        context = new ClassPathXmlApplicationContext("beans-services.xml");
+        userService = context.getBean("userServiceImpl", UserService.class);
+    }
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

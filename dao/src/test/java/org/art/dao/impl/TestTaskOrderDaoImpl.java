@@ -115,13 +115,19 @@ class TestTaskOrderDaoImpl {
         user.getOrders().add(order1);
         user.getOrders().add(order2);
         user.getOrders().add(order3);
-
         userDao.save(user);
+
+        //Get solved task orders
         List<OrderDTO> orders = orderDao.getUserSolvedTaskOrders(user.getUserID());
         assertNotNull(orders);
         assertEquals(2, orders.size());
         assertAll(() -> assertEquals("SOLVED", orders.get(0).getOrderStatus()),
                 () -> assertEquals("SOLVED", orders.get(1).getOrderStatus()));
+
+        //Get all user's task orders
+        List<OrderDTO> allOrders = orderDao.getAllUserSolvedTaskOrders(user.getUserID());
+        assertNotNull(allOrders);
+        assertEquals(3, allOrders.size());
     }
 
     @Test
