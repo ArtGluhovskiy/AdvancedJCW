@@ -137,8 +137,16 @@ class TestJavaTaskDaoImpl {
         assertEquals(initialTaskAmount + 4, updatedTaskAmount);
     }
 
+    @Test
+    @DisplayName("Null tests")
+    void test6() throws DAOSystemException {
+        assertNull(taskDao.get(999L));
+        assertNull(taskDao.getNextTaskByDiffGroup(DifficultyGroup.EXPERT.toString(), 999L));
+    }
+
     @AfterAll
     static void tearDown() throws SQLException {
         EMUtil.closeEMFactory();
+        ((ClassPathXmlApplicationContext) context).close();
     }
 }

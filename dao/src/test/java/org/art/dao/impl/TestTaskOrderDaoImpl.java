@@ -127,6 +127,7 @@ class TestTaskOrderDaoImpl {
     @Test
     @DisplayName("Simple task order test with java task")
     void test4() throws DAOSystemException {
+
         User user = new User("Sparky4", "godners4", "82730o4kgds2", "Allen",
                 "Swift", "swift4@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
                 "ACTIVE", toSQLDate("24-02-1993"), DifficultyGroup.BEGINNER.toString());
@@ -148,8 +149,24 @@ class TestTaskOrderDaoImpl {
         em.close();
     }
 
+    @Test
+    @DisplayName("Null tests")
+    void test5() throws DAOSystemException {
+
+        User user = new User("Spafrky4", "godfners4", "82730fo4kgds2", "Allen",
+                "Swift", "swifft4@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
+                "ACTIVE", toSQLDate("24-02-1993"), DifficultyGroup.BEGINNER.toString());
+        userDao.save(user);
+
+        assertNull(orderDao.get(999L));
+        assertNull(orderDao.getNotSolvedOrder(user));
+        assertTrue(orderDao.getOrders(user).size() == 0);
+        assertTrue(orderDao.getUserSolvedTaskOrders(999L).size() == 0);
+    }
+
     @AfterAll
     static void tearDown() throws SQLException {
         EMUtil.closeEMFactory();
+        ((ClassPathXmlApplicationContext) context).close();
     }
 }

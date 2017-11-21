@@ -9,6 +9,7 @@ import org.art.services.TaskOrderService;
 import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,9 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.art.dao.utils.DateTimeUtil.toSQLDate;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestOrderServiceImpl {
 
@@ -48,7 +47,7 @@ class TestOrderServiceImpl {
 
         User user = new User("Spoons", "haricks", "87jhkry12", "Harry",
                 "Jane", "harryk2@gmail.com", new Date(System.currentTimeMillis()), "user",
-                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.EXPERT.toString());
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.EXPERIENCED.toString());
 
         int initTaskAmount;
         try {
@@ -92,5 +91,23 @@ class TestOrderServiceImpl {
                 () -> assertEquals(newOrders.get(1).getStatus(), "SOLVED"),
                 () -> assertEquals(newOrders.get(2).getStatus(), "SOLVED"),
                 () -> assertEquals(newOrders.get(3).getStatus(), "NOT SOLVED"));
+    }
+
+    @Test
+    @DisplayName("Null tests")
+    void test2() throws ServiceSystemException {
+
+        User user = new User("Spsonsss2", "hasrickss2", "8s7jshy1s2", "Harry",
+                "Jane", "harrysss2@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.EXPERT.toString());
+        userService.save(user);
+        assertThrows(ServiceBusinessException.class, () -> orderService.get(999L));
+        assertThrows(ServiceBusinessException.class, () -> orderService.getOrders(user));
+        assertThrows(ServiceBusinessException.class, () -> orderService.getUserSolvedTaskOrders(999L));
+    }
+
+    @AfterAll
+    static void tearDownAll() throws SQLException {
+        ((ClassPathXmlApplicationContext) context).close();
     }
 }

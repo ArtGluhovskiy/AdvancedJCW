@@ -21,10 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestUserServiceImpl {
 
     static ApplicationContext context;
+    static UserService userService;
 
     @BeforeAll
     static void initAll() throws SQLException {
         context = new ClassPathXmlApplicationContext("beans-services.xml");
+        userService = context.getBean("userServiceImpl", UserService.class);
+        assertNotNull(userService);
     }
 
     @Test
@@ -36,8 +39,6 @@ class TestUserServiceImpl {
         User user2 = new User("Missles1", "browns1", "87hioly1", "Bob",
                 "Roven", "bob1@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
                 "ACTIVE", toSQLDate("13-01-1996"), DifficultyGroup.EXPERT.toString());
-
-        UserService userService = context.getBean("userServiceImpl", UserService.class);
 
         //Save operations
         User savedUser1 = userService.save(user1);
@@ -65,8 +66,17 @@ class TestUserServiceImpl {
         assertThrows(Exception.class, () -> userService.delete(1000L));
     }
 
+    @Test
+    @DisplayName("Null tests")
+    void test2() throws ServiceBusinessException, ServiceSystemException {
+
+        assertThrows(ServiceBusinessException.class, () -> userService.get(999L));
+        assertThrows(ServiceBusinessException.class, () -> userService.getUserByLogin("lllll"));
+        assertThrows(ServiceBusinessException.class, () -> userService.getUsersByClanName("ddddd"));
+    }
+
     @AfterAll
     static void tearDownAll() throws SQLException {
-
+        ((ClassPathXmlApplicationContext) context).close();
     }
 }

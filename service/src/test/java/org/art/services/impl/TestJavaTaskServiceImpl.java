@@ -181,8 +181,22 @@ public class TestJavaTaskServiceImpl {
                 () -> assertEquals("Not solved task", task.getShortDescr()));
     }
 
+    @Test
+    @DisplayName("Null tests")
+    void test5() throws ServiceBusinessException, ServiceSystemException {
+
+        User user = new User("Spsonsss2", "hasrickss2", "8s7jshy1s2", "Harry",
+                "Jane", "harrysss2@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.EXPERT.toString());
+        userService.save(user);
+
+        assertThrows(ServiceBusinessException.class, () -> taskService.get(999L));
+        assertThrows(ServiceBusinessException.class, () -> taskService.getNextTaskByDiffGroup(user, 999L));
+        assertThrows(ServiceBusinessException.class, () -> taskService.getNotSolvedTask(user));
+    }
+
     @AfterAll
     static void tearDownAll() throws SQLException {
-
+        ((ClassPathXmlApplicationContext) context).close();
     }
 }

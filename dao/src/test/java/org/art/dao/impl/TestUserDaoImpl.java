@@ -24,11 +24,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestUserDaoImpl {
 
     static ApplicationContext context;
+    static UserDao userDao;
 
     @BeforeAll
     static void initAll() throws SQLException {
+
         EMUtil.initEMFactory("org.art.dao.test");
         context = new ClassPathXmlApplicationContext("beans-dao.xml");
+        userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
+        assertNotNull(userDao);
     }
 
     @Test
@@ -124,9 +128,6 @@ class TestUserDaoImpl {
                 "Jane", "harry@gmail.com", new Date(System.currentTimeMillis()), "user",
                 "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
 
-        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
-        assertNotNull(userDao);
-
         User u = userDao.save(user);
         assertNotNull(u);
         List<User> users = userDao.getUsersByClanName("Spoons");
@@ -140,9 +141,6 @@ class TestUserDaoImpl {
         User user = new User("Sparks", "patrick", "87jhy", "Harry",
                 "Jane", "harry@gmail.com", new Date(System.currentTimeMillis()), "user",
                 "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
-
-        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
-        assertNotNull(userDao);
 
         User u = userDao.save(user);
         assertNotNull(u);
@@ -166,8 +164,6 @@ class TestUserDaoImpl {
         user2.setRating(1);
         user3.setRating(5);
 
-        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
-        assertNotNull(userDao);
         userDao.save(user1);
         userDao.save(user2);
         userDao.save(user3);
@@ -183,9 +179,6 @@ class TestUserDaoImpl {
         User user1 = new User("Spons2", "harick2", "87jhy12", "Harry",
                 "Jane", "harry2@gmail.com", new Date(System.currentTimeMillis()), "user",
                 "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.BEGINNER.toString());
-
-        UserDao userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
-        assertNotNull(userDao);
 
         userDao.save(user1);
         List<User> users = userDao.getAllUsers();
@@ -252,9 +245,18 @@ class TestUserDaoImpl {
         assertNull(u);
     }
 
+    @Test
+    @DisplayName("Null tests")
+    void test9() throws DAOSystemException {
+
+        assertNull(userDao.get(999L));
+        assertNull(userDao.getUserByLogin("llll"));
+        assertTrue(userDao.getUsersByClanName("dddd").size() == 0);
+    }
 
     @AfterAll
     static void tearDown() throws SQLException {
         EMUtil.closeEMFactory();
+        ((ClassPathXmlApplicationContext) context).close();
     }
 }

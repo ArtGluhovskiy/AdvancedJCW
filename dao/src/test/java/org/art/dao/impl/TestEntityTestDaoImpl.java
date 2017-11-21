@@ -17,11 +17,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TestEntityTestDaoImpl {
     static ApplicationContext context;
+    static TestEntityDaoImpl testEntityDao;
 
     @BeforeAll
     static void initAll() throws SQLException {
         EMUtil.initEMFactory("org.art.dao.test");
         context = new ClassPathXmlApplicationContext("beans-dao.xml");
+        testEntityDao = context.getBean("testEntityDaoImpl", TestEntityDaoImpl.class);
+        assertNotNull(testEntityDao);
     }
 
     @Test
@@ -41,8 +44,7 @@ class TestEntityTestDaoImpl {
     @Test
     @DisplayName("TestEntity test (with Spring Data)")
     void test2() throws DAOSystemException {
-        TestEntityDaoImpl testEntityDao = context.getBean("testEntityDaoImpl", TestEntityDaoImpl.class);
-        assertNotNull(testEntityDao);
+
         TestEntity testEntity1 = new TestEntity(null, "Hello from test entity 1");
         TestEntity testEntity2 = new TestEntity(null, "Hello from test entity 2");
         testEntity1 = testEntityDao.save(testEntity1);
@@ -70,8 +72,15 @@ class TestEntityTestDaoImpl {
         assertNull(tDel);
     }
 
+    @Test
+    @DisplayName("Null tests")
+    void test3() throws DAOSystemException {
+        assertNull(testEntityDao.get(999L));
+    }
+
     @AfterAll
     static void tearDown() throws SQLException {
         EMUtil.closeEMFactory();
+        ((ClassPathXmlApplicationContext) context).close();
     }
 }
