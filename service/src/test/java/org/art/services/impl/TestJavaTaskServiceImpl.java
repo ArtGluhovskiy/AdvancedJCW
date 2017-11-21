@@ -21,8 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.art.dao.utils.DateTimeUtil.toSQLDate;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestJavaTaskServiceImpl {
 
@@ -131,6 +130,55 @@ public class TestJavaTaskServiceImpl {
         assertEquals("Next task", newTask.getShortDescr());
         assertEquals(initUserOrdersAmount + 1, updatedUserOrdersAmount);
         assertEquals("NOT SOLVED", userOrders.get(updatedUserOrdersAmount - 1).getStatus());
+    }
+
+    @Test
+    @DisplayName("Get popular tasks test")
+    void test3() throws ServiceSystemException, ServiceBusinessException {
+
+        JavaTask task1 = new JavaTask();
+        JavaTask task2 = new JavaTask();
+        JavaTask task3 = new JavaTask();
+        JavaTask task4 = new JavaTask();
+        task1.setPopularity(12);
+        task2.setPopularity(5);
+        task3.setPopularity(89);
+        task4.setPopularity(1);
+
+        taskService.save(task1);
+        taskService.save(task2);
+        taskService.save(task3);
+        taskService.save(task4);
+
+        List<JavaTask> popTasks = taskService.getPopularJavaTasks(3);
+        assertAll(() -> assertNotNull(popTasks),
+                () -> assertTrue(3 == popTasks.size()),
+                () -> assertEquals(89, popTasks.get(0).getPopularity()));
+    }
+
+    @Test
+    @DisplayName("Get not solved task")
+    void test4() throws ServiceSystemException, ServiceBusinessException {
+
+        User user = new User("Spsonss2", "hasricks2", "8s7jhy1s2", "Harry",
+                "Jane", "harryss2@gmail.com", new Date(System.currentTimeMillis()), "user",
+                "ACTIVE", toSQLDate("21-05-1993"), DifficultyGroup.EXPERIENCED.toString());
+
+        JavaTask task1 = new JavaTask();
+        JavaTask task2 = new JavaTask();
+        task2.setShortDescr("Not solved task");
+        taskService.save(task1);
+        taskService.save(task2);
+        TaskOrder order1 = new TaskOrder("SOLVED", user, task1);
+        TaskOrder order2 = new TaskOrder("NOT SOLVED", user, task2);
+        user.getOrders().add(order1);
+        user.getOrders().add(order2);
+        userService.save(user);
+
+        JavaTask task = taskService.getNotSolvedTask(user);
+
+        assertAll(() -> assertNotNull(task),
+                () -> assertEquals("Not solved task", task.getShortDescr()));
     }
 
     @AfterAll

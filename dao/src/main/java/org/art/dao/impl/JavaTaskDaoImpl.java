@@ -34,7 +34,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
     }
 
     //Path of the file where serialized java task is stored
-    private String serialTaskPath = "C:\\Users\\Lenovo\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\Serial_task.txt";
+    private String serialTaskPath = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\Serial_task.txt";
 
 
     @Override
@@ -195,7 +195,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
      * @throws DAOSystemException in case of IO problems (file not found etc.) during task serializing
      */
     public static void serializeTask(JavaTask task) throws DAOSystemException {
-        String filePath = "C:\\Users\\Lenovo\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\Serial_task.txt";
+        String filePath = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\Serial_task.txt";
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(filePath)))) {
             out.writeObject(task);
         } catch (FileNotFoundException e) {

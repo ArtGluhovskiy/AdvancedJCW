@@ -1,5 +1,6 @@
 package org.art.dao.impl;
 
+import org.art.dao.JavaTaskDao;
 import org.art.dao.TaskOrderDao;
 import org.art.dao.UserDao;
 import org.art.dao.exceptions.DAOSystemException;
@@ -29,6 +30,7 @@ class TestTaskOrderDaoImpl {
     static ApplicationContext context;
     static UserDao userDao;
     static TaskOrderDao orderDao;
+    static JavaTaskDao taskDao;
 
     @BeforeAll
     static void initAll() throws SQLException {
@@ -38,6 +40,7 @@ class TestTaskOrderDaoImpl {
         assertNotNull(orderDao);
         userDao = context.getBean("userDaoImpl", UserDao.class);
         assertNotNull(userDao);
+        taskDao = context.getBean("javaTaskDaoImpl", JavaTaskDao.class);
     }
 
     @Test
@@ -103,6 +106,9 @@ class TestTaskOrderDaoImpl {
         JavaTask task1 = new JavaTask(10);
         JavaTask task2 = new JavaTask(15);
         JavaTask task3 = new JavaTask(20);
+        taskDao.save(task1);
+        taskDao.save(task2);
+        taskDao.save(task3);
         TaskOrder order1 = new TaskOrder("SOLVED", user, task1);
         TaskOrder order2 = new TaskOrder("SOLVED", user, task2);
         TaskOrder order3 = new TaskOrder("NOT SOLVED", user, task3);
@@ -120,12 +126,14 @@ class TestTaskOrderDaoImpl {
 
     @Test
     @DisplayName("Simple task order test with java task")
-    void test4() {
+    void test4() throws DAOSystemException {
         User user = new User("Sparky4", "godners4", "82730o4kgds2", "Allen",
                 "Swift", "swift4@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
                 "ACTIVE", toSQLDate("24-02-1993"), DifficultyGroup.BEGINNER.toString());
-        JavaTask task1 = new JavaTask(10);
-        TaskOrder order1 = new TaskOrder("SOLVED", null, task1);
+        userDao.save(user);
+        JavaTask task = new JavaTask(10);
+        taskDao.save(task);
+        TaskOrder order1 = new TaskOrder("SOLVED", user, task);
 
         EntityManager em = EMUtil.createEntityManager();
         em.getTransaction().begin();

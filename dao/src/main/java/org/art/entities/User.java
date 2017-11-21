@@ -8,6 +8,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import static org.art.dao.utils.DateTimeUtil.defineUserAge;
 @NoArgsConstructor
 @DynamicUpdate
 @Entity(name = "USERS")
+@Table(name = "USERS")
 public class User {
 
     @Id

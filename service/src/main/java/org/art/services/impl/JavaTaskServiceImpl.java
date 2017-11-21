@@ -107,69 +107,51 @@ public class JavaTaskServiceImpl implements JavaTaskService {
 
     @Override
     public JavaTask getNotSolvedTask(User user) throws ServiceSystemException, ServiceBusinessException {
-//        Connection conn = connPool.getConnection();
-//        threadCache.set(conn);
-        JavaTask javaTask = null;
-//        TaskOrder order;
-//        try {
-//            startTransaction();
-//            order = orderDao.getNotSolvedOrder(user);
-//            if (order == null) {
-//                throw new ServiceBusinessException("No order with not solved task was found!");
-//            }
-//            javaTask = javaTaskDao.get(order.getTaskID());
-//            endTransaction();
-//            if (javaTask == null) {
-//                throw new ServiceBusinessException("No task with such ID was found (getNotSolvedTask method)!");
-//            }
-//        } catch (DAOSystemException e) {
-//            log.info("Exception while getting not solved task from database!", e);
-//            throw new ServiceSystemException("Exception while getting not solved task from database!", e);
-//        } finally {
-//            ConnectionPoolManager.close(conn);
-//        }
+        JavaTask javaTask;
+        TaskOrder order;
+        try {
+            order = orderDao.getNotSolvedOrder(user);
+            if (order == null) {
+                throw new ServiceBusinessException("No order with not solved task was found!");
+            }
+            javaTask = javaTaskDao.get(order.getJavaTask().getTaskId());
+            if (javaTask == null) {
+                throw new ServiceBusinessException("No task with such ID was found (getNotSolvedTask method)!");
+            }
+        } catch (DAOSystemException e) {
+            log.info("Exception while getting not solved task from the database!", e);
+            throw new ServiceSystemException("Exception while getting not solved task from the database!", e);
+        }
         return javaTask;
     }
 
     @Override
     public List<JavaTask> getPopularJavaTasks(int taskAmount) throws ServiceBusinessException, ServiceSystemException {
-//        Connection conn = connPool.getConnection();
-//        threadCache.set(conn);
-        List<JavaTask> taskList = null;
-//        try {
-//            startTransaction();
-//            taskList = javaTaskDao.getPopularJavaTasks(taskAmount);
-//            endTransaction();
-//            if (taskList.size() == 0) {
-//                throw new ServiceBusinessException("No tasks were found!");
-//            }
-//        } catch (DAOSystemException e) {
-//            log.info("Exception while getting popular tasks from database!", e);
-//            throw new ServiceSystemException("Exception while getting popular tasks from database!", e);
-//        } finally {
-//            ConnectionPoolManager.close(conn);
-//        }
+        List<JavaTask> taskList;
+        try {
+            taskList = javaTaskDao.getPopularJavaTasks(taskAmount);
+            if (taskList.size() == 0) {
+                throw new ServiceBusinessException("No tasks were found!");
+            }
+        } catch (DAOSystemException e) {
+            log.info("Exception while getting popular tasks from the database!", e);
+            throw new ServiceSystemException("Exception while getting popular tasks from the database!", e);
+        }
         return taskList;
     }
 
     @Override
     public List<JavaTask> getAll() throws ServiceSystemException, ServiceBusinessException {
-//        Connection conn = connPool.getConnection();
-//        threadCache.set(conn);
-        List<JavaTask> taskList = null;
-//        try {
-//            startTransaction();
-//            taskList = javaTaskDao.getAll();
-//            endTransaction();
-//            if (taskList.size() == 0) {
-//                throw new ServiceBusinessException("No tasks were found!");
-//            }
-//        } catch (DAOSystemException e) {
-//            log.info("Exception while getting all tasks from database!", e);
-//            throw new ServiceSystemException("Exception while getting all tasks from database!", e);
-//        } finally {
-//            ConnectionPoolManager.close(conn);
-//        }
+        List<JavaTask> taskList;
+        try {
+            taskList = javaTaskDao.getAll();
+            if (taskList.size() == 0) {
+                throw new ServiceBusinessException("No tasks were found!");
+            }
+        } catch (DAOSystemException e) {
+            log.info("Exception while getting all tasks from the database!", e);
+            throw new ServiceSystemException("Exception while getting all tasks from the database!", e);
+        }
         return taskList;
     }
 
@@ -200,13 +182,5 @@ public class JavaTaskServiceImpl implements JavaTaskService {
 //            ConnectionPoolManager.close(conn);
 //        }
 //    }
-//
-//    public void tryRollBackTransaction(Exception e) {
-//        try {
-//            backTransaction();
-//        } catch (DAOSystemException e1) {
-//            log.info("Exception while rolling back the transaction! This exception was added to suppressed.", e);
-//            e.addSuppressed(e1);
-//        }
-//    }
+
 }

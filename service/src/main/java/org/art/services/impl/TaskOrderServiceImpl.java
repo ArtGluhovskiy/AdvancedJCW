@@ -125,7 +125,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
                 throw new ServiceBusinessException("There is no more tasks for user");
             }
             //Creation of new "NOT SOLVED" task order with a new task
-            order = new TaskOrder("NOT SOLVED", user, task);
+            order = new TaskOrder("NOT SOLVED", user, newTask);
             orderDao.save(order);
         } catch (DAOSystemException e) {
             log.info("Cannot update user in the database!", e);

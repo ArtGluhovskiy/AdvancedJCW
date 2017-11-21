@@ -2,10 +2,8 @@ org\art\services\Service.class
 org\art\services\validators\UserValidator.class
 org\art\services\impl\StringCompilerService.class
 org\art\services\impl\StringCompilerService$TaskResults.class
-org\art\db\ConnectionPoolManager.class
 org\art\services\exceptions\ServiceSystemException.class
 org\art\services\impl\JavaSourceFromString.class
-org\art\services\TransactionManager.class
 org\art\db\ConnectionManager.class
 org\art\services\impl\ResultsAnalyzer.class
 org\art\services\exceptions\ServiceBusinessException.class
