@@ -18,5 +18,6 @@ C:\Users\admin1\IdeaProjects\AdvancedJCW\web\src\main\java\org\art\web\handlers\
 C:\Users\admin1\IdeaProjects\AdvancedJCW\web\src\main\java\org\art\web\command\impl\AdminController.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\web\src\main\java\org\art\web\filters\ExceptionFilter.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\web\src\main\java\org\art\web\command\impl\LogoutController.java
+C:\Users\admin1\IdeaProjects\AdvancedJCW\web\src\main\java\org\art\web\controller\WelcomeController.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\web\src\main\java\org\art\web\command\Controller.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\web\src\main\java\org\art\web\command\impl\ApplicationController.java

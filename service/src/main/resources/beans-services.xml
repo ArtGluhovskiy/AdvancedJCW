@@ -8,7 +8,7 @@
        http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
-    <import resource="beans-dao.xml"/>
+    <import resource="classpath*:beans-dao.xml"/>
 
     <bean id="userServiceImpl" class="org.art.services.impl.UserServiceImpl"/>
     <bean id="taskOrderServiceImpl" class="org.art.services.impl.TaskOrderServiceImpl"/>
