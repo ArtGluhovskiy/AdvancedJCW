@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="container-fluid">
     <div class="row-fluid">
@@ -19,29 +19,26 @@
                         <a class="navbar-brand" href="${pageContext.request.contextPath}/frontController?command=main"><img src="assets/img/my_jcw_logo.png" height="150" width="150"></a>
                     </div>
 
-                    <fmt:setLocale value="${sessionScope.locale}"/>
-                    <fmt:setBundle basename="messages" var="i18n"/>
-
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="${pageContext.request.contextPath}/frontController?command=main"><i class="fa fa-home" aria-hidden="true"></i>  <fmt:message bundle="${i18n}" key="nav.home"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/frontController?command=main"><i class="fa fa-home" aria-hidden="true"></i>  home</a></li>
                             <c:if test="${sessionScope.user.role ne 'admin'}">
-                                <li><a href="${pageContext.request.contextPath}/frontController?command=statistics"><fmt:message bundle="${i18n}" key="nav.statistics"/></a></li>
+                                <li><a href="${pageContext.request.contextPath}/frontController?command=statistics">statistics</a></li>
                             </c:if>
-                            <li><a href="${pageContext.request.contextPath}/frontController?command=rating"><fmt:message bundle="${i18n}" key="nav.rating"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/frontController?command=rating">rating</a></li>
                             <c:if test="${sessionScope.user.role ne 'admin'}">
-                                <li class="active-link"><a href="${pageContext.request.contextPath}/frontController?command=application"><fmt:message bundle="${i18n}" key="nav.application"/></a></li>
+                                <li class="active-link"><a href="${pageContext.request.contextPath}/frontController?command=application">application</a></li>
                             </c:if>
                             <c:if test="${sessionScope.user.role eq 'admin'}">
-                                <li class="active-link"><a href="${pageContext.request.contextPath}/frontController?command=admin"><fmt:message bundle="${i18n}" key="nav.admin"/></a></li>
+                                <li class="active-link"><a href="${pageContext.request.contextPath}/frontController?command=admin">admin</a></li>
                             </c:if>
 
                         </ul>
                         <ul class="nav navbar-nav navbar-right user-hello icon">
                             <c:if test="${not empty sessionScope.user}">
-                            <li><fmt:message bundle="${i18n}" key="nav.hello"/>, ${user.FName}</li>
-                            <li><a href="${pageContext.request.contextPath}/frontController?command=logout"><fmt:message bundle="${i18n}" key="nav.logout"/></a></li>
+                            <li>hello, ${user.FName}</li>
+                            <li><a href="${pageContext.request.contextPath}/frontController?command=logout">logout</a></li>
                             </c:if>
 
                             <li><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,8 +47,8 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <c:url var="path" value="/frontController?command=${sessionScope.pageName}"></c:url>
-                                <li><a href="${path}&amp;locale=ru"><fmt:message key="header.locale.ru" bundle="${i18n}"/></a></li>
-                                <li><a href="${path}&amp;locale=en"><fmt:message key="header.locale.en" bundle="${i18n}"/></a></li>
+                                <li><a href="${path}&amp;locale=ru">ru</a></li>
+                                <li><a href="${path}&amp;locale=en">en</a></li>
                             </ul>
                             </li>
 
