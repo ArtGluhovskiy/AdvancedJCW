@@ -36,6 +36,7 @@
         <hibernate-ehcache.version>2.10.4</hibernate-ehcache.version>
         <spring.version>5.0.1.RELEASE</spring.version>
         <spring-data.version>2.0.1.RELEASE</spring-data.version>
+        <tiles.version>3.0.8</tiles.version>
         <aspectjweaver.version>1.8.11</aspectjweaver.version>
     </properties>
 
@@ -170,6 +171,18 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <!--<dependency>-->
+                <!--<groupId>org.apache.tiles</groupId>-->
+                <!--<artifactId>tiles-jsp</artifactId>-->
+                <!--<version>${tiles.version}</version>-->
+            <!--</dependency>-->
+
+            <dependency>
+                <groupId>org.apache.tiles</groupId>
+                <artifactId>tiles-extras</artifactId>
+                <version>${tiles.version}</version>
             </dependency>
 
             <dependency>
