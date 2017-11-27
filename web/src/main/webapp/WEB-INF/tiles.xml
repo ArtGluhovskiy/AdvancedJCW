@@ -11,11 +11,47 @@
         <put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp"/>
     </definition>
 
-    <definition name="welcome" extends="default">
-        <put-attribute name="body" value="/WEB-INF/jsp/welcome.jsp"/>
-    </definition>
-
     <definition name="main" extends="default">
         <put-attribute name="body" value="/WEB-INF/jsp/bodies/main-page/main.jsp"/>
+    </definition>
+
+    <definition name="login/main" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/login/login.jsp"/>
+    </definition>
+
+    <definition name="registration/main" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/registration/registration.jsp"/>
+    </definition>
+
+    <definition name="statistics" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/statistics/statistics.jsp"/>
+    </definition>
+
+    <definition name="application" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/application/application.jsp"/>
+    </definition>
+
+    <definition name="compilation-success" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/compilation-results/result-success.jsp"/>
+    </definition>
+
+    <definition name="compilation-failed" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/compilation-results/result-fail.jsp"/>
+    </definition>
+
+    <definition name="rating" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/rating/rating.jsp"/>
+    </definition>
+
+    <definition name="battleship" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/battleship/battleship.jsp"/>
+    </definition>
+
+    <definition name="admin" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/admin/admin.jsp"/>
+    </definition>
+
+    <definition name="error" extends="default">
+        <put-attribute name="body" value="/WEB-INF/jsp/bodies/error/error.jsp"/>
     </definition>
 </tiles-definitions>

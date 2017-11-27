@@ -9,7 +9,10 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +47,7 @@ public class User {
     @Column(name = "RATING")
     private int rating = 0;
 
+    @Pattern(regexp = "\\b[A-Za-z]{1,20}\\b", message = "Invalid clan name!")
     @Column(name = "CLAN_NAME")
     private String clanName;
 
@@ -52,15 +56,18 @@ public class User {
     private String login;
 
     @NotNull
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", length = 30)
     private String password;
 
+    @Pattern(regexp = "\\b[A-Za-z]{1,20}\\b", message = "Invalid first name!")
     @Column(name = "F_NAME")
     private String fName;
 
+    @Pattern(regexp = "\\b[A-Za-z]{1,20}\\b", message = "Invalid last name!")
     @Column(name = "L_NAME")
     private String lName;
 
+    @Pattern(regexp = "\\b[a-z][\\w.]+@[a-z]{2,7}.[a-z]{2,3}\\b", message = "Invalid email!")
     @NotNull
     @Column(name = "EMAIL")
     private String email;
@@ -77,6 +84,11 @@ public class User {
 
     @Column(name = "BIRTH_DATE")
     private Date birthDate;
+
+    //String birth from Spring Form
+    @Pattern(regexp = "(0[1-9]|1[0-9]|2[0-9]|3[01])-(0[1-9]|1[012])-[0-9]{4}", message = "Invalid birth date format!")
+    @Transient
+    private String birth;
 
     @Column(name = "LEVEL")
     private String level;
@@ -102,6 +114,12 @@ public class User {
         this.birthDate = birthDate;
         this.level = level;
         this.age = defineUserAge(birthDate);
+    }
+
+    public int getAge() {
+        int age;
+        age = defineUserAge(birthDate);
+        return age;
     }
 
     @Override

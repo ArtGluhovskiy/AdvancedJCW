@@ -141,6 +141,16 @@ public class JavaTaskServiceImpl implements JavaTaskService {
     }
 
     @Override
+    public void increaseTaskPopularity(JavaTask task) throws ServiceBusinessException {
+        try {
+            javaTaskDao.increaseTaskPopularity(task);
+        } catch (DAOSystemException e) {
+            log.info("Cannot update task popularity in the database!", e);
+            throw new ServiceBusinessException("Cannot update task popularity in the database!", e);
+        }
+    }
+
+    @Override
     public List<JavaTask> getAll() throws ServiceSystemException, ServiceBusinessException {
         List<JavaTask> taskList;
         try {

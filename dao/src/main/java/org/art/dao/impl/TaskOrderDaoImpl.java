@@ -140,45 +140,4 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         }
         return orders;
     }
-
-//    @Override
-//    public void createTaskOrderTable() throws DAOSystemException {
-//        Connection conn = threadCache.get();
-//        Statement stmt = null;
-//        try {
-//            stmt = conn.createStatement();
-//            StringBuilder sb = new StringBuilder("CREATE TABLE task_orders (")
-//                    .append("order_id INT(11) PRIMARY KEY AUTO_INCREMENT,")
-//                    .append("user_id INT(11),")
-//                    .append("task_id INT(11),")
-//                    .append("reg_date DATE,")
-//                    .append("exec_time BIGINT DEFAULT 0,")
-//                    .append("status ENUM('SOLVED', 'NOT SOLVED') DEFAULT 'NOT SOLVED',")
-//                    .append("CONSTRAINT fk_user_id FOREIGN KEY (user_id)")
-//                    .append("REFERENCES users (user_id),")
-//                    .append("CONSTRAINT fk_task_id FOREIGN KEY (task_id)")
-//                    .append("REFERENCES java_tasks (task_id));");
-//            stmt.execute(sb.toString());
-//        } catch (SQLException e) {
-//            log.info("Cannot create task orders table in database!", e);
-//            throw new DAOSystemException("Cannot create task orders table in database!", e);
-//        } finally {
-//            close(stmt);
-//        }
-//    }
-//
-//    @Override
-//    public void deleteTaskOrderTable() throws DAOSystemException {
-//        Connection conn = threadCache.get();
-//        Statement stmt = null;
-//        try {
-//            stmt = conn.createStatement();
-//            stmt.execute("DROP TABLE task_orders;");
-//        } catch (SQLException e) {
-//            log.info("Cannot delete task orders table from database!", e);
-//            throw new DAOSystemException("Cannot delete task orders table from database!", e);
-//        } finally {
-//            close(stmt);
-//        }
-//    }
 }
