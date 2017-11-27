@@ -1,0 +1,13 @@
+public class MaxFinder {
+  public int findMaxIndex(int[] array) {
+      int maxInt = array[0];
+      int maxIndex = 0;
+      for (int i = 1; i < array.length; i++) {
+            if (array[i] > maxInt) {
+                    maxInt = array[i];
+                    maxIndex = i;
+            }
+      }
+      return maxIndex;
+  }
+}

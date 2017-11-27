@@ -1,0 +1,59 @@
+div#board {
+    position: relative;
+    width: 1024px;
+    height: 863px;
+    margin: auto;
+    background: url("../img/board.jpg") no-repeat;
+}
+
+div#messageArea {
+    top: 0px;
+    left: 0px;
+    font-size: 28px;
+    color: #e0e0e0;
+}
+
+table.battletable {
+    position: absolute;
+    left: 173px;
+    top: 98px;
+    border-spacing: 0px;
+}
+
+table.battletable td {
+    width: 94px;
+    height: 94px;
+}
+
+.battleship {
+    bottom: 0px;
+    right: 0px;
+    padding: 15px;
+    background-color: rgba(38, 38, 38, 0.5);
+}
+
+form .battle_input {
+    background-color: #e0e0e0;
+    border-color: #424242;
+    font-size: 17px;
+    color: #151515;
+}
+
+#battleship-container {
+    width: 1025px;
+    margin: 40px auto 40px auto;
+    box-shadow: -14px -13px 0 rgba(38, 38, 38, 0.5);
+}
+
+.battle-stat {
+    width: 1030px;
+    height: 100px;
+    margin: auto;
+}
+
+input.btn-battle {
+    width: 100px;
+    height: 50px;
+    margin: 16px 45px 25px 35px;
+    font-size: 17px;
+}
