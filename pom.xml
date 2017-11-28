@@ -36,7 +36,11 @@
         <hibernate-ehcache.version>2.10.4</hibernate-ehcache.version>
         <spring.version>5.0.1.RELEASE</spring.version>
         <spring-data.version>2.0.1.RELEASE</spring-data.version>
+        <jackson-databind.version>2.9.2</jackson-databind.version>
+        <bean-validation.version>2.0.0.Final</bean-validation.version>
         <tiles.version>3.0.8</tiles.version>
+        <commons-fileupload.version>1.3.3</commons-fileupload.version>
+        <commons-io.version>2.6</commons-io.version>
         <aspectjweaver.version>1.8.11</aspectjweaver.version>
     </properties>
 
@@ -178,6 +182,36 @@
                 <!--<artifactId>tiles-jsp</artifactId>-->
                 <!--<version>${tiles.version}</version>-->
             <!--</dependency>-->
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${bean-validation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.tiles</groupId>

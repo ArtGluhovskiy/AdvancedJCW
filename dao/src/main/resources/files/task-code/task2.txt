@@ -1,0 +1,10 @@
+public class Factorial {
+    public long factorial(int num) {
+        long fact;
+        if (num == 0) {
+            return 1;
+        }
+        fact = num * factorial(num - 1);
+        return fact;
+    }
+}

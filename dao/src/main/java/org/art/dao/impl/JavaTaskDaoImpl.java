@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,15 +35,14 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
     }
 
     //Path of the file where serialized java task is stored
-    private String serialTaskPath = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\Serial_task.txt";
-
+    public static final String SERIAL_TASK_PATH = "C:\\Users\\HomePC\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\serial-tasks\\task33.txt";
 
     @Override
     public JavaTask save(JavaTask javaTask) throws DAOSystemException {
         JavaTask savedTask;
         try {
             serializeTask(javaTask);
-            Path path = Paths.get(serialTaskPath);
+            Path path = Paths.get(SERIAL_TASK_PATH);
             byte[] data = Files.readAllBytes(path);
             javaTask.setBinTask(data);
             savedTask = taskRepository.save(javaTask);
@@ -136,6 +136,17 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
         return taskList;
     }
 
+    @Transactional(value = Transactional.TxType.REQUIRED)
+    @Override
+    public void increaseTaskPopularity(JavaTask task) throws DAOSystemException {
+        try {
+            taskRepository.updateTaskPopularity(task.getPopularity() + 1, task.getTaskId());
+        } catch (Exception e) {
+            log.info("Cannot update task popularity in the database!", e);
+            throw new DAOSystemException("Cannot update task popularity in the database!", e);
+        }
+    }
+
     @Override
     public List<JavaTask> getAll() throws DAOSystemException {
         List<JavaTask> taskList = new ArrayList<>();
@@ -150,44 +161,6 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
         return taskList;
     }
 
-//    @Override
-//    public void createJavaTasksTable() throws DAOSystemException {
-//        Connection conn = threadCache.get();
-//        Statement stmt = null;
-//        try {
-//            stmt = conn.createStatement();
-//            StringBuilder sb = new StringBuilder("CREATE TABLE java_tasks (")
-//                    .append("task_id INT(11) AUTO_INCREMENT PRIMARY KEY,")
-//                    .append("difficulty_group ENUM('BEGINNER', 'EXPERIENCED', 'EXPERT'),")
-//                    .append("short_desc VARCHAR(255),")
-//                    .append("elapsed_time INT(11),")
-//                    .append("popularity INT DEFAULT 0,")
-//                    .append("java_task_object LONGBLOB,")
-//                    .append("reg_date DATE);");
-//            stmt.execute(sb.toString());
-//        } catch (SQLException e) {
-//            log.info("Cannot create tasks table in database!", e);
-//            throw new DAOSystemException("Cannot create tasks table in database!", e);
-//        } finally {
-//            close(stmt);
-//        }
-//    }
-//
-//    @Override
-//    public void deleteJavaTasksTable() throws DAOSystemException {
-//        Connection conn = threadCache.get();
-//        Statement stmt = null;
-//        try {
-//            stmt = conn.createStatement();
-//            stmt.execute("DROP TABLE java_tasks;");
-//        } catch (SQLException e) {
-//            log.info("Cannot delete tasks table in database!", e);
-//            throw new DAOSystemException("Cannot delete tasks table in database!", e);
-//        } finally {
-//            close(stmt);
-//        }
-//    }
-
     /**
      * This method serializes java task into file before its saving to the database
      *
@@ -195,8 +168,8 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
      * @throws DAOSystemException in case of IO problems (file not found etc.) during task serializing
      */
     public static void serializeTask(JavaTask task) throws DAOSystemException {
-        String filePath = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\Serial_task.txt";
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(filePath)))) {
+
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(SERIAL_TASK_PATH)))) {
             out.writeObject(task);
         } catch (FileNotFoundException e) {
             throw new DAOSystemException("Can not find file to write JavaTask!", e);

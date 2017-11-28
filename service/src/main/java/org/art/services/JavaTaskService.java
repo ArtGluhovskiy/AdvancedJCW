@@ -49,6 +49,14 @@ public interface JavaTaskService extends Service<JavaTask> {
     List<JavaTask> getPopularJavaTasks(int taskAmount) throws ServiceBusinessException, ServiceSystemException;
 
     /**
+     * Increases task popularity by one
+     *
+     * @param task java task which popularity should be increased
+     * @throws ServiceBusinessException if no java task were found in the database with such ID
+     */
+    void increaseTaskPopularity(JavaTask task) throws ServiceBusinessException;
+
+    /**
      * Get all tasks from the database
      *
      * @return the list of all tasks from database

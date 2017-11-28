@@ -126,8 +126,8 @@ public class TaskOrderServiceImpl implements TaskOrderService {
             user.setRating(user.getRating() + task.getValue());
             userDao.update(user);
             //Updating task (for solved task) popularity by 1
-            task.setPopularity(task.getPopularity() + 1);
-            taskDao.update(task);
+//            task.setPopularity(task.getPopularity() + 1);
+            taskDao.increaseTaskPopularity(task);
             //Updating task order
             order = orderDao.getNotSolvedOrder(user);
             order.setStatus("SOLVED");

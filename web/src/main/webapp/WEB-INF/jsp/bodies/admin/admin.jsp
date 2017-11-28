@@ -1,9 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!--Welcome-->
 <div class="container container_user">
@@ -14,13 +10,12 @@
     </div>
 </div>
 
-
 <div class="container tasks">
 
     <!--Table-->
     <table class="table tasks_table">
         <h4>Java task table:</h4>
-        <c:if test="${not empty requestScope.errorMsg}"><h4 class="error">${requestScope.errorMsg}</h4></c:if>
+        <c:if test="${not empty errorMsg}"><h4 class="error">${errorMsg}</h4></c:if>
         <thead align="right">
         <tr>
             <th>Task ID</th>
@@ -34,7 +29,7 @@
 
         <c:forEach items="${taskList}" var="task">
             <tr>
-                <td align="left">${task.taskID}</td>
+                <td align="left">${task.taskId}</td>
                 <td align="left">${task.difficultyGroup}</td>
                 <td align="left">${task.shortDescr}</td>
                 <td align="left">${task.elapsedTime}</td>
@@ -46,13 +41,13 @@
 </div>
 
 <div class="container">
-    <form class="form_admin" action="frontController?command=admin" method="post">
+    <form class="form_admin" action="${pageContext.request.contextPath}/admin" method="post">
         <h4 style="color: #d9d9d9;">Update task by ID:</h4>
-        <c:if test="${not empty requestScope.updateErrorMsg}">
-            <h4 class="error">${requestScope.updateErrorMsg}</h4>
+        <c:if test="${not empty updateErrorMsg}">
+            <h4 class="error">${updateErrorMsg}</h4>
         </c:if>
-        <c:if test="${not empty requestScope.updateStatusMsg}">
-            <h4 class="status">${requestScope.updateStatusMsg}</h4>
+        <c:if test="${not empty updateStatusMsg}">
+            <h4 class="status">${updateStatusMsg}</h4>
         </c:if>
         <div class="dws-input">
             <input type="text" name="taskID" placeholder="Task ID">
@@ -80,7 +75,7 @@
 </div>
 
 <div class="container">
-    <form class="form_admin" action="frontController?command=admin" method="post">
+    <form class="form_admin" action="${pageContext.request.contextPath}/admin" method="post">
         <h4 style="color: #d9d9d9;">Show user info:</h4>
         <div class="dws-input">
             <input type="text" name="userID" placeholder="User ID">
@@ -93,7 +88,7 @@
 <div class="container tasks">
     <table class="table tasks_table">
         <h4>User info:</h4>
-        <c:if test="${not empty requestScope.userErrorMsg}"><h4 class="error">${requestScope.userErrorMsg}</h4></c:if>
+        <c:if test="${not empty userErrorMsg}"><h4 class="error">${userErrorMsg}</h4></c:if>
         <thead align="right">
         <tr>
             <th>User ID</th>
@@ -109,7 +104,7 @@
         </tr>
         </thead>
             <tr>
-                <td align="left">${userInfo.userID}</td>
+                <td align="left">${userInfo.userId}</td>
                 <td align="left">${userInfo.login}</td>
                 <td align="left">${userInfo.level}</td>
                 <td align="left">${userInfo.rating}</td>
@@ -138,7 +133,7 @@
 
         <c:forEach items="${orderList}" var="orderDTO">
             <tr class="${orderDTO.orderStatus}">
-                <td>${orderDTO.orderID}</td>
+                <td>${orderDTO.orderId}</td>
                 <td align="left">${orderDTO.diffGroup}</td>
                 <td>${orderDTO.taskPopularity}</td>
                 <td align="left" class="small_column">${orderDTO.shortDesc}</td>
@@ -152,13 +147,13 @@
 </div>
 
 <div class="container">
-    <form class="form_admin" action="frontController?command=admin" method="post">
+    <form class="form_admin" action="${pageContext.request.contextPath}/admin" method="post">
         <h4 style="color: #d9d9d9;">Update user by ID:</h4>
-        <c:if test="${not empty requestScope.userUpdateErrorMsg}">
-            <h4 class="error">${requestScope.userUpdateErrorMsg}</h4>
+        <c:if test="${not empty userUpdateErrorMsg}">
+            <h4 class="error">${userUpdateErrorMsg}</h4>
         </c:if>
-        <c:if test="${not empty requestScope.userUpdateStatusMsg}">
-            <h4 class="status">${requestScope.userUpdateStatusMsg}</h4>
+        <c:if test="${not empty userUpdateStatusMsg}">
+            <h4 class="status">${userUpdateStatusMsg}</h4>
         </c:if>
         <div class="dws-input">
             <input type="text" name="updateUserID" placeholder="User ID">
@@ -186,5 +181,3 @@
     </form>
 </div>
 
-</body>
-</html>

@@ -36,6 +36,15 @@ public interface JavaTaskDao extends DAO<JavaTask> {
     List<JavaTask> getPopularJavaTasks(int taskAmount) throws DAOSystemException;
 
     /**
+     * Increases task popularity by one
+     *
+     * @param task java task which popularity should be increased
+     * @throws DAOSystemException if {@link java.sql.SQLException}
+     *                            was thrown during the tasks reading from the database
+     */
+    void increaseTaskPopularity(JavaTask task) throws DAOSystemException;
+
+    /**
      * Gets all tasks from the database
      *
      * @return the list of all tasks from database

@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+        <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
         <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
         <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
@@ -16,10 +16,12 @@
         <title><spring:message code="main.title"/></title>
 
         <!-- Bootstrap -->
-        <link href="assets/css/bootstrap.css" rel="stylesheet">
-        <link href="assets/css/jsw_style.css" rel="stylesheet">
-        <link href="assets/css/font-awesome.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/assets/css/bootstrap.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/assets/css/jsw_style.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/assets/css/font-awesome.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/assets/css/battleship.css" rel="stylesheet" >
         <link href="https://fonts.googleapis.com/css?family=Open+Sans|Paytone+One|Ropa+Sans" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,18 +35,23 @@
 
     <body>
 
+        <script>
+            var contextPath = '${pageContext.request.contextPath}';
+        </script>
+
         <tiles:insertAttribute name="header"/>
         <tiles:insertAttribute name="body"/>
         <tiles:insertAttribute name="footer"/>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script>
-        $('.carousel').carousel({
-            interval: 3000
-        });
-    </script>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-3.2.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/utils.js"></script>
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
     </body>
 </html>

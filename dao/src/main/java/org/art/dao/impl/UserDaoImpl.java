@@ -124,48 +124,4 @@ public class UserDaoImpl implements UserDao {
         }
         return users;
     }
-
-//    @Override
-//    public void createUsersTable() throws DAOSystemException {
-//        Connection conn = threadCache.get();
-//        Statement stmt = null;
-//        try {
-//            stmt = conn.createStatement();
-//            StringBuilder sb = new StringBuilder("CREATE TABLE users (")
-//                    .append("user_id INT(11) AUTO_INCREMENT PRIMARY KEY,")
-//                    .append("rating INT,")
-//                    .append("clan_name VARCHAR(15),")
-//                    .append("login VARCHAR(15),")
-//                    .append("password VARCHAR(15),")
-//                    .append("first_name VARCHAR(15),")
-//                    .append("last_name VARCHAR(15),")
-//                    .append("email VARCHAR(25),")
-//                    .append("reg_date DATE,")
-//                    .append("role VARCHAR(10) DEFAULT 'user',")
-//                    .append("status VARCHAR(10) DEFAULT 'ACTIVE',")
-//                    .append("birth_date DATE,")
-//                    .append("level ENUM('BEGINNER', 'EXPERIENCED', 'EXPERT') DEFAULT 'BEGINNER',")
-//                    .append("UNIQUE KEY user_login_unique (login));");
-//            stmt.execute(sb.toString());
-//        } catch (SQLException e) {
-//            log.info("Cannot create users table", e);
-//            throw new DAOSystemException("Cannot create users table", e);
-//        } finally {
-//            close(stmt);
-//        }
-//    }
-//
-//    public void deleteUsersTable() throws DAOSystemException {
-//        Connection conn = threadCache.get();
-//        Statement stmt = null;
-//        try {
-//            stmt = conn.createStatement();
-//            stmt.execute("DROP TABLE users;");
-//        } catch (SQLException e) {
-//            log.info("Cannot delete users table!", e);
-//            throw new DAOSystemException("Cannot delete users table!", e);
-//        } finally {
-//            close(stmt);
-//        }
-//    }
 }

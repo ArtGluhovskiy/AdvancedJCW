@@ -11,9 +11,11 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:annotation-config/>
+    <import resource="classpath*:beans-dao.xml"/>
     <import resource="classpath*:beans-services.xml"/>
 
-    <context:component-scan base-package="org.art.web.controller"/>
+    <context:component-scan base-package="org.art.web.controllers"/>
 
     <mvc:resources mapping="/resources/**" location="assets"/>
     <mvc:default-servlet-handler/>
@@ -42,6 +44,10 @@
         <property name="defaultLocale" value="en"/>
         <property name="cookieName" value="LocaleCookie"></property>
         <property name="cookieMaxAge" value="360000"></property>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5000000"/>
     </bean>
 
     <mvc:interceptors>

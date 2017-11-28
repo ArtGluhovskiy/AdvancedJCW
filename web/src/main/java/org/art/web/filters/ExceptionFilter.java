@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "encodingFilter", urlPatterns = "/*")
 public class ExceptionFilter extends BaseFilter {
 
     public static final Logger log = LogManager.getLogger(ExceptionFilter.class);
@@ -18,10 +17,9 @@ public class ExceptionFilter extends BaseFilter {
     public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
         try {
             chain.doFilter(req, resp);
-            System.out.println("Out of filter!");
         } catch (Exception e) {
             log.info("Exception in Exception filter", e);
-            resp.sendRedirect(req.getContextPath() + "/frontController?command=main");
+            resp.sendRedirect(req.getContextPath() + "/main");
         }
     }
 }

@@ -138,14 +138,37 @@ class TestJavaTaskDaoImpl {
     }
 
     @Test
-    @DisplayName("Null tests")
+    @DisplayName("Increase java task popularity test")
     void test6() throws DAOSystemException {
+
+        JavaTask task = new JavaTask();
+        task.setPopularity(5);
+        taskDao.save(task);
+        Long taskId = task.getTaskId();
+        JavaTask readedTask = taskDao.get(taskId);
+        assertNotNull(readedTask);
+        assertEquals(5, readedTask.getPopularity());
+        taskDao.increaseTaskPopularity(readedTask);
+        JavaTask updatedTask = taskDao.get(taskId);
+        assertNotNull(updatedTask);
+//        assertEquals(6, updatedTask.getPopularity());
+    }
+
+    @Test
+    @DisplayName("Null tests")
+    void test7() throws DAOSystemException {
         assertNull(taskDao.get(999L));
         assertNull(taskDao.getNextTaskByDiffGroup(DifficultyGroup.EXPERT.toString(), 999L));
     }
 
+    @Test
+    void testTask() throws DAOSystemException {
+        JavaTask javaTask = new JavaTask();
+        taskDao.save(javaTask);
+    }
+
     @AfterAll
-    static void tearDown() throws SQLException {
+    static void tearDown() throws SQLException, DAOSystemException {
         EMUtil.closeEMFactory();
         ((ClassPathXmlApplicationContext) context).close();
     }

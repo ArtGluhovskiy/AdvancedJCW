@@ -29,12 +29,12 @@ $(document).ready(function () {
         validate($(this), pat_password, 'password');
     })
 
-    $('.dws-submit').click(function () {
-        if ($('.place_error').text() === "") {
+    $('.dws-submit').click(function (event) {
+        event.stopPropagation();
+        if ($('.place_error').text() == "") {
             $(this).submit();
         } else {
-            // $('.place_error').html('You have some errors!');
-            alert('Please, fill in the form correctly!')
+            // alert('Please, fill in the form correctly!')
             return false;
         }
     })
@@ -44,8 +44,12 @@ function validate(element, pattern, field) {
     var match = pattern.test(element.val());
     if (match == false) {
         $('.place_error').html('Invalid ' + field + '!');
+        $('.dws-submit').attr('disabled', 'disabled');
+        return false;
     } else {
         $('.place_error').html('');
+        $('.dws-submit').removeAttr('disabled');
+        return true;
     }
 }
 
@@ -53,19 +57,20 @@ function checkLogin(element) {
   var login = $(element).val();
   $.ajax({
       type: 'post',
-      url: contextPath + '/frontController',
-      data: {command:'checkLogin', login:login}
+      dataType: "json",
+      data: {login:login},
+      url: contextPath + '/checkLogin'
   }).done(function (data) {
-      var info = JSON.parse(data);
+      var info = data;
       console.log('Done block = ' + info);
-      if (info == 'FAIL') {
+      if (info.response == 'FAIL') {
           $('.place_error').html('Such login already exists!');
-          $('.dws-submit').attr('disabled', 'disabled');
+          // $('.dws-submit').attr('disabled', 'disabled');
       } else {
           $('.place_error').html('');
       }
   }).fail(function (data) {
-      var info = JSON.parse(data);
+      var info = data;
       console.log('Error. Data: ' + info);
   })
 }

@@ -1,9 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!--Welcome-->
 <div class="container container_user">
@@ -13,7 +9,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="container rating">
 
@@ -40,5 +35,4 @@
     </table>
 
 </div>
-</body>
-</html>
+

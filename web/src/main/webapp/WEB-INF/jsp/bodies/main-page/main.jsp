@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!--Welcome-->
 <div class="container">
@@ -31,7 +32,7 @@
 
     <!--Form-->
     <div class="col-lg-4 col-md-4 col-sm-3 col-xs-2">
-        <form class="form" action="frontController?command=login" method="post">
+        <form class="form" action="${pageContext.request.contextPath}/login" method="post">
             <img src="assets/img/male-circle.png">
             <div class="dws-input">
                 <input type="text" name="login" placeholder="Enter login" maxlength="30">
@@ -41,7 +42,7 @@
             </div>
             <input class="dws-submit" type="submit" name="submit" value="ENTER">
             <br/>
-            <a href="registration.jsp">Registration</a>
+            <a href="${pageContext.request.contextPath}/registration/main">Registration</a>
         </form>
     </div>
 </div>
