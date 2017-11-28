@@ -35,7 +35,7 @@
 
             <!--Formatted code area-->
             <c:choose>
-                <c:when test="${empty code}">
+                <c:when test="${empty modelMap.code}">
                     <textarea form="my_form" name="code">
 public class ${task.className} {
         ${task.methodString}
@@ -47,7 +47,7 @@ public class ${task.className} {
                 </c:when>
                 <c:otherwise>
                     <textarea form="my_form" name="code">
-${code}
+${modelMap.code}
                     </c:otherwise></c:choose>
             </textarea>
         </div>

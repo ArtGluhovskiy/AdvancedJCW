@@ -10,6 +10,8 @@
         <class>org.art.entities.TestEntity</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jcwdb?createDatabaseIfNotExist=true"/>
@@ -21,6 +23,11 @@
             <property name="hibernate.use_sql_comments" value="false"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.connection.pool_size" value="10"/>
+
+            <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <property name="net.sf.ehcache.configurationResouceName" value="ehcache.xml"/>
+            <property name="hibernate.generate_statistics" value="false"/>
             <!--<property name="hibernate.physical_naming_strategy" value="org.art.utils.CustomNamingStrategy"/>-->
         </properties>
     </persistence-unit>

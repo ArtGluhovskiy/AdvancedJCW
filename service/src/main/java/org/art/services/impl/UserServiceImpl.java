@@ -12,12 +12,13 @@ import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(/*propagation = Propagation.REQUIRED*/)
 public class UserServiceImpl implements UserService {
 
     private static final Logger log = LogManager.getLogger(UserServiceImpl.class);

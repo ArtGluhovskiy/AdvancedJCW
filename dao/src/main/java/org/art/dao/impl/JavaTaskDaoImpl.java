@@ -35,7 +35,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
     }
 
     //Path of the file where serialized java task is stored
-    public static final String SERIAL_TASK_PATH = "C:\\Users\\HomePC\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\serial-tasks\\task33.txt";
+    public static final String SERIAL_TASK_PATH = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\serial-tasks\\task3.txt";
 
     @Override
     public JavaTask save(JavaTask javaTask) throws DAOSystemException {

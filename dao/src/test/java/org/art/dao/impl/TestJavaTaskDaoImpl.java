@@ -161,11 +161,11 @@ class TestJavaTaskDaoImpl {
         assertNull(taskDao.getNextTaskByDiffGroup(DifficultyGroup.EXPERT.toString(), 999L));
     }
 
-    @Test
-    void testTask() throws DAOSystemException {
-        JavaTask javaTask = new JavaTask();
-        taskDao.save(javaTask);
-    }
+//    @Test
+//    void testTask() throws DAOSystemException {
+//        JavaTask javaTask = new JavaTask();
+//        taskDao.save(javaTask);
+//    }
 
     @AfterAll
     static void tearDown() throws SQLException, DAOSystemException {

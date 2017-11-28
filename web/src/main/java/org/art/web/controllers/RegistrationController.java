@@ -29,7 +29,7 @@ public class RegistrationController {
     private UserService userService;
 
     static final String REGISTRATION_MAIN = "registration/main";
-    static final String IMAGES_PATH = "C:\\Users\\HomePC\\IdeaProjects\\AdvancedJCW\\web\\src\\main\\resources\\img\\";
+    static final String IMAGES_PATH = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\web\\src\\main\\resources\\img\\";
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String regPage(ModelMap modelMap) {

@@ -10,10 +10,7 @@ import org.art.entities.DifficultyGroup;
 import org.art.entities.JavaTask;
 import org.art.entities.TaskOrder;
 import org.art.entities.User;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -98,6 +95,7 @@ class TestTaskOrderDaoImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Get solved task orders test")
     void test3() throws DAOSystemException {
         User user = new User("Sparky2", "godners2", "82730okgds2", "Allen",
@@ -131,6 +129,7 @@ class TestTaskOrderDaoImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Simple task order test with java task")
     void test4() throws DAOSystemException {
 

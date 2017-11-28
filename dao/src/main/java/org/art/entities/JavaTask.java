@@ -1,12 +1,13 @@
 package org.art.entities;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Arrays;
@@ -20,6 +21,8 @@ import java.util.Set;
 @Data
 @DynamicUpdate
 @Entity
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE,
+//                                 region = "org.art.entity.JavaTask")
 @Table(name = "JAVA_TASKS")
 public class JavaTask implements Serializable {
 

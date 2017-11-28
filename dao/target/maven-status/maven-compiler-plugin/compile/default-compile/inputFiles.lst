@@ -9,6 +9,7 @@ C:\Users\admin1\IdeaProjects\AdvancedJCW\dao\src\main\java\org\art\dao\UserDao.j
 C:\Users\admin1\IdeaProjects\AdvancedJCW\dao\src\main\java\org\art\dto\OrderDTO.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\dao\src\main\java\org\art\dao\impl\TaskOrderDaoImpl.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\dao\src\main\java\org\art\dao\repository\JavaTaskRepository.java
+C:\Users\admin1\IdeaProjects\AdvancedJCW\dao\src\main\java\org\art\LoadJavaTasks.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\dao\src\main\java\org\art\dao\repository\TestEntityRepository.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\dao\src\main\java\org\art\entities\User.java
 C:\Users\admin1\IdeaProjects\AdvancedJCW\dao\src\main\java\org\art\dao\repository\TaskOrderRepository.java

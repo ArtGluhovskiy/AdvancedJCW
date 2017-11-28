@@ -30,7 +30,7 @@ public class StatisticsController {
     public String statisticsPage(ModelMap modelMap,
                            @ModelAttribute(value = "user") User user) {
 
-        if (user.getLogin() == null || user == null) {
+        if (user == null || user.getLogin() == null) {
             return LOGIN;
         }
 

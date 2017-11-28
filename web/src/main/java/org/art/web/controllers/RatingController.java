@@ -31,7 +31,7 @@ public class RatingController {
     public String showRating(ModelMap modelMap,
                              @ModelAttribute("user") User user) throws IOException, ServletException {
 
-        if (user.getLogin() == null || user == null) {
+        if (user == null || user.getLogin() == null) {
             return LOGIN;
         }
 

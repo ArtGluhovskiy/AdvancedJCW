@@ -13,12 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = "/admin")
+@SessionAttributes(names = {"user", "taskList", "userInfo", "orderList"})
 public class AdminController {
 
     @Autowired
@@ -30,7 +32,9 @@ public class AdminController {
     @Autowired
     private TaskOrderService orderService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    static final String ADMIN = "admin";
+
+    @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
     public String adminPage(ModelMap modelMap, HttpServletRequest request) {
 
         List<JavaTask> taskList;
@@ -51,7 +55,7 @@ public class AdminController {
         if (updateUserID != null && !"".equals(updateUserID)) {
             updateUser(modelMap, request);
         }
-        return "admin";
+        return ADMIN;
     }
 
     private void updateTask(ModelMap modelMap, HttpServletRequest req) {

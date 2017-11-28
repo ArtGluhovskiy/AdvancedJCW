@@ -17,7 +17,7 @@ import java.io.IOException;
 @SessionAttributes("user")
 public class DisplayImageController {
 
-    static final String IMAGES_PATH = "C:\\Users\\HomePC\\IdeaProjects\\AdvancedJCW\\web\\src\\main\\resources\\img\\";
+    static final String IMAGES_PATH = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\web\\src\\main\\resources\\img\\";
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)

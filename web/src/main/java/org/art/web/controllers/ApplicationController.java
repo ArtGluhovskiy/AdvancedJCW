@@ -33,7 +33,7 @@ public class ApplicationController {
     public String applicationPage(ModelMap modelMap,
                                   @ModelAttribute("user") User user,
                                   @ModelAttribute("errorMsg") String errorMsg) throws IOException, ServletException {
-        if (user.getLogin() == null || user == null) {
+        if (user == null || user.getLogin() == null) {
             return LOGIN;
         }
         JavaTask javaTask;
