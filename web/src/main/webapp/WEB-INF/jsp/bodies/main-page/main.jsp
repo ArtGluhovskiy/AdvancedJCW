@@ -7,6 +7,11 @@
         <div class="content">
             <div class="slogan">
                 <h2>Welcome to Java Code Wars</h2>
+
+                <!-- For JRebel test -->
+                <%--<h2>Hello from JRebel: ${jrebel}</h2>--%>
+                <%--<h2>Page name: ${pageName}</h2>--%>
+
             </div>
         </div>
     </div>

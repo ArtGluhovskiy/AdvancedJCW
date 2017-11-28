@@ -11,14 +11,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.art.dao.utils.DateTimeUtil.toSQLDate;
 
 public class LoadJavaTasks {
     public static void main(String[] args) throws IOException, ClassNotFoundException, DAOSystemException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("beans-dao.xml");
-        JavaTaskDao taskDao = context.getBean("javaTaskDaoImpl", JavaTaskDao.class);
-        UserDao userDao = context.getBean("userDaoImpl", UserDao.class);
+//        ApplicationContext context = new ClassPathXmlApplicationContext("beans-dao.xml");
+//        JavaTaskDao taskDao = context.getBean("javaTaskDaoImpl", JavaTaskDao.class);
+//        UserDao userDao = context.getBean("userDaoImpl", UserDao.class);
 //        JavaTask task;
 //        String filePathPrefix = "C:\\Users\\HomePC\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\serial-tasks\\task";
 //        File file;
@@ -79,6 +81,7 @@ public class LoadJavaTasks {
 //                "ACTIVE", toSQLDate("01-12-1975"), DifficultyGroup.EXPERT.toString());
 //        user6.setRating(33);
 //        userDao.save(user6);
+
     }
 }
 

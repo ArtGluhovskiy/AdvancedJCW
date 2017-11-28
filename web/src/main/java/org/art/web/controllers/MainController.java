@@ -17,6 +17,13 @@ public class MainController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String welcomePage(ModelMap modelMap) {
         modelMap.put("pageName", MAIN);
+
+        //JRebel test
+        /*
+        String jrebelText = "EEEE! I was dynamically loaded!!!";
+        modelMap.addAttribute("jrebel", jrebelText);
+        */
+
         return MAIN;
     }
 }
