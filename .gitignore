@@ -34,6 +34,7 @@ bin
 .settings
 
 tmp
+/target
 /build
 .springBeans
 /.project
