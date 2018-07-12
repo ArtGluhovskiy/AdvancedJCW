@@ -18,27 +18,31 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static org.art.web.controllers.ControllerConstants.*;
+
 @Controller
 @RequestMapping(value = "/admin")
 @SessionAttributes(names = {"user", "taskList", "userInfo", "orderList"})
 public class AdminController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final JavaTaskService taskService;
+
+    private final TaskOrderService orderService;
 
     @Autowired
-    private JavaTaskService taskService;
+    public AdminController(UserService userService, JavaTaskService taskService, TaskOrderService orderService) {
+        this.userService = userService;
+        this.taskService = taskService;
+        this.orderService = orderService;
+    }
 
-    @Autowired
-    private TaskOrderService orderService;
-
-    static final String ADMIN = "admin";
-
-    @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public String adminPage(ModelMap modelMap, HttpServletRequest request) {
 
-        List<JavaTask> taskList;
-        taskList = (List<JavaTask>) modelMap.get("taskList");
+        @SuppressWarnings("unchecked")
+        List<JavaTask> taskList = (List<JavaTask>) modelMap.get("taskList");
         if (taskList == null) {
             readAllTasks(modelMap);
         }
@@ -55,7 +59,7 @@ public class AdminController {
         if (updateUserID != null && !"".equals(updateUserID)) {
             updateUser(modelMap, request);
         }
-        return ADMIN;
+        return ADMIN_VIEW;
     }
 
     private void updateTask(ModelMap modelMap, HttpServletRequest req) {
@@ -68,62 +72,58 @@ public class AdminController {
         try {
             task = taskService.get(taskID);
         } catch (ServiceSystemException e) {
-            modelMap.put("updateErrorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
+            modelMap.put("updateErrorMsg", SERVER_ERROR_MESSAGE);
             return;
         } catch (ServiceBusinessException e) {
             modelMap.put("updateErrorMsg", "Can't find task in DB");
             return;
         }
-        if (!"".equals(diffGroup)) {
+        if (!EMPTY.equals(diffGroup)) {
             task.setDifficultyGroup(diffGroup);
         }
-        if (!"".equals(shortDescr)) {
+        if (!EMPTY.equals(shortDescr)) {
             task.setShortDescr(shortDescr);
         }
-        if (!"".equals(elapsedTime)) {
+        if (!EMPTY.equals(elapsedTime)) {
             int elTime = Integer.parseInt(elapsedTime);
             task.setElapsedTime(elTime);
         }
-        if (!"".equals(popularity)) {
+        if (!EMPTY.equals(popularity)) {
             int pop = Integer.parseInt(popularity);
             task.setPopularity(pop);
         }
         try {
-            //TODO: Danger!!!
             taskService.update(task);
             modelMap.put("updateStatusMsg", "Task was successfully updated!");
         } catch (ServiceSystemException e) {
-            modelMap.put("updateErrorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
+            modelMap.put("updateErrorMsg", SERVER_ERROR_MESSAGE);
         } catch (ServiceBusinessException e) {
             modelMap.put("updateErrorMsg", "Cannot update task!");
         }
     }
 
     private void readAllTasks(ModelMap modelMap) {
-        List<JavaTask> taskList;
         try {
-            taskList = taskService.getAll();
+            List<JavaTask> taskList = taskService.getAll();
             modelMap.put("taskList", taskList);
         } catch (ServiceSystemException e) {
-            modelMap.put("errorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
+            modelMap.put("errorMsg", SERVER_ERROR_MESSAGE);
         } catch (ServiceBusinessException e) {
             modelMap.put("errorMsg", "There is no tasks in database");
         }
     }
 
     private void readUserInfo(ModelMap modelMap, HttpServletRequest req) {
-        List<OrderDTO> orderList;
-        User user;
         Long userID = Long.parseLong(req.getParameter("userID"));
         try {
-            user = userService.get(userID);
-            orderList = orderService.getAllUserSolvedTaskOrders(user.getUserID());
+            User user = userService.get(userID);
+            List<OrderDTO> orderList = orderService.getAllUserSolvedTaskOrders(user.getUserID());
             modelMap.put("userInfo", user);
             modelMap.put("orderList", orderList);
         } catch (ServiceSystemException e) {
             modelMap.remove("userInfo");
             modelMap.remove("orderList");
-            modelMap.put("userErrorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
+            modelMap.put("userErrorMsg", SERVER_ERROR_MESSAGE);
         } catch (ServiceBusinessException e) {
             modelMap.remove("userInfo");
             modelMap.remove("orderList");
@@ -141,22 +141,22 @@ public class AdminController {
         try {
             user = userService.get(userID);
         } catch (ServiceSystemException e) {
-            modelMap.put("userUpdateErrorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
+            modelMap.put("userUpdateErrorMsg", SERVER_ERROR_MESSAGE);
             return;
         } catch (ServiceBusinessException e) {
             modelMap.put("userUpdateErrorMsg", "Can't find user in DB");
             return;
         }
-        if (!"".equals(level)) {
+        if (!EMPTY.equals(level)) {
             user.setLevel(level);
         }
-        if (!"".equals(role)) {
+        if (!EMPTY.equals(role)) {
             user.setRole(role);
         }
-        if (!"".equals(status)) {
+        if (!EMPTY.equals(status)) {
             user.setStatus(status);
         }
-        if (!"".equals(rating)) {
+        if (!EMPTY.equals(rating)) {
             int rat = Integer.parseInt(rating);
             user.setRating(rat);
         }
@@ -164,7 +164,7 @@ public class AdminController {
             userService.update(user);
             modelMap.put("userUpdateStatusMsg", "User was successfully updated!");
         } catch (ServiceSystemException e) {
-            modelMap.put("userUpdateErrorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
+            modelMap.put("userUpdateErrorMsg", SERVER_ERROR_MESSAGE);
         } catch (ServiceBusinessException e) {
             modelMap.put("userUpdateErrorMsg", "Cannot update user!");
         }

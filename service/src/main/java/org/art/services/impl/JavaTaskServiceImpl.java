@@ -14,7 +14,6 @@ import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,16 +22,20 @@ import java.util.List;
 @Transactional(/*propagation = Propagation.REQUIRED*/)
 public class JavaTaskServiceImpl implements JavaTaskService {
 
-    private static final Logger log = LogManager.getLogger(JavaTaskServiceImpl.class);
+    private static final Logger LOG = LogManager.getLogger(JavaTaskServiceImpl.class);
+
+    private final JavaTaskDao javaTaskDao;
+
+    private final TaskOrderDao orderDao;
+
+    private final UserDao userDao;
 
     @Autowired
-    private JavaTaskDao javaTaskDao;
-
-    @Autowired
-    private TaskOrderDao orderDao;
-
-    @Autowired
-    private UserDao userDao;
+    public JavaTaskServiceImpl(JavaTaskDao javaTaskDao, TaskOrderDao orderDao, UserDao userDao) {
+        this.javaTaskDao = javaTaskDao;
+        this.orderDao = orderDao;
+        this.userDao = userDao;
+    }
 
     @Override
     public JavaTask save(JavaTask javaTask) throws ServiceSystemException {
@@ -40,7 +43,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
         try {
             savedTask = javaTaskDao.save(javaTask);
         } catch (DAOSystemException e) {
-            log.info("Exception while saving task into the database!", e);
+            LOG.info("Exception while saving task into the database!", e);
             throw new ServiceSystemException("Exception while saving task into the database!", e);
         }
         return savedTask;
@@ -55,7 +58,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
                 throw new ServiceBusinessException("No task with such ID was found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting task from the database! Task ID: " + id, e);
+            LOG.info("Exception while getting task from the database! Task ID: " + id, e);
             throw new ServiceSystemException("Exception while getting task from the database! Task ID: " + id, e);
         }
         return javaTask;
@@ -70,7 +73,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
                 throw new ServiceBusinessException("Java task updating failed!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while updating task in the database!", e);
+            LOG.info("Exception while updating task in the database!", e);
             throw new ServiceSystemException("Exception while updating task in the database!", e);
         }
         return updTask;
@@ -81,7 +84,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
         try {
             javaTaskDao.delete(id);
         } catch (DAOSystemException e) {
-            log.info("Exception while deleting task from database!", e);
+            LOG.info("Exception while deleting task from database!", e);
             throw new ServiceSystemException("Exception while deleting task from database!", e);
         }
     }
@@ -100,7 +103,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
             order = new TaskOrder("NOT SOLVED", user, newTask);
             orderDao.save(order);
         } catch (DAOSystemException e) {
-            log.info("Exception while getting task from database!", e);
+            LOG.info("Exception while getting task from database!", e);
             throw new ServiceSystemException("Exception while getting task from database!", e);
         }
         return newTask;
@@ -120,7 +123,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
                 throw new ServiceBusinessException("No task with such ID was found (getNotSolvedTask method)!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting not solved task from the database!", e);
+            LOG.info("Exception while getting not solved task from the database!", e);
             throw new ServiceSystemException("Exception while getting not solved task from the database!", e);
         }
         return javaTask;
@@ -135,7 +138,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
                 throw new ServiceBusinessException("No tasks were found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting popular tasks from the database!", e);
+            LOG.info("Exception while getting popular tasks from the database!", e);
             throw new ServiceSystemException("Exception while getting popular tasks from the database!", e);
         }
         return taskList;
@@ -146,7 +149,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
         try {
             javaTaskDao.increaseTaskPopularity(task);
         } catch (DAOSystemException e) {
-            log.info("Cannot update task popularity in the database!", e);
+            LOG.info("Cannot update task popularity in the database!", e);
             throw new ServiceBusinessException("Cannot update task popularity in the database!", e);
         }
     }
@@ -160,7 +163,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
                 throw new ServiceBusinessException("No tasks were found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting all tasks from the database!", e);
+            LOG.info("Exception while getting all tasks from the database!", e);
             throw new ServiceSystemException("Exception while getting all tasks from the database!", e);
         }
         return taskList;
@@ -173,7 +176,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
 //        try {
 //            javaTaskDao.createJavaTasksTable();
 //        } catch (DAOSystemException e) {
-//            log.info("Exception while creating tasks table in database!", e);
+//            LOG.info("Exception while creating tasks table in database!", e);
 //            throw new ServiceSystemException("Exception while creating tasks table in database!", e);
 //        } finally {
 //            ConnectionPoolManager.close(conn);
@@ -187,7 +190,7 @@ public class JavaTaskServiceImpl implements JavaTaskService {
 //        try {
 //            javaTaskDao.deleteJavaTasksTable();
 //        } catch (DAOSystemException e) {
-//            log.info("Exception while deleting tasks table in database!", e);
+//            LOG.info("Exception while deleting tasks table in database!", e);
 //            throw new ServiceSystemException("Exception while deleting tasks table in database!", e);
 //        } finally {
 //            ConnectionPoolManager.close(conn);

@@ -12,40 +12,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
 import java.util.List;
+
+import static org.art.web.controllers.ControllerConstants.LOGIN_VIEW;
+import static org.art.web.controllers.ControllerConstants.RATING_VIEW;
 
 @Controller
 @SessionAttributes("user")
 @RequestMapping("/rating")
 public class RatingController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public RatingController(UserService userService) {
+        this.userService = userService;
+    }
 
-    static final String RATING = "rating";
-    static final String LOGIN = "login/main";
-
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String showRating(ModelMap modelMap,
-                             @ModelAttribute("user") User user) throws IOException, ServletException {
+    @RequestMapping(method = RequestMethod.GET)
+    public String showRating(ModelMap modelMap, @ModelAttribute("user") User user) {
 
         if (user == null || user.getLogin() == null) {
-            return LOGIN;
+            return LOGIN_VIEW;
         }
-
         try {
             List<User> userList = userService.getTopUsers(10);
             modelMap.put("topList", userList);
         } catch (ServiceBusinessException e) {
             modelMap.put("errorMsg", "Can't find any users in the application!");
-            return RATING;
+            return RATING_VIEW;
         } catch (ServiceSystemException e) {
             modelMap.put("errorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
-            return RATING;
+            return RATING_VIEW;
         }
-        return RATING;
+        return RATING_VIEW;
     }
 
     @ModelAttribute("user")

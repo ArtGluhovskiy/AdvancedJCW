@@ -1,24 +1,24 @@
 package org.art.web.filters;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebFilter(
+        filterName = "exceptionFilter",
+        description = "Intercepts exceptions during the request processing and redirects request to the main page.",
+        urlPatterns = "/*"
+)
 public class ExceptionFilter extends BaseFilter {
 
-    public static final Logger log = LogManager.getLogger(ExceptionFilter.class);
     @Override
-    public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException {
         try {
             chain.doFilter(req, resp);
         } catch (Exception e) {
-            log.info("Exception in Exception filter", e);
+            log.info("ExceptionFilter: exception has been caught! Redirect to the 'Main' page...", e);
             resp.sendRedirect(req.getContextPath() + "/main");
         }
     }

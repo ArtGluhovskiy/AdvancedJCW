@@ -13,26 +13,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
+import static org.art.web.controllers.ControllerConstants.*;
 
 @Controller
 @SessionAttributes(names = {"code", "user", "task"})
 @RequestMapping("/compile")
-public class CompilerController {
+public class JavaCompilerController {
+
+    private final TaskOrderService orderService;
 
     @Autowired
-    private TaskOrderService orderService;
+    public JavaCompilerController(TaskOrderService orderService) {
+        this.orderService = orderService;
+    }
 
-    static final String COMPILATION_FAILED = "compilation-failed";
-    static final String COMPILATION_SUCCESS = "compilation-success";
-    static final String ERROR = "error";
-
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String compile(ModelMap modelMap,
-                        @ModelAttribute("task") JavaTask task,
-                        @ModelAttribute("user") User user,
-                        @RequestParam("code") String code) throws ServletException, IOException {
+                          @ModelAttribute("task") JavaTask task,
+                          @ModelAttribute("user") User user,
+                          @RequestParam("code") String code) {
 
         StringCompilerService stringCompiler = new StringCompilerService(false);
         StringCompilerService.TaskResults compResult;
@@ -43,29 +42,29 @@ public class CompilerController {
             modelMap.put("code", code);
             modelMap.put("title", "Result_fail");
             modelMap.put("errorMsg", "Some problems with compilation.<br>Try to fix it!");
-            return COMPILATION_FAILED;
+            return COMPILATION_FAILED_VIEW;
         }
         if (compResult.getMethodResult() == null) {
             modelMap.put("code", code);
             modelMap.put("title", "Result_fail");
             modelMap.put("errorMsg", "Your code is not compiling.<br>Try to fix it!");
-            return COMPILATION_FAILED;
+            return COMPILATION_FAILED_VIEW;
         }
         boolean result = ResultsAnalyzer.analyzeResults(task, compResult);
         if (result) {
             modelMap.put("elapsedTime", compResult.getElapsedTime());
             modifyUserData(modelMap);
             if (modelMap.get("errorMsg") != null) {
-                return ERROR;
+                return ERROR_VIEW;
             }
             modelMap.put("title", "Result_success");
             modelMap.remove("code");
-            return COMPILATION_SUCCESS;
+            return COMPILATION_SUCCESS_VIEW;
         } else {
             modelMap.put("code", code);
             modelMap.put("title", "Result_fail");
             modelMap.put("errorMsg", "It seems that your algorithm is not efficient or even incorrect!<br>Try to fix it!");
-            return COMPILATION_FAILED;
+            return COMPILATION_FAILED_VIEW;
         }
     }
 
@@ -73,8 +72,7 @@ public class CompilerController {
      * Creation of a new task order in database with a new "NOT SOLVED" task;
      * user rating increase; task popularity increase etc.
      */
-    private void modifyUserData(ModelMap modelMap) throws ServletException, IOException {
-
+    private void modifyUserData(ModelMap modelMap) {
         User user = (User) modelMap.get("user");
         JavaTask task = (JavaTask) modelMap.get("task");
         long execTime = (long) modelMap.get("elapsedTime");

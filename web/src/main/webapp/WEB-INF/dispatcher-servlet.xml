@@ -11,15 +11,14 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:annotation-config/>
     <import resource="classpath*:beans-dao.xml"/>
     <import resource="classpath*:beans-services.xml"/>
 
     <context:component-scan base-package="org.art.web.controllers"/>
 
-    <mvc:resources mapping="/resources/**" location="assets"/>
     <mvc:default-servlet-handler/>
-    <mvc:annotation-driven/>
+
+    <mvc:resources mapping="/resources/**" location="assets"/>
 
     <bean id="tilesConfigurer"
           class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
@@ -39,11 +38,10 @@
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
 
-    <bean id="localeResolver"
-          class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
         <property name="defaultLocale" value="en"/>
-        <property name="cookieName" value="LocaleCookie"></property>
-        <property name="cookieMaxAge" value="360000"></property>
+        <property name="cookieName" value="LocaleCookie"/>
+        <property name="cookieMaxAge" value="360000"/>
     </bean>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

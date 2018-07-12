@@ -11,23 +11,23 @@ $(document).ready(function () {
 
     $('input.input_fname').blur(function () {
         validate($(this), pat_name, 'first name');
-    })
+    });
 
     $('input.input_lname').blur(function () {
         validate($(this), pat_name, 'last name');
-    })
+    });
 
     $('input.input_date').blur(function () {
         validate($(this), pat_birth, 'birth date');
-    })
+    });
 
     $('input.input_email').blur(function () {
         validate($(this), pat_email, 'email');
-    })
+    });
 
     $('input.input_password').blur(function () {
         validate($(this), pat_password, 'password');
-    })
+    });
 
     $('.dws-submit').click(function (event) {
         event.stopPropagation();
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
 function validate(element, pattern, field) {
     var match = pattern.test(element.val());
-    if (match == false) {
+    if (match === false) {
         $('.place_error').html('Invalid ' + field + '!');
         $('.dws-submit').attr('disabled', 'disabled');
         return false;
@@ -63,7 +63,7 @@ function checkLogin(element) {
   }).done(function (data) {
       var info = data;
       console.log('Done block = ' + info);
-      if (info.response == 'FAIL') {
+      if (info.response === 'FAIL') {
           $('.place_error').html('Such login already exists!');
           // $('.dws-submit').attr('disabled', 'disabled');
       } else {

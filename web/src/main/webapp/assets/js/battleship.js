@@ -1,3 +1,5 @@
+//Simple 'Battleship' game implementation
+
 //View
 var view = {
     

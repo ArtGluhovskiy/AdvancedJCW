@@ -1,42 +1,45 @@
 package org.art.services.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.entities.JavaTask;
 
 import java.io.*;
 
 /**
- * Deprecated class!
+ * Helper class. Loads java tasks from file with specified path.
  */
 public class LoaderUtil {
 
-    public static String loadCodeStringFromTextFile(String initCodePath) {
-        String line;
+    private static final Logger LOG = LogManager.getLogger(LoaderUtil.class);
+
+    public static String loadCodeStringFromTextFile(String codeFilePath) {
         String initCodeString = null;
-        try (BufferedReader in = new BufferedReader(new FileReader(new File(initCodePath)));
+        try (BufferedReader in = new BufferedReader(new FileReader(new File(codeFilePath)));
              StringWriter out = new StringWriter()) {
+            String line;
             while ((line = in.readLine()) != null) {
                 out.write(line);
             }
             initCodeString = out.toString();
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e);
+            LOG.error("File not found: {}", codeFilePath, e);
         } catch (IOException e) {
-            System.out.println("IOException: " + e);
+            LOG.error("IOException while task loading has been caught!", e);
         }
         return initCodeString;
     }
 
-    public static JavaTask loadTaskFromFile(String filePath) {
-
+    public static JavaTask loadTaskFromFile(String codeFilePath) {
         JavaTask loadedTask = null;
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(filePath)))) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(codeFilePath)))) {
             loadedTask = (JavaTask) in.readObject();
         } catch (FileNotFoundException e) {
-            System.out.println("FileNotFoundException: " + e);
+            LOG.error("File not found: {}", codeFilePath, e);
         } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFoundException: " + e);
+            LOG.error("ClassNotFoundException while task loading has been caught!", e);
         } catch (IOException e) {
-            System.out.println("IOException: " + e);
+            LOG.error("IOException while task loading has been caught!", e);
         }
         return loadedTask;
     }

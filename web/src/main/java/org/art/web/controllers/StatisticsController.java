@@ -15,39 +15,39 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.List;
 
+import static org.art.web.controllers.ControllerConstants.LOGIN_VIEW;
+import static org.art.web.controllers.ControllerConstants.STATISTICS_VIEW;
+
 @Controller
 @SessionAttributes(names = {"user", "errorMsg"})
 @RequestMapping(value = "/statistics")
 public class StatisticsController {
 
+    private final TaskOrderService orderService;
+
     @Autowired
-    private TaskOrderService orderService;
+    public StatisticsController(TaskOrderService orderService) {
+        this.orderService = orderService;
+    }
 
-    static final String STATISTICS = "statistics";
-    static final String LOGIN = "login/main";
-
-    @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
-    public String statisticsPage(ModelMap modelMap,
-                           @ModelAttribute(value = "user") User user) {
-
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
+    public String statisticsPage(ModelMap modelMap, @ModelAttribute(value = "user") User user) {
         if (user == null || user.getLogin() == null) {
-            return LOGIN;
+            return LOGIN_VIEW;
         }
-
         List<OrderDTO> orderList;
         modelMap.remove("errorMsg");
-
         try {
             orderList = orderService.getAllUserSolvedTaskOrders(user.getUserID());
         } catch (ServiceSystemException e) {
             modelMap.put("errorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
-            return STATISTICS;
+            return STATISTICS_VIEW;
         } catch (ServiceBusinessException e) {
             modelMap.put("message", "You have no task orders yet! ");
-            return STATISTICS;
+            return STATISTICS_VIEW;
         }
         modelMap.put("orderList", orderList);
-        return STATISTICS;
+        return STATISTICS_VIEW;
     }
 
     @ModelAttribute("user")

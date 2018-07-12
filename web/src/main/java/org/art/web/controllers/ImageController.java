@@ -12,23 +12,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 
+import static org.art.web.controllers.ControllerConstants.IMAGES_ROOT_PATH;
+
 @Controller
 @RequestMapping("/displayImage")
 @SessionAttributes("user")
-public class DisplayImageController {
-
-    static final String IMAGES_PATH = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\web\\src\\main\\resources\\img\\";
+public class ImageController {
 
     @ResponseBody
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] displayImage(HttpServletRequest req, HttpServletResponse resp,
-                             @ModelAttribute("user") User user) throws IOException {
+                               @ModelAttribute("user") User user) throws IOException {
+
         String fileName = req.getParameter("image");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "image/jpg");
-        File file = new File(IMAGES_PATH + user.getLogin() + ".jpg");
-        byte[] image = FileUtils.readFileToByteArray(file);
-//        resp.getOutputStream().write(image);
-        return image;
+        File file = new File(IMAGES_ROOT_PATH + user.getLogin() + ".jpg");
+        return FileUtils.readFileToByteArray(file);
     }
 }
