@@ -22,6 +22,9 @@ public abstract class BaseFilter implements Filter {
         //Empty implementation (should be overridden if needed)
     }
 
+    /**
+     * Provides type casting {@code ServletRequest -> HttpServletRequest} for convenient usage).
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {

@@ -9,10 +9,7 @@ import org.art.services.TaskOrderService;
 import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -23,15 +20,18 @@ import java.util.List;
 import static org.art.dao.utils.DateTimeUtil.toSQLDate;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestJavaTaskServiceImpl {
+class TestJavaTaskServiceImpl {
 
-    static ApplicationContext context;
-    static JavaTaskService taskService;
-    static UserService userService;
-    static TaskOrderService orderService;
+    private static ApplicationContext context;
+
+    private static JavaTaskService taskService;
+
+    private static UserService userService;
+
+    private static TaskOrderService orderService;
 
     @BeforeAll
-    static void initAll() throws SQLException {
+    static void initAll() {
         context = new ClassPathXmlApplicationContext("beans-services.xml");
         taskService = context.getBean("javaTaskServiceImpl", JavaTaskService.class);
         userService = context.getBean("userServiceImpl", UserService.class);
@@ -39,6 +39,7 @@ public class TestJavaTaskServiceImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Java task solution test")
     void test1() throws ServiceSystemException, ServiceBusinessException {
         StringCompilerService stringCompiler = new StringCompilerService(false);
@@ -97,6 +98,7 @@ public class TestJavaTaskServiceImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Get next task by difficulty group test")
     void test2() throws ServiceSystemException, ServiceBusinessException {
 
@@ -133,6 +135,7 @@ public class TestJavaTaskServiceImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Get popular tasks test")
     void test3() throws ServiceSystemException, ServiceBusinessException {
 
@@ -157,6 +160,7 @@ public class TestJavaTaskServiceImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Get not solved task")
     void test4() throws ServiceSystemException, ServiceBusinessException {
 
@@ -182,8 +186,9 @@ public class TestJavaTaskServiceImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Null tests")
-    void test5() throws ServiceBusinessException, ServiceSystemException {
+    void test5() throws ServiceSystemException {
 
         User user = new User("Spsonsss2", "hasrickss2", "8s7jshy1s2", "Harry",
                 "Jane", "harrysss2@gmail.com", new Date(System.currentTimeMillis()), "user",
@@ -196,7 +201,7 @@ public class TestJavaTaskServiceImpl {
     }
 
     @AfterAll
-    static void tearDownAll() throws SQLException {
+    static void tearDownAll() {
         ((ClassPathXmlApplicationContext) context).close();
     }
 }

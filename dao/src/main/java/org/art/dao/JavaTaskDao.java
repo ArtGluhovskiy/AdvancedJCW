@@ -6,7 +6,7 @@ import org.art.entities.JavaTask;
 import java.util.List;
 
 /**
- * JavaTaskDao interface with special methods
+ * JavaTaskDao interface with special methods.
  */
 public interface JavaTaskDao extends DAO<JavaTask> {
 

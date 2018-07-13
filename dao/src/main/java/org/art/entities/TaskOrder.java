@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * This class is an implementation of task order entity
+ * This class is an implementation of task order entity.
  */
 @Data
 @NoArgsConstructor

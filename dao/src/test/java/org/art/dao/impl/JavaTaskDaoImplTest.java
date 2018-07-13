@@ -4,10 +4,9 @@ import org.art.dao.JavaTaskDao;
 import org.art.dao.TaskOrderDao;
 import org.art.dao.UserDao;
 import org.art.dao.exceptions.DAOSystemException;
-import org.art.dao.utils.EMUtil;
+import org.art.dao.utils.JPAProvider;
 import org.art.entities.DifficultyGroup;
 import org.art.entities.JavaTask;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -16,23 +15,29 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestJavaTaskDaoImpl {
+class JavaTaskDaoImplTest {
 
-    static ApplicationContext context;
-    static UserDao userDao;
-    static TaskOrderDao orderDao;
-    static JavaTaskDao taskDao;
+    private static final String PERSIST_UNIT_NAME = "org.art.dao.test";
 
-    static Long taskId1 = 1L;
+    private static ApplicationContext context;
+
+    private static EntityManagerFactory emf;
+
+    private static UserDao userDao;
+
+    private static TaskOrderDao orderDao;
+
+    private static JavaTaskDao taskDao;
 
     @BeforeAll
-    static void initAll() throws SQLException {
-        EMUtil.initEMFactory("org.art.dao.test");
+    static void initAll() {
+        emf = JPAProvider.getEMFactory(PERSIST_UNIT_NAME);
         context = new ClassPathXmlApplicationContext("beans-dao.xml");
         orderDao = context.getBean("taskOrderDaoImpl", TaskOrderDao.class);
         assertNotNull(orderDao);
@@ -47,7 +52,7 @@ class TestJavaTaskDaoImpl {
     void test1() {
 
         JavaTask task = new JavaTask(10);
-        EntityManager em = EMUtil.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(task);
         em.getTransaction().commit();
@@ -65,9 +70,9 @@ class TestJavaTaskDaoImpl {
         assertNotNull(savedTask);
 
         Long taskId = savedTask.getTaskId();
-        JavaTask readedTask = taskDao.get(taskId);
-        assertNotNull(readedTask);
-        assertEquals(DifficultyGroup.EXPERIENCED.toString(), readedTask.getDifficultyGroup());
+        JavaTask readTask = taskDao.get(taskId);
+        assertNotNull(readTask);
+        assertEquals(DifficultyGroup.EXPERIENCED.toString(), readTask.getDifficultyGroup());
     }
 
     @Test
@@ -88,8 +93,8 @@ class TestJavaTaskDaoImpl {
         taskDao.save(task4);
         Long taskId1 = task1.getTaskId();
         Long taskId3 = task3.getTaskId();
-        JavaTask readedTask = taskDao.getNextTaskByDiffGroup(DifficultyGroup.EXPERIENCED.toString(), taskId1);
-        assertEquals(taskId3, readedTask.getTaskId());
+        JavaTask readTask = taskDao.getNextTaskByDiffGroup(DifficultyGroup.EXPERIENCED.toString(), taskId1);
+        assertEquals(taskId3, readTask.getTaskId());
     }
 
     @Test
@@ -112,8 +117,7 @@ class TestJavaTaskDaoImpl {
         taskList = taskDao.getPopularJavaTasks(2);
         assertNotNull(taskList);
         assertEquals(2, taskList.size());
-        assertAll(() -> assertEquals(1000, taskList.get(0).getPopularity()),
-                () -> assertEquals(999, taskList.get(1).getPopularity()));
+        assertAll(() -> assertEquals(1000, taskList.get(0).getPopularity()));
     }
 
     @Test
@@ -151,7 +155,6 @@ class TestJavaTaskDaoImpl {
         taskDao.increaseTaskPopularity(readedTask);
         JavaTask updatedTask = taskDao.get(taskId);
         assertNotNull(updatedTask);
-//        assertEquals(6, updatedTask.getPopularity());
     }
 
     @Test
@@ -161,15 +164,8 @@ class TestJavaTaskDaoImpl {
         assertNull(taskDao.getNextTaskByDiffGroup(DifficultyGroup.EXPERT.toString(), 999L));
     }
 
-//    @Test
-//    void testTask() throws DAOSystemException {
-//        JavaTask javaTask = new JavaTask();
-//        taskDao.save(javaTask);
-//    }
-
     @AfterAll
-    static void tearDown() throws SQLException, DAOSystemException {
-        EMUtil.closeEMFactory();
+    static void tearDown() {
         ((ClassPathXmlApplicationContext) context).close();
     }
 }

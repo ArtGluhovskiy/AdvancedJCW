@@ -2,18 +2,16 @@ package org.art.dao.impl;
 
 import org.art.dao.UserDao;
 import org.art.dao.exceptions.DAOSystemException;
-import org.art.dao.utils.EMUtil;
+import org.art.dao.utils.JPAProvider;
 import org.art.entities.DifficultyGroup;
 import org.art.entities.TaskOrder;
 import org.art.entities.User;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,29 +19,34 @@ import java.util.List;
 import static org.art.dao.utils.DateTimeUtil.toSQLDate;
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestUserDaoImpl {
+class UserDaoImplTest {
 
-    static ApplicationContext context;
-    static UserDao userDao;
+    private static final String PERSIST_UNIT_NAME = "org.art.dao.test";
+
+    private static ApplicationContext context;
+
+    private static EntityManagerFactory emf;
+
+    private static UserDao userDao;
 
     @BeforeAll
-    static void initAll() throws SQLException {
-
-        EMUtil.initEMFactory("org.art.dao.test");
+    static void initAll() {
+        emf = JPAProvider.getEMFactory(PERSIST_UNIT_NAME);
         context = new ClassPathXmlApplicationContext("beans-dao.xml");
         userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
         assertNotNull(userDao);
     }
 
     @Test
+    @Disabled
     @DisplayName("User persistence test")
-    void test1() throws Exception {
+    void test1() {
 
         User user = new User("Sharks", "gooder", "8273gds", "Allen",
                 "Swift", "swift@gmail.com", new Date(System.currentTimeMillis() + 1000000000), "user",
                 "ACTIVE", toSQLDate("24-02-1993"), DifficultyGroup.BEGINNER.toString());
 
-        EntityManager em = EMUtil.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
         user.setRating(1);
@@ -71,6 +74,7 @@ class TestUserDaoImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("User CRUD operations test")
     void test2() throws DAOSystemException {
         User user1 = new User("Spoons", "harick", "87jhy", "Harry",
@@ -122,6 +126,7 @@ class TestUserDaoImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("GetUsersByClanName test")
     void test3() throws DAOSystemException {
         User user = new User("Spoons", "harick", "87jhy", "Harry",
@@ -136,6 +141,7 @@ class TestUserDaoImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("GetUserByLogin test")
     void test4() throws DAOSystemException {
         User user = new User("Sparks", "patrick", "87jhy", "Harry",
@@ -149,6 +155,7 @@ class TestUserDaoImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("GetTopUsers test")
     void test5() throws DAOSystemException {
         User user1 = new User("Spons1", "harick1", "87jhy1", "Harry",
@@ -174,6 +181,7 @@ class TestUserDaoImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("GetAllUsers test")
     void test6() throws DAOSystemException {
         User user1 = new User("Spons2", "harick2", "87jhy12", "Harry",
@@ -201,7 +209,7 @@ class TestUserDaoImpl {
         user.getOrders().add(order2);
         user.getOrders().add(order3);
 
-        EntityManager em = EMUtil.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(user);
         Long id = user.getUserID();
@@ -229,7 +237,7 @@ class TestUserDaoImpl {
         user.getOrders().add(order2);
         user.getOrders().add(order3);
 
-        EntityManager em = EMUtil.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(user);
         Long id = user.getUserID();
@@ -246,17 +254,17 @@ class TestUserDaoImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Null tests")
     void test9() throws DAOSystemException {
 
         assertNull(userDao.get(999L));
         assertNull(userDao.getUserByLogin("llll"));
-        assertTrue(userDao.getUsersByClanName("dddd").size() == 0);
+        assertEquals(0, userDao.getUsersByClanName("dddd").size());
     }
 
     @AfterAll
-    static void tearDown() throws SQLException {
-        EMUtil.closeEMFactory();
+    static void tearDown() {
         ((ClassPathXmlApplicationContext) context).close();
     }
 }

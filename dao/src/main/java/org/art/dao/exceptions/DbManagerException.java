@@ -1,8 +1,8 @@
-package org.art.db.exceptions;
+package org.art.dao.exceptions;
 
 /**
  * {@code DbManagerException} is thrown in case of problems while
- * getting connection with the database (with the usage of {@link java.sql.DriverManager})
+ * getting connection to the database.
  */
 public class DbManagerException extends RuntimeException {
 

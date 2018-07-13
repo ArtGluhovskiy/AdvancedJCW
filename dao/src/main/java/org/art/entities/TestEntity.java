@@ -10,7 +10,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 
 /**
- * Dummy entity for Hibernate quick start test
+ * Dummy entity for Hibernate quick start test.
  */
 @Data
 @NoArgsConstructor

@@ -9,7 +9,7 @@ import java.util.Calendar;
 public class DateTimeUtil {
 
     /**
-     * This method define user's age from his birth date
+     * This method define user's age from his birth date.
      *
      * @param birthDate user's birth date
      * @return user's age (in years)
@@ -25,7 +25,7 @@ public class DateTimeUtil {
 
     /**
      * This method converts date from string to {@link Date}
-     * in order to make it compatible with data base date type
+     * in order to make it compatible with data base date type.
      *
      * @param date date string in appropriate format
      * @return {@link Date}, converted from string

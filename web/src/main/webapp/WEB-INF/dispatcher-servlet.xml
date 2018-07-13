@@ -18,6 +18,8 @@
 
     <mvc:default-servlet-handler/>
 
+    <mvc:annotation-driven/>
+
     <mvc:resources mapping="/resources/**" location="assets"/>
 
     <bean id="tilesConfigurer"

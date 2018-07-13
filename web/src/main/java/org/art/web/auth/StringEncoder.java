@@ -1,17 +1,21 @@
 package org.art.web.auth;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sun.misc.BASE64Encoder;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Password encoder (by means of {@link BASE64Encoder})
+ * Password encoder (based on {@link BASE64Encoder})
  */
-public class Encoder {
+public class StringEncoder {
+
+    private static final Logger LOG = LogManager.getLogger(StringEncoder.class);
 
     public static String encode(String str) {
-        byte[] dig = null;
+        byte[] dig;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.reset();
@@ -20,7 +24,7 @@ public class Encoder {
             BASE64Encoder encoder = new BASE64Encoder();
             str = encoder.encode(dig);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOG.error("StringEncoder: NoSuchAlgorithmException during string encoding!", e);
         }
         return str;
     }

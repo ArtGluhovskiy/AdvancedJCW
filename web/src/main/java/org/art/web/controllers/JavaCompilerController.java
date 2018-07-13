@@ -1,5 +1,7 @@
 package org.art.web.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.entities.JavaTask;
 import org.art.entities.User;
 import org.art.services.TaskOrderService;
@@ -20,6 +22,8 @@ import static org.art.web.controllers.ControllerConstants.*;
 @RequestMapping("/compile")
 public class JavaCompilerController {
 
+    private static final Logger LOG = LogManager.getLogger(JavaCompilerController.class);
+
     private final TaskOrderService orderService;
 
     @Autowired
@@ -27,12 +31,13 @@ public class JavaCompilerController {
         this.orderService = orderService;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public String compile(ModelMap modelMap,
                           @ModelAttribute("task") JavaTask task,
                           @ModelAttribute("user") User user,
                           @RequestParam("code") String code) {
 
+        LOG.debug("JavaCompilerController: compile()");
         StringCompilerService stringCompiler = new StringCompilerService(false);
         StringCompilerService.TaskResults compResult;
         modelMap.remove("errorMsg");
@@ -42,6 +47,7 @@ public class JavaCompilerController {
             modelMap.put("code", code);
             modelMap.put("title", "Result_fail");
             modelMap.put("errorMsg", "Some problems with compilation.<br>Try to fix it!");
+            LOG.info("JavaCompilerController: ServiceCompilationException - cannot compile code! Code: {}", code, e);
             return COMPILATION_FAILED_VIEW;
         }
         if (compResult.getMethodResult() == null) {
@@ -79,14 +85,14 @@ public class JavaCompilerController {
         try {
             orderService.createNewOrder(user, task, execTime);
         } catch (ServiceSystemException e) {
-            modelMap.put("errorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
-            return;
+            modelMap.put("errorMsg", ControllerConstants.INTERNAL_ERROR_MESSAGE);
+            LOG.error("JavaCompilerController: ServiceSystemException - cannot create new task order in DB! User ID: {}", user.getUserID(), e);
         } catch (ServiceBusinessException e) {
             /*NOP*/
             //"NOT SOLVED" task order wasn't created.
             //There are no more tasks to solve.
             //Method ignores this exception at THIS stage.
-            //ServiceBusinessException will be thrown and catch later.
+            //ServiceBusinessException will be thrown and caught later.
         }
     }
 

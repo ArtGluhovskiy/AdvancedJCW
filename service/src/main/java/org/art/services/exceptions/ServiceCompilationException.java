@@ -2,8 +2,8 @@ package org.art.services.exceptions;
 
 /**
  * {@code ServiceCompilationException} is thrown in case of problems
- * connected with the compiling of string (with java task) by means of
- * {@link javax.tools.JavaCompiler}
+ * related to the string compilation (with java task) with the help of
+ * {@link javax.tools.JavaCompiler}.
  */
 public class ServiceCompilationException extends ServiceBusinessException {
 

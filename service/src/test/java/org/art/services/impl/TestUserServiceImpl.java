@@ -5,10 +5,7 @@ import org.art.entities.User;
 import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -20,17 +17,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TestUserServiceImpl {
 
-    static ApplicationContext context;
-    static UserService userService;
+    private static ApplicationContext context;
+
+    private static UserService userService;
 
     @BeforeAll
-    static void initAll() throws SQLException {
+    static void initAll() {
         context = new ClassPathXmlApplicationContext("beans-services.xml");
         userService = context.getBean("userServiceImpl", UserService.class);
         assertNotNull(userService);
     }
 
     @Test
+    @Disabled
     @DisplayName("Service CRUD operations test")
     void test1() throws ServiceSystemException, ServiceBusinessException {
         User user1 = new User("Spons2", "harick2", "87jhy12", "Harry",
@@ -67,8 +66,9 @@ class TestUserServiceImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Null tests")
-    void test2() throws ServiceBusinessException, ServiceSystemException {
+    void test2() {
 
         assertThrows(ServiceBusinessException.class, () -> userService.get(999L));
         assertThrows(ServiceBusinessException.class, () -> userService.getUserByLogin("lllll"));
@@ -76,7 +76,7 @@ class TestUserServiceImpl {
     }
 
     @AfterAll
-    static void tearDownAll() throws SQLException {
+    static void tearDownAll() {
         ((ClassPathXmlApplicationContext) context).close();
     }
 }

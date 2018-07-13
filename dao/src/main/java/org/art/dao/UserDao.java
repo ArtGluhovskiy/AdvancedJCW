@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserDao extends DAO<User> {
 
     /**
-     * Getting all users from specified clan
+     * Getting all users from specified clan.
      *
      * @param clanName the name of the user clan
      * @return the list of all users from specified clan

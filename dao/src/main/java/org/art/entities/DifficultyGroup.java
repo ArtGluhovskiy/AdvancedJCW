@@ -1,7 +1,7 @@
 package org.art.entities;
 
 /**
- * This enum contains the level of difficulty for users and java tasks
+ * This enum contains the level of difficulty for users and java tasks.
  */
 public enum DifficultyGroup {
 

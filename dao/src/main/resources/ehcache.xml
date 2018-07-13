@@ -6,7 +6,6 @@
                   eternal="false"
                   timeToIdleSeconds="150"
                   timeToLiveSeconds="200">
-
     </defaultCache>
 
     <cache name="org.art.entities.JavaTask"

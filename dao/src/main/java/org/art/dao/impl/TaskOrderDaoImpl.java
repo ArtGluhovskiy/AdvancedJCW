@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.art.dao.TaskOrderDao;
 import org.art.dao.exceptions.DAOSystemException;
 import org.art.dao.repository.TaskOrderRepository;
-import org.art.dao.utils.EMUtil;
+import org.art.dao.utils.JPAProvider;
 import org.art.dto.OrderDTO;
 import org.art.entities.TaskOrder;
 import org.art.entities.User;
@@ -13,18 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.art.dao.utils.DbcpConnectionPool.close;
 
 @Repository
 public class TaskOrderDaoImpl implements TaskOrderDao {
 
     private TaskOrderRepository orderRepository;
 
-    public static final Logger log = LogManager.getLogger(TaskOrderDaoImpl.class);
+    public static final Logger LOG = LogManager.getLogger(TaskOrderDaoImpl.class);
 
     @Autowired
     public void setTaskOrderRepository(TaskOrderRepository orderRepository) {
@@ -37,7 +33,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         try {
             savedOrder = orderRepository.save(taskOrder);
         } catch (Exception e) {
-            log.info("Cannot save task order to the database", e);
+            LOG.info("Cannot save task order to the database", e);
             throw new DAOSystemException("Cannot save task order to the database", e);
         }
         return savedOrder;
@@ -49,7 +45,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         try {
             order = orderRepository.findById(id).orElse(null);
         } catch (Exception e) {
-            log.info("Cannot get task order from the database! ID: " + id, e);
+            LOG.info("Cannot get task order from the database! ID: " + id, e);
             throw new DAOSystemException("Cannot get task order from the database! ID: " + id, e);
         }
         return order;
@@ -61,7 +57,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         try {
            updOrder = orderRepository.save(order);
         } catch (Exception e) {
-            log.info("Cannot update task order in the database!", e);
+            LOG.info("Cannot update task order in the database!", e);
             throw new DAOSystemException("Cannot update task order in the database!", e);
         }
         return updOrder;
@@ -72,7 +68,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         try {
             orderRepository.deleteById(id);
         } catch (Exception e) {
-            log.info("Cannot delete task order from the database! ID: " + id, e);
+            LOG.info("Cannot delete task order from the database! ID: " + id, e);
             throw new DAOSystemException("Cannot delete task order from the database! ID: " + id, e);
         }
     }
@@ -81,7 +77,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
     @Override
     public List<OrderDTO> getUserSolvedTaskOrders(Long id) throws DAOSystemException {
         List<OrderDTO> orders;
-        EntityManager em = EMUtil.getThreadCachedEM();
+        EntityManager em = JPAProvider.getThreadCachedEM();
         try {
             em.getTransaction().begin();
             orders = em.createQuery("select new org.art.dto.OrderDTO(u.userID, u.login," +
@@ -91,7 +87,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
 
             em.getTransaction().commit();
         } catch (Exception e) {
-            log.info("Cannot get task orders from the database! User ID: " + id, e);
+            LOG.info("Cannot get task orders from the database! User ID: " + id, e);
             throw new DAOSystemException("Cannot get task orders from the database! User ID: " + id, e);
         }
         return orders;
@@ -101,7 +97,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
     @Override
     public List<OrderDTO> getAllUserSolvedTaskOrders(Long id) throws DAOSystemException {
         List<OrderDTO> orders;
-        EntityManager em = EMUtil.getThreadCachedEM();
+        EntityManager em = JPAProvider.getThreadCachedEM();
         try {
             em.getTransaction().begin();
             orders = em.createQuery("select new org.art.dto.OrderDTO(u.userID, u.login," +
@@ -111,7 +107,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
 
             em.getTransaction().commit();
         } catch (Exception e) {
-            log.info("Cannot get task orders from the database! User ID: " + id, e);
+            LOG.info("Cannot get task orders from the database! User ID: " + id, e);
             throw new DAOSystemException("Cannot get task orders from the database! User ID: " + id, e);
         }
         return orders;
@@ -123,7 +119,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         try {
             order = orderRepository.getNotSolvedOrder(user);
         } catch (Exception e) {
-            log.info("Cannot get task order from the database!", e);
+            LOG.info("Cannot get task order from the database!", e);
             throw new DAOSystemException("Cannot get task order from the database!", e);
         }
         return order;
@@ -135,7 +131,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
         try {
             orders = orderRepository.getTaskOrderByUser(user);
         } catch (Exception e) {
-            log.info("Cannot get task orders from the database!", e);
+            LOG.info("Cannot get task orders from the database!", e);
             throw new DAOSystemException("Cannot get task orders from the database!", e);
         }
         return orders;

@@ -3,7 +3,7 @@ package org.art.dao.utils;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.art.dao.exceptions.TestDbManagerException;
+import org.art.dao.exceptions.DbManagerException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,29 +12,26 @@ import java.util.ResourceBundle;
 
 public class DbcpConnectionPool {
 
-    public static final Logger log = LogManager.getLogger(DbcpConnectionPool.class);
+    public static final Logger LOG = LogManager.getLogger(DbcpConnectionPool.class);
 
-    private static DbcpConnectionPool INSTANCE;
+    private static volatile DbcpConnectionPool INSTANCE;
+
     private static BasicDataSource dataSource;
-    private static ResourceBundle rb;
 
-    private final String DRIVER;
-    private final String URL;
-    private final String USER;
-    private final String PASSWORD;
     private ThreadLocal<Connection> threadCache;
 
-    private DbcpConnectionPool() throws TestDbManagerException {
-
+    private DbcpConnectionPool() throws DbManagerException {
+        ResourceBundle rb;
         try {
             rb = ResourceBundle.getBundle("testDatabase");
         } catch (MissingResourceException e) {
-            throw new TestDbManagerException("Missing resource file!", e);
+            LOG.error("Error: Missing resource file!", e);
+            throw new DbManagerException("Error: Missing resource file!", e);
         }
-        DRIVER = rb.getString("driver");
-        URL = rb.getString("url");
-        USER = rb.getString("user");
-        PASSWORD = rb.getString("password");
+        String DRIVER = rb.getString("driver");
+        String URL = rb.getString("url");
+        String USER = rb.getString("user");
+        String PASSWORD = rb.getString("password");
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setUsername(USER);
@@ -50,7 +47,7 @@ public class DbcpConnectionPool {
         return threadCache;
     }
 
-    public static DbcpConnectionPool getInstance() throws TestDbManagerException {
+    public static DbcpConnectionPool getInstance() throws DbManagerException {
         DbcpConnectionPool dataSource = INSTANCE;
         if (dataSource == null) {
             synchronized (DbcpConnectionPool.class) {
@@ -65,9 +62,10 @@ public class DbcpConnectionPool {
 
     public Connection getConnection() {
         try {
-            return this.dataSource.getConnection();
+            return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new TestDbManagerException("Could not get new connection!", e);
+            LOG.error("Cannot get new connection!", e);
+            throw new DbManagerException("Cannot get new connection!", e);
         }
 
     }
@@ -78,8 +76,8 @@ public class DbcpConnectionPool {
                 res.close();
             }
         } catch (Exception e) {
-            log.info("Exception while connection closing!", e);
-            //It's ok, because DBCP provides automatic connection closing
+            LOG.info("Exception while connection closing!", e);
+            //It's ok, DBCP provides automatic connection closing
         }
     }
 }

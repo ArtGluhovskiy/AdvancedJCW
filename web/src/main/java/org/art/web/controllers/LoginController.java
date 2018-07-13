@@ -1,10 +1,13 @@
 package org.art.web.controllers;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.entities.User;
 import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
-import org.art.web.auth.Encoder;
+import org.art.web.auth.StringEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +23,8 @@ import static org.art.web.controllers.ControllerConstants.*;
 @RequestMapping(value = "/login")
 public class LoginController {
 
+    private static final Logger LOG = LogManager.getLogger(LoginController.class);
+
     private final UserService userService;
 
     @Autowired
@@ -32,8 +37,9 @@ public class LoginController {
                             @RequestParam(value = "login") String login,
                             @RequestParam(value = "password") String password) {
 
+        LOG.debug("LoginController: loginPage()");
         modelMap.put("pageName", "login");
-        if (EMPTY.equals(login) || "".equals(password) || login == null || password == null) {
+        if (StringUtils.isBlank(login) || StringUtils.isBlank(password)) {
             modelMap.put("errorMsg", "Invalid login or password!");
             return LOGIN_VIEW;
         }
@@ -41,18 +47,19 @@ public class LoginController {
         try {
             user = userService.getUserByLogin(login);
         } catch (ServiceBusinessException e) {
-            //If no user with such login was found
             modelMap.put("errorMsg", "Invalid login or password!");
+            LOG.info("LoginController: ServiceBusinessException - cannot find user with such login in DB! User login: {}", login, e);
             return LOGIN_VIEW;
 
         } catch (ServiceSystemException e) {
-            modelMap.put("errorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
+            modelMap.put("errorMsg", INTERNAL_ERROR_MESSAGE);
+            LOG.error("LoginController: ServiceSystemException - cannot find user with such login in DB! User login: {}", login, e);
             return LOGIN_VIEW;
         }
-        if (user.getPassword().equals(Encoder.encode(password)) && user.getStatus().equals("ACTIVE")) {
+        if (user.getPassword().equals(StringEncoder.encode(password)) && user.getStatus().equals("ACTIVE")) {
             modelMap.put("user", user);
             if (user.getRole().equals("admin")) {
-                return "redirect:admin";
+                return REDIRECT_ADMIN_VIEW;
             }
             return REDIRECT_STATISTICS_VIEW;
 

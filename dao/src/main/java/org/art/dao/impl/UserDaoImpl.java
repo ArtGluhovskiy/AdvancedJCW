@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
 
     private UserRepository userRepository;
 
-    public static final Logger log = LogManager.getLogger(UserDaoImpl.class);
+    public static final Logger LOG = LogManager.getLogger(UserDaoImpl.class);
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
         try {
             savedUser = userRepository.save(user);
         } catch (Exception e) {
-            log.error("Cannot save user to the database!", e);
+            LOG.error("Cannot save user to the database!", e);
             throw new DAOSystemException("Cannot save user to the database!", e);
         }
         return savedUser;
@@ -48,7 +48,7 @@ public class UserDaoImpl implements UserDao {
         try {
             user = userRepository.findById(id).orElse(null);
         } catch (Exception e) {
-            log.error("Cannot get user from the database!", e);
+            LOG.error("Cannot get user from the database!", e);
             throw new DAOSystemException("Cannot get user from the database!", e);
         }
         return user;
@@ -60,7 +60,7 @@ public class UserDaoImpl implements UserDao {
         try {
             updUser = userRepository.save(user);
         } catch (Exception e) {
-            log.error("Cannot update user in the database!", e);
+            LOG.error("Cannot update user in the database!", e);
             throw new DAOSystemException("Cannot update user in the database!", e);
         }
         return updUser;
@@ -71,7 +71,7 @@ public class UserDaoImpl implements UserDao {
         try {
             userRepository.deleteById(id);
         } catch (Exception e) {
-            log.error("Cannot delete user from the database!", e);
+            LOG.error("Cannot delete user from the database!", e);
             throw new DAOSystemException("Cannot delete user from the database!", e);
         }
     }
@@ -82,7 +82,7 @@ public class UserDaoImpl implements UserDao {
         try {
             users = userRepository.findUsersByClanName(clanName);
         } catch (Exception e) {
-            log.info("Cannot get users from the database!", e);
+            LOG.info("Cannot get users from the database!", e);
             throw new DAOSystemException("Cannot get users from the database!", e);
         }
         return users;
@@ -94,7 +94,7 @@ public class UserDaoImpl implements UserDao {
         try {
             user = userRepository.findUserByLogin(login);
         } catch (Exception e) {
-            log.info("Cannot get user from the database!", e);
+            LOG.info("Cannot get user from the database!", e);
             throw new DAOSystemException("Cannot get user from the database!", e);
         }
         return user;
@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserDao {
             users = userRepository.findAll(PageRequest.of(0, usersAmount, Sort.Direction.DESC,
                     "rating")).getContent();
         } catch (Exception e) {
-            log.info("Cannot get users from the database!", e);
+            LOG.info("Cannot get users from the database!", e);
             throw new DAOSystemException("Cannot get users from the database!", e);
         }
         return users;
@@ -119,7 +119,7 @@ public class UserDaoImpl implements UserDao {
         try {
             users = userRepository.findAll();
         } catch (Exception e) {
-            log.info("Cannot get users from the database!", e);
+            LOG.info("Cannot get users from the database!", e);
             throw new DAOSystemException("Cannot get users from the database!", e);
         }
         return users;

@@ -8,7 +8,7 @@ import org.art.entities.User;
 import java.util.List;
 
 /**
- * TaskOrderDao interface with special methods
+ * TaskOrderDao interface with special methods.
  */
 public interface TaskOrderDao extends DAO<TaskOrder> {
 

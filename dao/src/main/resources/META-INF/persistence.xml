@@ -7,9 +7,9 @@
         <class>org.art.entities.User</class>
         <class>org.art.entities.JavaTask</class>
         <class>org.art.entities.TaskOrder</class>
-        <class>org.art.entities.TestEntity</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 
         <properties>

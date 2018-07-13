@@ -1,5 +1,7 @@
 package org.art.web.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.art.entities.JavaTask;
 import org.art.entities.User;
 import org.art.services.JavaTaskService;
@@ -21,6 +23,8 @@ import static org.art.web.controllers.ControllerConstants.*;
 @SessionAttributes(names = {"user", "errorMsg", "task"})
 public class ApplicationController {
 
+    private static final Logger LOG = LogManager.getLogger(ApplicationController.class);
+
     private final JavaTaskService taskService;
 
     @Autowired
@@ -32,6 +36,8 @@ public class ApplicationController {
     public String applicationPage(ModelMap modelMap,
                                   @ModelAttribute("user") User user,
                                   @ModelAttribute("errorMsg") String errorMsg) {
+
+        LOG.debug("ApplicationController: applicationPage()");
         if (user == null || user.getLogin() == null) {
             return LOGIN_VIEW;
         }
@@ -39,7 +45,6 @@ public class ApplicationController {
         try {
             //If no tasks were solved
             if (user.getRating() == 1) {
-                //Requiring of the first task for user (with task ID > 0) after registration
                 if (!hasNotSolvedTask(user)) {
                     javaTask = taskService.getNextTaskByDiffGroup(user, 0);
                 } else {
@@ -51,10 +56,12 @@ public class ApplicationController {
         } catch (ServiceBusinessException e) {
             modelMap.put("errorMsg", "We can't find a new task for you.<br>It seems that you solved all of them!");
             modelMap.put("prevPage", "statistics");
+            LOG.info("ApplicationController: ServiceBusinessException - cannot get new task from DB! User ID: {}", user.getUserID(), e);
             return ERROR_VIEW;
         } catch (ServiceSystemException e) {
-            modelMap.put("errorMsg", ControllerConstants.SERVER_ERROR_MESSAGE);
+            modelMap.put("errorMsg", ControllerConstants.INTERNAL_ERROR_MESSAGE);
             modelMap.put("prevPage", "statistics");
+            LOG.error("ApplicationController: ServiceSystemException - cannot get new task from DB! User ID: {}", user.getUserID(), e);
             return ERROR_VIEW;
         }
         modelMap.remove("errorMsg");
@@ -67,6 +74,7 @@ public class ApplicationController {
             taskService.getNotSolvedTask(user);
         } catch (ServiceException e) {
             //Either some system problems or user has no solved task in the database
+            LOG.info("ApplicationController: ServiceException - cannot get new task from DB! User ID: {}", user.getUserID(), e);
             return false;
         }
         return true;

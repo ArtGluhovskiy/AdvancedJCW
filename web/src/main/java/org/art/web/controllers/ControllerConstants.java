@@ -16,13 +16,14 @@ public class ControllerConstants {
     public static final String BATTLESHIP_VIEW = "battleship";
     public static final String ERROR_VIEW = "error";
 
+    public static final String REDIRECT_ADMIN_VIEW = "redirect:admin";
+    public static final String REDIRECT_MAIN_VIEW = "redirect:main";
     public static final String REDIRECT_STATISTICS_VIEW = "redirect:statistics";
-    public static final String REDIRECT_MAIN = "redirect:main";
 
     public static final String RESPONSE_STATUS_SUCCESS = "OK";
     public static final String RESPONSE_STATUS_FAIL = "FAIL";
 
-    public static final String SERVER_ERROR_MESSAGE = "We have some system problems on server! Please, try later.";
+    public static final String INTERNAL_ERROR_MESSAGE = "We have some system problems on server! Please, try later.";
 
     public static final String IMAGES_ROOT_PATH = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\web\\src\\main\\resources\\img\\";
 }

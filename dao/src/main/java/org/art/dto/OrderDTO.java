@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * OrderDTO is actually the mixture of data from
- * database tables ("users", "java_tasks", "task_orders")
+ * database tables ("users", "java_tasks", "task_orders").
  */
 @Data
 public class OrderDTO {
@@ -22,7 +22,6 @@ public class OrderDTO {
     private String orderStatus;
     private Date regDate;
     private Date taskRegDate;
-
 
     public OrderDTO(long userID, String login, String diffGroup, String shortDesc, Date regDate, String orderStatus,
                     Date taskRegDate, int taskPopularity, long elapsedTime, long execTime, long orderID) {

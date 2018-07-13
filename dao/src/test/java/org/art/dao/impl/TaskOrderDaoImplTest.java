@@ -4,7 +4,7 @@ import org.art.dao.JavaTaskDao;
 import org.art.dao.TaskOrderDao;
 import org.art.dao.UserDao;
 import org.art.dao.exceptions.DAOSystemException;
-import org.art.dao.utils.EMUtil;
+import org.art.dao.utils.JPAProvider;
 import org.art.dto.OrderDTO;
 import org.art.entities.DifficultyGroup;
 import org.art.entities.JavaTask;
@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,16 +23,23 @@ import java.util.List;
 import static org.art.dao.utils.DateTimeUtil.toSQLDate;
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestTaskOrderDaoImpl {
+class TaskOrderDaoImplTest {
 
-    static ApplicationContext context;
-    static UserDao userDao;
-    static TaskOrderDao orderDao;
-    static JavaTaskDao taskDao;
+    private static final String PERSIST_UNIT_NAME = "org.art.dao.test";
+
+    private static ApplicationContext context;
+
+    private static EntityManagerFactory emf;
+
+    private static UserDao userDao;
+
+    private static TaskOrderDao orderDao;
+
+    private static JavaTaskDao taskDao;
 
     @BeforeAll
-    static void initAll() throws SQLException {
-        EMUtil.initEMFactory("org.art.dao.test");
+    static void initAll() {
+        emf = JPAProvider.getEMFactory(PERSIST_UNIT_NAME);
         context = new ClassPathXmlApplicationContext("beans-dao.xml");
         orderDao = context.getBean("taskOrderDaoImpl", TaskOrderDao.class);
         assertNotNull(orderDao);
@@ -53,7 +61,7 @@ class TestTaskOrderDaoImpl {
         user.getOrders().add(order2);
         user.getOrders().add(order3);
 
-        EntityManager em = EMUtil.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(user);
         Long userId = user.getUserID();
@@ -141,7 +149,7 @@ class TestTaskOrderDaoImpl {
         taskDao.save(task);
         TaskOrder order1 = new TaskOrder("SOLVED", user, task);
 
-        EntityManager em = EMUtil.createEntityManager();
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(order1);
         Long orderId = order1.getOrderID();
@@ -165,13 +173,12 @@ class TestTaskOrderDaoImpl {
 
         assertNull(orderDao.get(999L));
         assertNull(orderDao.getNotSolvedOrder(user));
-        assertTrue(orderDao.getOrders(user).size() == 0);
-        assertTrue(orderDao.getUserSolvedTaskOrders(999L).size() == 0);
+        assertEquals(0, orderDao.getOrders(user).size());
+        assertEquals(0, orderDao.getUserSolvedTaskOrders(999L).size());
     }
 
     @AfterAll
-    static void tearDown() throws SQLException {
-        EMUtil.closeEMFactory();
+    static void tearDown() {
         ((ClassPathXmlApplicationContext) context).close();
     }
 }

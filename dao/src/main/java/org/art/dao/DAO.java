@@ -3,7 +3,7 @@ package org.art.dao;
 import org.art.dao.exceptions.DAOSystemException;
 
 /**
- * DAO interface with CRUD operations
+ * DAO interface with CRUD operations.
  *
  * @param <T> generic type for entities
  */

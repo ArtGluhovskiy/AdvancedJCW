@@ -9,10 +9,7 @@ import org.art.services.TaskOrderService;
 import org.art.services.UserService;
 import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -25,13 +22,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TestOrderServiceImpl {
 
-    static ApplicationContext context;
-    static TaskOrderService orderService;
-    static UserService userService;
-    static JavaTaskService taskService;
+    private static ApplicationContext context;
+
+    private static TaskOrderService orderService;
+
+    private static UserService userService;
+
+    private static JavaTaskService taskService;
 
     @BeforeAll
-    static void initAll() throws SQLException {
+    static void initAll() {
         context = new ClassPathXmlApplicationContext("beans-services.xml");
         orderService = context.getBean("taskOrderServiceImpl", TaskOrderService.class);
         assertNotNull(orderService);
@@ -42,6 +42,7 @@ class TestOrderServiceImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Create new order complex test")
     void test1() throws ServiceSystemException, ServiceBusinessException {
 
@@ -94,6 +95,7 @@ class TestOrderServiceImpl {
     }
 
     @Test
+    @Disabled
     @DisplayName("Null tests")
     void test2() throws ServiceSystemException {
 
@@ -107,7 +109,7 @@ class TestOrderServiceImpl {
     }
 
     @AfterAll
-    static void tearDownAll() throws SQLException {
+    static void tearDownAll() {
         ((ClassPathXmlApplicationContext) context).close();
     }
 }

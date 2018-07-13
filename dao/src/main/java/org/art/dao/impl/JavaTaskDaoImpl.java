@@ -8,7 +8,6 @@ import org.art.dao.repository.JavaTaskRepository;
 import org.art.entities.JavaTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
@@ -16,7 +15,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
 
     private JavaTaskRepository taskRepository;
 
-    public static final Logger log = LogManager.getLogger(JavaTaskDaoImpl.class);
+    public static final Logger LOG = LogManager.getLogger(JavaTaskDaoImpl.class);
 
     @Autowired
     public void setJavaTaskRepository(JavaTaskRepository taskRepository) {
@@ -47,7 +45,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
             javaTask.setBinTask(data);
             savedTask = taskRepository.save(javaTask);
         } catch (Exception e) {
-            log.info("Cannot save task into database!", e);
+            LOG.info("Cannot save task into database!", e);
             throw new DAOSystemException("Cannot save task into database!", e);
         }
         return savedTask;
@@ -65,7 +63,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
                 return deserialTask;
             }
         } catch (Exception e) {
-            log.info("Can not get task from the database!", e);
+            LOG.info("Can not get task from the database!", e);
             throw new DAOSystemException("Can not get task from the database!", e);
         }
         return null;
@@ -90,7 +88,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
         try {
             updTask = taskRepository.save(javaTask);
         } catch (Exception e) {
-            log.info("Cannot update task in the database!", e);
+            LOG.info("Cannot update task in the database!", e);
             throw new DAOSystemException("Cannot update task in the database!", e);
         }
         return updTask;
@@ -101,7 +99,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
         try {
             taskRepository.deleteById(id);
         } catch (Exception e) {
-            log.info("Cannot delete task from the database!", e);
+            LOG.info("Cannot delete task from the database!", e);
             throw new DAOSystemException("Cannot delete task from the database!", e);
         }
     }
@@ -118,7 +116,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
                 return deserialTask;
             }
         } catch (Exception e) {
-            log.info("Cannot get task from database!", e);
+            LOG.info("Cannot get task from database!", e);
             throw new DAOSystemException("Cannot get task from database!", e);
         }
         return null;
@@ -130,7 +128,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
         try {
             taskList = taskRepository.findAll(PageRequest.of(0, taskAmount, Sort.Direction.DESC, "popularity")).getContent();
         } catch (Exception e) {
-            log.info("Cannot get tasks from the database!", e);
+            LOG.info("Cannot get tasks from the database!", e);
             throw new DAOSystemException("Cannot get task from the database!", e);
         }
         return taskList;
@@ -142,7 +140,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
         try {
             taskRepository.updateTaskPopularity(task.getPopularity() + 1, task.getTaskId());
         } catch (Exception e) {
-            log.info("Cannot update task popularity in the database!", e);
+            LOG.info("Cannot update task popularity in the database!", e);
             throw new DAOSystemException("Cannot update task popularity in the database!", e);
         }
     }
@@ -155,7 +153,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
                 taskList.add(t);
             });
         } catch (Exception e) {
-            log.info("Cannot get tasks from the database!", e);
+            LOG.info("Cannot get tasks from the database!", e);
             throw new DAOSystemException("Cannot get tasks from the database!", e);
         }
         return taskList;

@@ -20,7 +20,7 @@ import java.util.List;
 import static org.art.dao.utils.DateTimeUtil.defineUserAge;
 
 /**
- * This class is an implementation of user entity
+ * This class is an implementation of user entity.
  */
 @Data
 @NoArgsConstructor
