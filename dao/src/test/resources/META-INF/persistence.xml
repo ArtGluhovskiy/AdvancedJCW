@@ -6,6 +6,7 @@
     <persistence-unit name="org.art.dao.test" transaction-type="RESOURCE_LOCAL">
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
         <class>org.art.entities.User</class>
         <class>org.art.entities.JavaTask</class>
         <class>org.art.entities.TaskOrder</class>

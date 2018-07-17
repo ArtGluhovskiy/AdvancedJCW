@@ -10,7 +10,7 @@ import org.art.dao.exceptions.DAOSystemException;
 public interface DAO<T> {
 
     /**
-     * This method saves entity to the database
+     * Saves entity to the database.
      *
      * @param t entity
      * @return entity with its ID from the database
@@ -30,7 +30,7 @@ public interface DAO<T> {
     T get(Long id) throws DAOSystemException;
 
     /**
-     * This method updates entity in the database
+     * Updates entity in the database
      *
      * @param t entity with fields you need to update
      * @return updated entity

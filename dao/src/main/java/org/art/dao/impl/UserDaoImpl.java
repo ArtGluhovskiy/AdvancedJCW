@@ -1,6 +1,5 @@
 package org.art.dao.impl;
 
-import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.art.dao.UserDao;
@@ -15,18 +14,17 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * User DAO implementation
+ * User DAO implementation.
  */
-@Data
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private UserRepository userRepository;
-
     public static final Logger LOG = LogManager.getLogger(UserDaoImpl.class);
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public UserDaoImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

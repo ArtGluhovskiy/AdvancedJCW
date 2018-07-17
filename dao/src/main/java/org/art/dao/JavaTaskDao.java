@@ -26,7 +26,7 @@ public interface JavaTaskDao extends DAO<JavaTask> {
     JavaTask getNextTaskByDiffGroup(String difGroup, Long taskID) throws DAOSystemException;
 
     /**
-     * This method finds the most popular (with the highest popularity) tasks in the database
+     * Finds the most popular (with the highest popularity) tasks in the database
      *
      * @param taskAmount amount (from top list) of popular tasks
      * @return the list of the most popular java tasks

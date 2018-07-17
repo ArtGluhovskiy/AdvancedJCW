@@ -15,15 +15,18 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+/**
+ * Task Order DAO implementation.
+ */
 @Repository
 public class TaskOrderDaoImpl implements TaskOrderDao {
 
-    private TaskOrderRepository orderRepository;
-
     public static final Logger LOG = LogManager.getLogger(TaskOrderDaoImpl.class);
 
+    private final TaskOrderRepository orderRepository;
+
     @Autowired
-    public void setTaskOrderRepository(TaskOrderRepository orderRepository) {
+    public TaskOrderDaoImpl(TaskOrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
@@ -55,7 +58,7 @@ public class TaskOrderDaoImpl implements TaskOrderDao {
     public TaskOrder update(TaskOrder order) throws DAOSystemException {
         TaskOrder updOrder;
         try {
-           updOrder = orderRepository.save(order);
+            updOrder = orderRepository.save(order);
         } catch (Exception e) {
             LOG.info("Cannot update task order in the database!", e);
             throw new DAOSystemException("Cannot update task order in the database!", e);

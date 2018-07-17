@@ -13,7 +13,7 @@ import java.util.List;
 public interface TaskOrderDao extends DAO<TaskOrder> {
 
     /**
-     * This method returns the list of the orders {@link OrderDTO} with the tasks solved by user
+     * Returns the list of the orders {@link OrderDTO} with the tasks solved by user
      *
      * @param id user ID
      * @return the list of the tasks solved by user
@@ -23,7 +23,7 @@ public interface TaskOrderDao extends DAO<TaskOrder> {
     List<OrderDTO> getUserSolvedTaskOrders(Long id) throws DAOSystemException;
 
     /**
-     * This method returns the list of all user's orders {@link OrderDTO}
+     * Returns the list of all user's orders {@link OrderDTO}
      *
      * @param id user ID
      * @return the list of the task order

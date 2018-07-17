@@ -5,10 +5,13 @@ import org.art.entities.User;
 
 import java.util.List;
 
+/**
+ * UserDao interface with special methods.
+ */
 public interface UserDao extends DAO<User> {
 
     /**
-     * Getting all users from specified clan.
+     * Retrieves all users from specified clan.
      *
      * @param clanName the name of the user clan
      * @return the list of all users from specified clan
@@ -18,7 +21,7 @@ public interface UserDao extends DAO<User> {
     List<User> getUsersByClanName(String clanName) throws DAOSystemException;
 
     /**
-     * Getting user by login
+     * Retrieves a user by login
      *
      * @param login user's login
      * @return user with specified login and password
@@ -28,7 +31,7 @@ public interface UserDao extends DAO<User> {
     User getUserByLogin(String login) throws DAOSystemException;
 
     /**
-     * Getting top users with the highest rating from the database
+     * Retrieves top users with the highest rating from the database
      *
      * @param usersAmount the amount of users from the top list
      * @return the list of the most experienced users
@@ -38,7 +41,7 @@ public interface UserDao extends DAO<User> {
     List<User> getTopUsers(int usersAmount) throws DAOSystemException;
 
     /**
-     * Getting all users from the database
+     * Retrieves all users from the database
      *
      * @return the list of all users
      * @throws DAOSystemException if {@link java.sql.SQLException}

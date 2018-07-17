@@ -55,7 +55,6 @@ public class JavaTask implements Serializable {
             cascade = {CascadeType.PERSIST})
     private Set<TaskOrder> orders = new HashSet<>();
 
-    //    @Enumerated(value = EnumType.STRING)
     @Column(name = "DIF_GROUP")
     private String difficultyGroup = DifficultyGroup.EXPERT.toString();
 

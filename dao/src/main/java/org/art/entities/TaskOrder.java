@@ -18,7 +18,6 @@ import java.sql.Date;
 @Table(name = "TASK_ORDERS")
 public class TaskOrder {
 
-
     public TaskOrder(String status) {
         this.status = status;
     }

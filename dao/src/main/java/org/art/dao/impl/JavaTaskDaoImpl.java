@@ -9,6 +9,7 @@ import org.art.entities.JavaTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.io.*;
@@ -19,21 +20,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JavaTaskDao implementation
+ * Java Task Dao implementation.
  */
+@Repository
 public class JavaTaskDaoImpl implements JavaTaskDao {
-
-    private JavaTaskRepository taskRepository;
 
     public static final Logger LOG = LogManager.getLogger(JavaTaskDaoImpl.class);
 
+    //Path to the file where serialized java task is stored
+    private static final String SERIAL_TASK_PATH = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\etc\\serial-tasks\\task3.txt";
+
+    private final JavaTaskRepository taskRepository;
+
     @Autowired
-    public void setJavaTaskRepository(JavaTaskRepository taskRepository) {
+    public JavaTaskDaoImpl(JavaTaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
-
-    //Path of the file where serialized java task is stored
-    public static final String SERIAL_TASK_PATH = "C:\\Users\\admin1\\IdeaProjects\\AdvancedJCW\\dao\\src\\main\\resources\\files\\serial-tasks\\task3.txt";
 
     @Override
     public JavaTask save(JavaTask javaTask) throws DAOSystemException {
@@ -149,9 +151,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
     public List<JavaTask> getAll() throws DAOSystemException {
         List<JavaTask> taskList = new ArrayList<>();
         try {
-            taskRepository.findAll().forEach((JavaTask t) -> {
-                taskList.add(t);
-            });
+            taskRepository.findAll().forEach(taskList::add);
         } catch (Exception e) {
             LOG.info("Cannot get tasks from the database!", e);
             throw new DAOSystemException("Cannot get tasks from the database!", e);
@@ -165,8 +165,7 @@ public class JavaTaskDaoImpl implements JavaTaskDao {
      * @param task task for serializing
      * @throws DAOSystemException in case of IO problems (file not found etc.) during task serializing
      */
-    public static void serializeTask(JavaTask task) throws DAOSystemException {
-
+    private static void serializeTask(JavaTask task) throws DAOSystemException {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(SERIAL_TASK_PATH)))) {
             out.writeObject(task);
         } catch (FileNotFoundException e) {

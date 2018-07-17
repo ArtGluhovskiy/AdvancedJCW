@@ -16,25 +16,31 @@ import org.art.services.exceptions.ServiceBusinessException;
 import org.art.services.exceptions.ServiceSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Task Order Service implementation.
+ */
 @Service
 @Transactional(/*propagation = Propagation.REQUIRED*/)
 public class TaskOrderServiceImpl implements TaskOrderService {
 
-    private static final Logger log = LogManager.getLogger(TaskOrderServiceImpl.class);
+    private static final Logger LOG = LogManager.getLogger(TaskOrderServiceImpl.class);
+
+    private final UserDao userDao;
+
+    private final TaskOrderDao orderDao;
+
+    private final JavaTaskDao taskDao;
 
     @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private TaskOrderDao orderDao;
-
-    @Autowired
-    private JavaTaskDao taskDao;
+    public TaskOrderServiceImpl(UserDao userDao, TaskOrderDao orderDao, JavaTaskDao taskDao) {
+        this.userDao = userDao;
+        this.orderDao = orderDao;
+        this.taskDao = taskDao;
+    }
 
     @Override
     public TaskOrder save(TaskOrder order) throws ServiceSystemException {
@@ -42,7 +48,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
         try {
             savedOrder = orderDao.save(order);
         } catch (DAOSystemException e) {
-            log.info("Exception while saving task order into the database!", e);
+            LOG.info("Exception while saving task order into the database!", e);
             throw new ServiceSystemException("Exception while saving task order into the database!", e);
         }
         return savedOrder;
@@ -57,7 +63,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
                 throw new ServiceBusinessException("No order was found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting task order from the database!", e);
+            LOG.info("Exception while getting task order from the database!", e);
             throw new ServiceSystemException("Exception while getting task order from the database!", e);
         }
         return order;
@@ -72,7 +78,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
                 throw new ServiceBusinessException("No task order with such ID was found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while updating task order in the database!", e);
+            LOG.info("Exception while updating task order in the database!", e);
             throw new ServiceSystemException("Exception while updating task order in the database!", e);
         }
         return updOrder;
@@ -83,7 +89,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
         try {
             orderDao.delete(id);
         } catch (DAOSystemException e) {
-            log.info("Exception while deleting task order from the database! ID: " + id, e);
+            LOG.info("Exception while deleting task order from the database! ID: " + id, e);
             throw new ServiceSystemException("Exception while deleting task order from the database! ID: " + id, e);
         }
     }
@@ -97,7 +103,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
                 throw new ServiceBusinessException("No orders were found in the DB!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting task orders from the database! ID: " + id, e);
+            LOG.info("Exception while getting task orders from the database! ID: " + id, e);
             throw new ServiceSystemException("Exception while getting task orders from the database! ID: " + id, e);
         }
         return complOrders;
@@ -112,7 +118,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
                 throw new ServiceBusinessException("No orders were found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting task orders from the database! ID: " + id, e);
+            LOG.info("Exception while getting task orders from the database! ID: " + id, e);
             throw new ServiceSystemException("Exception while getting task orders from the database! ID: " + id, e);
         }
         return complOrders;
@@ -127,7 +133,6 @@ public class TaskOrderServiceImpl implements TaskOrderService {
             user.setRating(user.getRating() + task.getValue());
             userDao.update(user);
             //Updating task (for solved task) popularity by 1
-//            task.setPopularity(task.getPopularity() + 1);
             taskDao.increaseTaskPopularity(task);
             //Updating task order
             order = orderDao.getNotSolvedOrder(user);
@@ -144,7 +149,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
             order = new TaskOrder("NOT SOLVED", user, newTask);
             orderDao.save(order);
         } catch (DAOSystemException e) {
-            log.info("Cannot update user in the database!", e);
+            LOG.info("Cannot update user in the database!", e);
             throw new ServiceSystemException("Cannot update user in the database!", e);
         }
     }
@@ -158,7 +163,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
                 throw new ServiceBusinessException("No orders were found!");
             }
         } catch (DAOSystemException e) {
-            log.info("Exception while getting task orders from the database! ID: " + user.getUserID(), e);
+            LOG.info("Exception while getting task orders from the database! ID: " + user.getUserID(), e);
             throw new ServiceSystemException("Exception while getting task orders from the database! ID: " + user.getUserID(), e);
         }
         return orders;
@@ -182,7 +187,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
         if (newTask == null) {
             //There is no more tasks with such difficulty in the database
             //So, we change the user level to a higher one
-            user = togleUserLevel(user);
+            user = toggleUserLevel(user);
             //Method returns null if user already has EXPERT level
             if (user == null) {
                 return newTask; // == null
@@ -200,7 +205,7 @@ public class TaskOrderServiceImpl implements TaskOrderService {
      * @param user
      * @return user with updated level
      */
-    private User togleUserLevel(User user) {
+    private User toggleUserLevel(User user) {
         if (user.getLevel().equals(DifficultyGroup.BEGINNER.toString())) {
             user.setLevel(DifficultyGroup.EXPERIENCED.toString());
             return user;
